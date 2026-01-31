@@ -1,0 +1,113 @@
+// ============================================
+// Disciplinary Case Enums
+// ============================================
+enum IssueCategory {
+  MISCONDUCT
+  POLICY_VIOLATION
+  ETHICAL_BREACH
+  INSUBORDINATION
+  FINANCIAL_IRREGULARITY
+  PUBLIC_STATEMENT_VIOLATION
+  OTHER
+
+  @@map("issue_category")
+}
+
+enum IssueSource {
+  INTERNAL_COMPLAINT
+  EXTERNAL_COMPLAINT
+  MEDIA_REPORT
+  PARTY_OBSERVATION
+  LEGAL_NOTICE
+
+  @@map("issue_source")
+}
+
+enum CaseStatus {
+  UNDER_REVIEW
+  CLARIFICATION_REQUIRED
+  REVIEW_COMPLETED
+  ACTION_TAKEN
+  CLOSED
+  ARCHIVED
+
+  @@map("case_status")
+}
+
+enum ActionOutcome {
+  NO_ACTION
+  WARNING
+  TEMPORARY_SUSPENSION
+  PERMANENT_SUSPENSION
+  POSITION_REVOKED
+  MEMBERSHIP_REVOKED
+
+  @@map("action_outcome")
+}
+
+enum CaseVisibility {
+  INTERNAL_ONLY
+  PUBLIC
+  RESTRICTED
+
+  @@map("case_visibility")
+}
+
+// ============================================
+// Disciplinary Case Entity
+// ============================================
+model DisciplinaryCase {
+  id                    String                @id @default(uuid()) @db.Uuid
+  caseNumber            String                @unique @map("case_number") @db.VarChar(50)
+  
+  // Subject Information
+  leaderId              String                @map("leader_id") @db.Uuid
+  leader                Leader                @relation(fields: [leaderId], references: [id], onDelete: Cascade)
+  leaderName            String                @map("leader_name") @db.VarChar(100)
+  position              String                @db.VarChar(100)
+  constituency          String?               @db.VarChar(50)
+  
+  // Case Details
+  issueCategory         IssueCategory         @map("issue_category")
+  issueDescription      String                @map("issue_description") @db.Text
+  issueSource           IssueSource           @map("issue_source")
+  
+  // Timeline
+  initiationDate        DateTime              @default(now()) @map("initiation_date") @db.Timestamptz(3)
+  reviewStartDate       DateTime?             @map("review_start_date") @db.Timestamptz(3)
+  decisionDate          DateTime?             @map("decision_date") @db.Timestamptz(3)
+  effectiveFrom         DateTime?             @map("effective_from") @db.Timestamptz(3)
+  effectiveTo           DateTime?             @map("effective_to") @db.Timestamptz(3)
+  
+  // Authorities
+  initiatedBy           String                @map("initiated_by") @db.Uuid
+  initiatedByUser       User                  @relation("InitiatedCases", fields: [initiatedBy], references: [id])
+  reviewAuthority       String?               @map("review_authority") @db.Uuid
+  reviewAuthorityUser   User?                 @relation("ReviewedCases", fields: [reviewAuthority], references: [id])
+  decisionAuthority     String?               @map("decision_authority") @db.Uuid
+  decisionAuthorityUser User?                 @relation("DecidedCases", fields: [decisionAuthority], references: [id])
+  
+  // Status & Decision
+  status                CaseStatus            @default(UNDER_REVIEW)
+  actionOutcome         ActionOutcome?        @map("action_outcome")
+  
+  // Visibility
+  visibility            CaseVisibility        @default(INTERNAL_ONLY)
+  
+  // Evidence & Notes
+  internalNotes         String?               @map("internal_notes") @db.Text
+  evidenceUrls          String[]              @map("evidence_urls")
+  imageUrls             String[]              @map("image_urls")
+  decisionRationale     String?               @map("decision_rationale") @db.Text
+  
+  // Metadata
+  createdAt             DateTime              @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt             DateTime              @updatedAt @map("updated_at") @db.Timestamptz(3)
+  
+  @@index([leaderId])
+  @@index([status])
+  @@index([visibility])
+  @@index([initiationDate])
+  @@index([caseNumber])
+  @@map("disciplinary_cases")
+}

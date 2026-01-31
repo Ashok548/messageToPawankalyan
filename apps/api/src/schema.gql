@@ -1,0 +1,667 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""Final action outcome for the case"""
+enum ActionOutcome {
+  MEMBERSHIP_REVOKED
+  NO_ACTION
+  PERMANENT_SUSPENSION
+  POSITION_REVOKED
+  TEMPORARY_SUSPENSION
+  WARNING
+}
+
+type Atrocity {
+  atrocityBy: String
+  atrocityType: AtrocityType!
+  constituency: String!
+  createdAt: DateTime!
+  description: String!
+  district: String!
+  id: ID!
+  images: [String]!
+  isVerified: Boolean!
+  leaderName: String!
+  mandal: String!
+  position: String
+  state: String!
+  subject: String
+  updatedAt: DateTime!
+  village: String!
+}
+
+"""Type of atrocity report"""
+enum AtrocityType {
+  TO_JANASENA_PARTY
+  TO_JSP_LEADER
+}
+
+type AuthPayload {
+  token: String
+  user: User!
+}
+
+"""Current status of the disciplinary case"""
+enum CaseStatus {
+  ACTION_TAKEN
+  ARCHIVED
+  CLARIFICATION_REQUIRED
+  CLOSED
+  REVIEW_COMPLETED
+  UNDER_REVIEW
+}
+
+"""Visibility level of the case"""
+enum CaseVisibility {
+  INTERNAL_ONLY
+  PUBLIC
+  RESTRICTED
+}
+
+input CreateAtrocityInput {
+  atrocityBy: String
+  atrocityType: AtrocityType! = TO_JSP_LEADER
+  constituency: String!
+  description: String!
+  district: String!
+
+  """Base64 encoded images (max 2, each max 500KB)"""
+  images: [String!]
+  leaderName: String!
+  mandal: String!
+  position: String
+  state: String!
+  subject: String
+  village: String!
+}
+
+input CreateDisciplinaryCaseInput {
+  constituency: String
+  evidenceUrls: [String!]
+  imageUrls: [String!]
+  issueCategory: IssueCategory!
+  issueDescription: String!
+  issueSource: IssueSource!
+  leaderId: String!
+  leaderName: String!
+  position: String!
+}
+
+input CreateGovernanceHighlightInput {
+  adminNotes: String
+  area: String!
+  category: HighlightCategory!
+  constituency: String
+  department: String
+  description: String!
+  district: String!
+
+  """Base64 encoded image (max 500KB)"""
+  image: String
+  issueContext: String
+  mandal: String
+  period: String
+  sourceTitle: String
+  sourceType: SourceType!
+  sourceUrl: String!
+  state: String!
+  status: HighlightStatus! = ADDRESSED
+  title: String!
+  village: String
+  yearCompleted: Float!
+  yearStarted: Float
+}
+
+input CreateLeaderInput {
+  district: String!
+
+  """Gallery images (max 10)"""
+  gallery: [String!]
+  mandal: String
+  name: String!
+  nominatedPost: String
+  otherPlatforms: [OtherPlatformInput!]
+  partyPosition: String
+  partyYears: Float
+
+  """Base64 encoded image (max 500KB)"""
+  photo: String
+  primaryPlatform: String
+  primaryProfileUrl: String
+  reason: String!
+  serviceAreas: [String!]!
+  submittedBy: SubmittedBy!
+  values: [String!]!
+}
+
+input CreateProjectInput {
+  description: String
+  name: String!
+  status: ProjectStatus
+}
+
+input CreateSocialMediaWarriorInput {
+  digitalContributions: [String!]!
+  district: String!
+  engagementStyle: [String!]!
+
+  """Gallery images (max 10)"""
+  gallery: [String!]
+  mandal: String
+  name: String!
+  nominatedPost: String
+  otherPlatforms: [WarriorOtherPlatformInput!]
+  partyPosition: String
+  partyYears: Float
+
+  """Base64 encoded image (max 500KB)"""
+  photo: String
+  primaryPlatform: String
+  primaryProfileUrl: String
+  reason: String!
+  submittedBy: SubmittedBy!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type DisciplinaryCase {
+  actionOutcome: ActionOutcome
+  caseNumber: String!
+  constituency: String
+  createdAt: DateTime!
+  decisionAuthority: String
+  decisionAuthorityUser: User
+  decisionDate: DateTime
+  decisionRationale: String
+  effectiveFrom: DateTime
+  effectiveTo: DateTime
+  evidenceUrls: [String!]!
+  id: ID!
+  imageUrls: [String!]!
+  initiatedBy: String!
+  initiatedByUser: User
+  initiationDate: DateTime!
+  internalNotes: String
+  issueCategory: IssueCategory!
+  issueDescription: String!
+  issueSource: IssueSource!
+  leader: Leader
+  leaderId: String!
+  leaderName: String!
+  position: String!
+  reviewAuthority: String
+  reviewAuthorityUser: User
+  reviewStartDate: DateTime
+  status: CaseStatus!
+  updatedAt: DateTime!
+  visibility: CaseVisibility!
+}
+
+input DisciplinaryCaseFilterInput {
+  issueCategory: String
+  leaderId: String
+  searchTerm: String
+  status: String
+  visibility: String
+}
+
+input ForgotPasswordInput {
+  mobile: String!
+}
+
+type GovernanceHighlight {
+  adminNotes: String
+  area: String!
+  category: HighlightCategory!
+  constituency: String
+  createdAt: DateTime!
+  department: String
+  description: String!
+  district: String!
+  id: ID!
+  image: String
+  isVerified: Boolean!
+  isVisible: Boolean!
+  issueContext: String
+  mandal: String
+  period: String
+  sourceTitle: String
+  sourceType: SourceType!
+  sourceUrl: String!
+  state: String!
+  status: HighlightStatus!
+  title: String!
+  updatedAt: DateTime!
+  village: String
+  yearCompleted: Float!
+  yearStarted: Float
+}
+
+"""Category of governance highlight"""
+enum HighlightCategory {
+  INNOVATIVE_INITIATIVE
+  PENDING_ISSUE_ADDRESSED
+}
+
+"""Status of governance highlight implementation"""
+enum HighlightStatus {
+  ADDRESSED
+  FOLLOW_UP_ONGOING
+  IN_PROGRESS
+}
+
+"""Category of disciplinary issue"""
+enum IssueCategory {
+  ETHICAL_BREACH
+  FINANCIAL_IRREGULARITY
+  INSUBORDINATION
+  MISCONDUCT
+  OTHER
+  POLICY_VIOLATION
+  PUBLIC_STATEMENT_VIOLATION
+}
+
+"""Source of the disciplinary issue"""
+enum IssueSource {
+  EXTERNAL_COMPLAINT
+  INTERNAL_COMPLAINT
+  LEGAL_NOTICE
+  MEDIA_REPORT
+  PARTY_OBSERVATION
+}
+
+type Leader {
+  adminNotes: String
+  createdAt: DateTime!
+  district: String!
+  gallery: [String!]
+  id: ID!
+  mandal: String
+  name: String!
+  nominatedPost: String
+  otherPlatforms: [OtherPlatform!]
+  partyPosition: String
+  partyYears: Float
+  photo: String
+  primaryPlatform: String
+  primaryProfileUrl: String
+  reason: String!
+  serviceAreas: [String!]!
+  status: LeaderStatus!
+  submittedBy: SubmittedBy!
+  updatedAt: DateTime!
+  values: [String!]!
+}
+
+"""Moderation status of leader profile"""
+enum LeaderStatus {
+  APPROVED
+  ARCHIVED
+  HIDDEN
+  PENDING
+}
+
+input LoginInput {
+  mobile: String!
+  password: String!
+}
+
+type Mutation {
+  """Add an internal note to a case"""
+  addCaseInternalNote(id: ID!, note: String!): DisciplinaryCase!
+  approveAtrocity(id: String!): Atrocity!
+  createAtrocity(input: CreateAtrocityInput!): Atrocity!
+
+  """Create a new disciplinary case"""
+  createDisciplinaryCase(input: CreateDisciplinaryCaseInput!): DisciplinaryCase!
+
+  """SUPER_ADMIN only: Create new governance highlight"""
+  createGovernanceHighlight(input: CreateGovernanceHighlightInput!): GovernanceHighlight!
+
+  """Admin only: Create new leader profile"""
+  createLeader(input: CreateLeaderInput!): Leader!
+  createProject(input: CreateProjectInput!): Project!
+
+  """Admin only: Create new social media warrior profile"""
+  createSocialMediaWarrior(input: CreateSocialMediaWarriorInput!): SocialMediaWarrior!
+  deleteAtrocity(id: String!): Atrocity!
+
+  """SUPER_ADMIN only: Delete governance highlight"""
+  deleteGovernanceHighlight(id: String!): GovernanceHighlight!
+
+  """Admin only: Delete leader profile"""
+  deleteLeader(id: String!): Leader!
+  deleteProject(id: String!): Project!
+
+  """Admin only: Delete warrior profile"""
+  deleteSocialMediaWarrior(id: String!): SocialMediaWarrior!
+  deleteUser(id: String!): User!
+  forgotPassword(input: ForgotPasswordInput!): VerifyOtpResponse!
+  login(input: LoginInput!): AuthPayload!
+  logout: Boolean!
+
+  """Record a final decision and action outcome"""
+  recordCaseDecision(id: ID!, input: RecordDecisionInput!): DisciplinaryCase!
+  register(input: RegisterInput!): AuthPayload!
+  removeAtrocityImage(id: String!, imageUrl: String!): Atrocity!
+  resendOtp(input: ResendOtpInput!): VerifyOtpResponse!
+  resetPassword(input: ResetPasswordInput!): VerifyOtpResponse!
+
+  """SUPER_ADMIN only: Toggle visibility"""
+  toggleGovernanceHighlightVisibility(id: String!): GovernanceHighlight!
+  updateAtrocity(id: String!, input: UpdateAtrocityInput!): Atrocity!
+
+  """Update the status of a disciplinary case"""
+  updateCaseStatus(id: ID!, input: UpdateCaseStatusInput!): DisciplinaryCase!
+
+  """Update visibility setting of a case"""
+  updateCaseVisibility(id: ID!, visibility: CaseVisibility!): DisciplinaryCase!
+
+  """SUPER_ADMIN only: Update governance highlight"""
+  updateGovernanceHighlight(id: String!, input: UpdateGovernanceHighlightInput!): GovernanceHighlight!
+
+  """Admin only: Update leader profile"""
+  updateLeader(id: String!, input: UpdateLeaderInput!): Leader!
+
+  """Admin only: Update leader status"""
+  updateLeaderStatus(adminNotes: String, id: String!, status: LeaderStatus!): Leader!
+  updateProject(id: String!, input: UpdateProjectInput!): Project!
+
+  """Admin only: Update social media warrior profile"""
+  updateSocialMediaWarrior(id: String!, input: UpdateSocialMediaWarriorInput!): SocialMediaWarrior!
+
+  """Admin only: Update warrior status"""
+  updateSocialMediaWarriorStatus(adminNotes: String, id: String!, status: WarriorStatus!): SocialMediaWarrior!
+  updateUser(id: String!, input: UpdateUserInput!): User!
+
+  """Upload and attach additional photos to a case"""
+  uploadCaseImages(id: ID!, images: [String!]!): DisciplinaryCase!
+  verifyOtp(input: VerifyOtpInput!): VerifyOtpResponse!
+}
+
+type OtherPlatform {
+  platform: String!
+  profileUrl: String!
+}
+
+input OtherPlatformInput {
+  platform: String!
+  profileUrl: String!
+}
+
+type Project {
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  name: String!
+  owner: User!
+  status: ProjectStatus!
+  updatedAt: DateTime!
+}
+
+"""The status of a project"""
+enum ProjectStatus {
+  ACTIVE
+  ARCHIVED
+  COMPLETED
+  ON_HOLD
+}
+
+type Query {
+  atrocities: [Atrocity!]!
+  atrocity(id: String!): Atrocity
+
+  """Get a single disciplinary case by ID"""
+  disciplinaryCase(id: ID!): DisciplinaryCase!
+
+  """List disciplinary cases with optional filtering"""
+  disciplinaryCases(filter: DisciplinaryCaseFilterInput): [DisciplinaryCase!]!
+  governanceHighlight(id: String!): GovernanceHighlight
+
+  """Get all verified and visible governance highlights"""
+  governanceHighlights(category: HighlightCategory): [GovernanceHighlight!]!
+  leader(id: String!): Leader
+
+  """Get all approved leaders"""
+  leaders: [Leader!]!
+
+  """Admin only: Get leaders by status"""
+  leadersByStatus(status: LeaderStatus!): [Leader!]!
+  me: User
+  project(id: String!): Project!
+  projects(status: String): [Project!]!
+  socialMediaWarrior(id: String!): SocialMediaWarrior
+
+  """Get all approved social media warriors"""
+  socialMediaWarriors: [SocialMediaWarrior!]!
+
+  """Admin only: Get warriors by status"""
+  socialMediaWarriorsByStatus(status: WarriorStatus!): [SocialMediaWarrior!]!
+  unverifiedAtrocities: [Atrocity!]!
+  user(id: String!): User!
+  userProjects(userId: String!): [Project!]!
+  users: [User!]!
+}
+
+input RecordDecisionInput {
+  actionOutcome: ActionOutcome!
+  decisionRationale: String
+  effectiveFrom: String
+  effectiveTo: String
+}
+
+input RegisterInput {
+  age: Float!
+  confirmPassword: String!
+  email: String
+  mobile: String!
+  name: String!
+  password: String!
+}
+
+input ResendOtpInput {
+  mobile: String!
+}
+
+input ResetPasswordInput {
+  confirmPassword: String!
+  mobile: String!
+  newPassword: String!
+  otp: String!
+}
+
+type SocialMediaWarrior {
+  adminNotes: String
+  createdAt: DateTime!
+  digitalContributions: [String!]!
+  district: String!
+  engagementStyle: [String!]!
+  gallery: [String!]
+  id: ID!
+  mandal: String
+  name: String!
+  nominatedPost: String
+  otherPlatforms: [WarriorOtherPlatform!]
+  partyPosition: String
+  partyYears: Float
+  photo: String
+  primaryPlatform: String
+  primaryProfileUrl: String
+  reason: String!
+  status: WarriorStatus!
+  submittedBy: SubmittedBy!
+  updatedAt: DateTime!
+}
+
+"""Type of source documentation"""
+enum SourceType {
+  FIELD_VERIFICATION
+  GOVERNMENT_PORTAL
+  NEWS_REPORT
+  PRESS_RELEASE
+  PUBLIC_RECORD
+}
+
+"""Who submitted the warrior profile"""
+enum SubmittedBy {
+  ANONYMOUS
+  SELF
+  SUPPORTER
+}
+
+input UpdateAtrocityInput {
+  atrocityBy: String
+  atrocityType: AtrocityType
+  constituency: String
+  description: String
+  district: String
+  images: [String!]
+  isVerified: Boolean
+  leaderName: String
+  mandal: String
+  position: String
+  state: String
+  subject: String
+  village: String
+}
+
+input UpdateCaseStatusInput {
+  internalNotes: String
+  reviewAuthority: String
+  reviewStartDate: String
+  status: CaseStatus!
+}
+
+input UpdateGovernanceHighlightInput {
+  adminNotes: String
+  area: String
+  category: HighlightCategory
+  constituency: String
+  department: String
+  description: String
+  district: String
+  image: String
+  isVisible: Boolean
+  issueContext: String
+  mandal: String
+  period: String
+  sourceTitle: String
+  sourceType: SourceType
+  sourceUrl: String
+  state: String
+  status: HighlightStatus
+  title: String
+  village: String
+  yearCompleted: Float
+  yearStarted: Float
+}
+
+input UpdateLeaderInput {
+  adminNotes: String
+  district: String
+  gallery: [String!]
+  mandal: String
+  name: String
+  nominatedPost: String
+  otherPlatforms: [OtherPlatformInput!]
+  partyPosition: String
+  partyYears: Float
+  photo: String
+  primaryPlatform: String
+  primaryProfileUrl: String
+  reason: String
+  serviceAreas: [String!]
+  submittedBy: SubmittedBy
+  values: [String!]
+}
+
+input UpdateProjectInput {
+  description: String
+  name: String
+  status: ProjectStatus
+}
+
+input UpdateSocialMediaWarriorInput {
+  adminNotes: String
+  digitalContributions: [String!]
+  district: String
+  engagementStyle: [String!]
+  gallery: [String!]
+  mandal: String
+  name: String
+  nominatedPost: String
+  otherPlatforms: [WarriorOtherPlatformInput!]
+  partyPosition: String
+  partyYears: Float
+  photo: String
+  primaryPlatform: String
+  primaryProfileUrl: String
+  reason: String
+  submittedBy: SubmittedBy
+}
+
+input UpdateUserInput {
+  age: Float
+  email: String
+  isVerified: Boolean
+  mobile: String
+  name: String
+  otp: String
+  otpExpiresAt: DateTime
+  passwordHash: String
+}
+
+type User {
+  createdAt: DateTime!
+  email: String
+  id: ID!
+  isVerified: Boolean!
+  mobile: String!
+  name: String!
+  otp: String
+  projects: [Project!]
+  role: UserRole!
+  updatedAt: DateTime!
+}
+
+"""User access role"""
+enum UserRole {
+  ADMIN
+  SUPER_ADMIN
+  USER
+}
+
+input VerifyOtpInput {
+  mobile: String!
+  otp: String!
+}
+
+type VerifyOtpResponse {
+  message: String!
+  otp: String
+  success: Boolean!
+  token: String
+  user: User
+}
+
+type WarriorOtherPlatform {
+  platform: String!
+  profileUrl: String!
+}
+
+input WarriorOtherPlatformInput {
+  platform: String!
+  profileUrl: String!
+}
+
+"""Moderation status of social media warrior profile"""
+enum WarriorStatus {
+  APPROVED
+  ARCHIVED
+  HIDDEN
+  PENDING
+}

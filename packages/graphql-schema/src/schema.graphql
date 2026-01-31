@@ -1,0 +1,121 @@
+# ============================================
+# Enums
+# ============================================
+
+enum ProjectStatus {
+  ACTIVE
+  ARCHIVED
+  COMPLETED
+  ON_HOLD
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  GUEST
+}
+
+# ============================================
+# User Type
+# ============================================
+
+type User {
+  id: ID!
+  email: String!
+  name: String!
+  role: UserRole
+  createdAt: String!
+  updatedAt: String!
+  projects: [Project!]!
+}
+
+# ============================================
+# Project Type
+# ============================================
+
+type Project {
+  id: ID!
+  name: String!
+  description: String
+  status: ProjectStatus!
+  owner: User!
+  createdAt: String!
+  updatedAt: String!
+}
+
+# ============================================
+# Auth Types
+# ============================================
+
+type AuthPayload {
+  user: User!
+  token: String!
+}
+
+# ============================================
+# Input Types
+# ============================================
+
+input RegisterInput {
+  email: String!
+  password: String!
+  name: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  name: String
+  email: String
+}
+
+input CreateProjectInput {
+  name: String!
+  description: String
+  status: ProjectStatus
+}
+
+input UpdateProjectInput {
+  name: String
+  description: String
+  status: ProjectStatus
+}
+
+# ============================================
+# Queries
+# ============================================
+
+type Query {
+  # User queries
+  me: User
+  user(id: ID!): User
+  users: [User!]!
+
+  # Project queries
+  project(id: ID!): Project
+  projects(status: ProjectStatus): [Project!]!
+  userProjects(userId: ID!): [Project!]!
+}
+
+# ============================================
+# Mutations
+# ============================================
+
+type Mutation {
+  # Auth mutations
+  register(input: RegisterInput!): AuthPayload!
+  login(input: LoginInput!): AuthPayload!
+  logout: Boolean!
+
+  # User mutations
+  updateUser(id: ID!, input: UpdateUserInput!): User!
+  deleteUser(id: ID!): User!
+
+  # Project mutations
+  createProject(input: CreateProjectInput!): Project!
+  updateProject(id: ID!, input: UpdateProjectInput!): Project!
+  deleteProject(id: ID!): Project!
+}
