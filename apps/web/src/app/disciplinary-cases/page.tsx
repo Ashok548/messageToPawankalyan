@@ -6,16 +6,14 @@ import {
     Box,
     Container,
     Typography,
-    Grid,
     TextField,
     MenuItem,
     Button,
-    Stack,
     InputAdornment,
     CircularProgress,
     Alert
 } from '@mui/material';
-import { Search, Add, FilterList } from '@mui/icons-material';
+import { Search, Add } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { DisciplinaryCaseCard } from '../../components/DisciplinaryCaseCard';
 import { GET_DISCIPLINARY_CASES } from '../../graphql/disciplinary-cases';
@@ -58,130 +56,139 @@ export default function DisciplinaryCasesPage() {
     };
 
     return (
-        <Container maxWidth="lg" sx={{ py: 4 }}>
-            {/* Header */}
-            <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'start', sm: 'center' }} spacing={2} mb={4}>
-                <Box>
-                    <Typography variant="h4" component="h1" gutterBottom fontWeight="bold" color="primary">
-                        Disciplinary Register
-                    </Typography>
-                    <Typography variant="body1" color="text.secondary">
-                        Official records of disciplinary actions and internal reviews.
-                    </Typography>
-                </Box>
+        <Box component="main" sx={{ minHeight: '100vh', backgroundColor: '#fafafa', py: 4 }}>
+            <Container maxWidth="lg">
+                {/* Header */}
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+                    <Box>
+                        <Typography variant="h4" component="h1" sx={{ fontWeight: 600, mb: 1 }}>
+                            Disciplinary Register
+                        </Typography>
+                        <Typography variant="body1" color="text.secondary">
+                            Official records of disciplinary actions and internal reviews
+                        </Typography>
+                    </Box>
 
-                {isAdmin && (
-                    <Button
-                        variant="contained"
-                        startIcon={<Add />}
-                        onClick={handleCreateCase}
-                        sx={{ bgcolor: '#E31E24', '&:hover': { bgcolor: '#B01419' } }}
-                    >
-                        New Case
-                    </Button>
-                )}
-            </Stack>
-
-            {/* Filters */}
-            <Box sx={{ mb: 4, p: 2, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
-                <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={12} md={4}>
-                        <TextField
-                            fullWidth
-                            placeholder="Search by Case ID or Leader Name"
-                            value={filters.searchTerm}
-                            onChange={handleFilterChange('searchTerm')}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <Search color="action" />
-                                    </InputAdornment>
-                                ),
-                            }}
-                            size="small"
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={3}>
-                        <TextField
-                            select
-                            fullWidth
-                            label="Status"
-                            value={filters.status}
-                            onChange={handleFilterChange('status')}
-                            size="small"
-                        >
-                            <MenuItem value="">All Statuses</MenuItem>
-                            {Object.values(CaseStatus).map((status) => (
-                                <MenuItem key={status} value={status}>
-                                    {status.replace(/_/g, ' ')}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={3}>
-                        <TextField
-                            select
-                            fullWidth
-                            label="Category"
-                            value={filters.issueCategory}
-                            onChange={handleFilterChange('issueCategory')}
-                            size="small"
-                        >
-                            <MenuItem value="">All Categories</MenuItem>
-                            {Object.values(IssueCategory).map((category) => (
-                                <MenuItem key={category} value={category}>
-                                    {category.replace(/_/g, ' ')}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </Grid>
                     {isAdmin && (
-                        <Grid item xs={12} sm={6} md={2}>
-                            <TextField
-                                select
-                                fullWidth
-                                label="Visibility"
-                                value={filters.visibility}
-                                onChange={handleFilterChange('visibility')}
-                                size="small"
-                            >
-                                <MenuItem value="">All</MenuItem>
-                                {Object.values(CaseVisibility).map((viz) => (
-                                    <MenuItem key={viz} value={viz}>
-                                        {viz.replace(/_/g, ' ')}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Grid>
+                        <Button
+                            variant="contained"
+                            onClick={handleCreateCase}
+                            sx={{ whiteSpace: 'nowrap', minWidth: { xs: 'auto', sm: 64 } }}
+                        >
+                            <Add />
+                            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' }, ml: 1 }}>
+                                New Case
+                            </Box>
+                        </Button>
                     )}
-                </Grid>
-            </Box>
+                </Box>
 
-            {/* Content */}
-            {loading ? (
-                <Box display="flex" justifyContent="center" py={8}>
-                    <CircularProgress />
+                {/* Horizontal Filter Bar */}
+                <Box
+                    sx={{
+                        mb: 4,
+                        display: 'flex',
+                        flexDirection: { xs: 'column', md: 'row' },
+                        gap: 2,
+                        alignItems: { xs: 'stretch', md: 'center' }
+                    }}
+                >
+                    {/* Search */}
+                    <TextField
+                        fullWidth
+                        placeholder="Search by Case ID or Leader Name"
+                        value={filters.searchTerm}
+                        onChange={handleFilterChange('searchTerm')}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <Search color="action" />
+                                </InputAdornment>
+                            ),
+                        }}
+                        size="small"
+                        sx={{ maxWidth: { md: 400 } }}
+                    />
+
+                    {/* Status Filter */}
+                    <TextField
+                        select
+                        label="Status"
+                        value={filters.status}
+                        onChange={handleFilterChange('status')}
+                        size="small"
+                        sx={{ minWidth: { xs: '100%', md: 180 } }}
+                    >
+                        <MenuItem value="">All Statuses</MenuItem>
+                        {Object.values(CaseStatus).map((status) => (
+                            <MenuItem key={status} value={status}>
+                                {status.replace(/_/g, ' ')}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+
+                    {/* Category Filter */}
+                    <TextField
+                        select
+                        label="Category"
+                        value={filters.issueCategory}
+                        onChange={handleFilterChange('issueCategory')}
+                        size="small"
+                        sx={{ minWidth: { xs: '100%', md: 200 } }}
+                    >
+                        <MenuItem value="">All Categories</MenuItem>
+                        {Object.values(IssueCategory).map((category) => (
+                            <MenuItem key={category} value={category}>
+                                {category.replace(/_/g, ' ')}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+
+                    {/* Visibility Filter (Admin Only) */}
+                    {isAdmin && (
+                        <TextField
+                            select
+                            label="Visibility"
+                            value={filters.visibility}
+                            onChange={handleFilterChange('visibility')}
+                            size="small"
+                            sx={{ minWidth: { xs: '100%', md: 150 } }}
+                        >
+                            <MenuItem value="">All</MenuItem>
+                            {Object.values(CaseVisibility).map((viz) => (
+                                <MenuItem key={viz} value={viz}>
+                                    {viz.replace(/_/g, ' ')}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    )}
                 </Box>
-            ) : error ? (
-                <Alert severity="error">Error loading disciplinary cases: {error.message}</Alert>
-            ) : data?.disciplinaryCases?.length === 0 ? (
-                <Box textAlign="center" py={8} bgcolor="background.paper" borderRadius={2}>
-                    <Typography variant="h6" color="text.secondary">
-                        No disciplinary cases found matching your criteria.
-                    </Typography>
-                </Box>
-            ) : (
-                <Grid container spacing={3}>
-                    {data?.disciplinaryCases.map((disciplinaryCase: any) => (
-                        <Grid item xs={12} md={6} lg={4} key={disciplinaryCase.id}>
+
+                {/* Content */}
+                {loading ? (
+                    <Box display="flex" justifyContent="center" py={8}>
+                        <CircularProgress />
+                    </Box>
+                ) : error ? (
+                    <Alert severity="error">Error loading disciplinary cases: {error.message}</Alert>
+                ) : data?.disciplinaryCases?.length === 0 ? (
+                    <Box textAlign="center" py={8}>
+                        <Typography variant="h6" color="text.secondary">
+                            No disciplinary cases found matching your criteria
+                        </Typography>
+                    </Box>
+                ) : (
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                        {data?.disciplinaryCases.map((disciplinaryCase: any) => (
                             <DisciplinaryCaseCard
+                                key={disciplinaryCase.id}
                                 data={disciplinaryCase}
                                 isAdmin={isAdmin}
                             />
-                        </Grid>
-                    ))}
-                </Grid>
-            )}
-        </Container>
+                        ))}
+                    </Box>
+                )}
+            </Container>
+        </Box>
     );
 }

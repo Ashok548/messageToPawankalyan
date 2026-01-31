@@ -1,5 +1,4 @@
 import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
-import { Leader } from '../../leaders/entities/leader.entity';
 import { User } from '../../users/entities/user.entity';
 
 import { IssueCategory, IssueSource, CaseStatus, ActionOutcome, CaseVisibility } from '@prisma/client';
@@ -40,13 +39,7 @@ export class DisciplinaryCase {
     @Field()
     caseNumber: string;
 
-    // Subject Information
-    @Field()
-    leaderId: string;
-
-    @Field(() => Leader, { nullable: true })
-    leader?: Leader;
-
+    // Subject Information (Independent)
     @Field()
     leaderName: string;
 
@@ -54,7 +47,13 @@ export class DisciplinaryCase {
     position: string;
 
     @Field({ nullable: true })
+    leaderPhotoUrl?: string;
+
+    @Field({ nullable: true })
     constituency?: string;
+
+    @Field({ nullable: true })
+    district?: string;
 
     // Case Details
     @Field(() => IssueCategory)
@@ -121,6 +120,9 @@ export class DisciplinaryCase {
 
     @Field(() => [String])
     imageUrls: string[];
+
+    @Field(() => [String])
+    sourceLinks: string[];
 
     @Field({ nullable: true })
     decisionRationale?: string;

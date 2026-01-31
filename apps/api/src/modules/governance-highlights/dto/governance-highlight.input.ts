@@ -100,6 +100,10 @@ export class CreateGovernanceHighlightInput {
     @IsString()
     image?: string;
 
+    @Field(() => [String], { nullable: true, description: 'Array of base64 encoded gallery images (max 500KB each)' })
+    @IsOptional()
+    gallery?: string[];
+
     @Field({ nullable: true })
     @IsOptional()
     @IsString()
@@ -206,6 +210,10 @@ export class UpdateGovernanceHighlightInput {
     @IsOptional()
     @IsString()
     image?: string;
+
+    @Field(() => [String], { nullable: true })
+    @IsOptional()
+    gallery?: string[];
 
     @Field({ nullable: true })
     @IsOptional()

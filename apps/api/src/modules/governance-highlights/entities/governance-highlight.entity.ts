@@ -96,6 +96,9 @@ export class GovernanceHighlight {
     @Field({ nullable: true })
     image?: string;
 
+    @Field(() => [String], { nullable: 'itemsAndList' })
+    gallery?: string[];
+
     @Field()
     isVerified: boolean;
 

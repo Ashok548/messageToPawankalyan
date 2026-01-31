@@ -345,7 +345,8 @@ export default function GovernanceHighlightsPage() {
                             variant="contained"
                             color="primary"
                             startIcon={<AddIcon />}
-                            onClick={() => handleOpenDialog()}
+                            component={Link}
+                            href="/governance-highlights/create"
                         >
                             Create Highlight
                         </Button>
@@ -474,6 +475,17 @@ export default function GovernanceHighlightsPage() {
                                                     bgcolor: highlight.status === HighlightStatus.ADDRESSED ? '#2e7d32' :
                                                         highlight.status === HighlightStatus.IN_PROGRESS ? '#ed6c02' : '#0288d1'
                                                 }} />
+
+                                                {/* Profile/Cover Photo */}
+                                                {highlight.image && (
+                                                    <CardMedia
+                                                        component="img"
+                                                        height="200"
+                                                        image={highlight.image}
+                                                        alt={highlight.title}
+                                                        sx={{ objectFit: 'cover' }}
+                                                    />
+                                                )}
 
                                                 <CardContent sx={{ p: 3, flexGrow: 1, display: 'flex', flexDirection: 'column', paddingLeft: '24px' }}>
                                                     {/* Metadata Header */}

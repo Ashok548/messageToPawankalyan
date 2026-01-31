@@ -23,6 +23,7 @@ export const GET_GOVERNANCE_HIGHLIGHTS = gql`
             sourceTitle
             issueContext
             image
+            gallery
             createdAt
         }
     }
@@ -51,6 +52,7 @@ export const GET_GOVERNANCE_HIGHLIGHT = gql`
             sourceTitle
             issueContext
             image
+            gallery
             isVerified
             isVisible
             adminNotes
@@ -66,6 +68,8 @@ export const CREATE_GOVERNANCE_HIGHLIGHT_MUTATION = gql`
             id
             title
             category
+            image
+            gallery
         }
     }
 `;
@@ -76,6 +80,8 @@ export const UPDATE_GOVERNANCE_HIGHLIGHT_MUTATION = gql`
             id
             title
             category
+            image
+            gallery
         }
     }
 `;

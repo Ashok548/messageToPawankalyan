@@ -166,9 +166,6 @@ model Leader {
   createdAt       DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt       DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  // Relations
-  disciplinaryCases DisciplinaryCase[]
-
   @@index([status])
   @@index([district])
   @@index([createdAt])
@@ -293,6 +290,7 @@ model GovernanceHighlight {
   
   // Media
   image           String?
+  gallery         String[]  // Array of gallery image URLs
   
   // Moderation
   isVerified      Boolean           @default(false) @map("is_verified")
@@ -374,12 +372,12 @@ model DisciplinaryCase {
   id                    String                @id @default(uuid()) @db.Uuid
   caseNumber            String                @unique @map("case_number") @db.VarChar(50)
   
-  // Subject Information
-  leaderId              String                @map("leader_id") @db.Uuid
-  leader                Leader                @relation(fields: [leaderId], references: [id], onDelete: Cascade)
+  // Subject Information (Independent - No Foreign Key)
   leaderName            String                @map("leader_name") @db.VarChar(100)
+  leaderPhotoUrl        String?               @map("leader_photo_url")
   position              String                @db.VarChar(100)
   constituency          String?               @db.VarChar(50)
+  district              String?               @db.VarChar(50)
   
   // Case Details
   issueCategory         IssueCategory         @map("issue_category")
@@ -412,13 +410,13 @@ model DisciplinaryCase {
   internalNotes         String?               @map("internal_notes") @db.Text
   evidenceUrls          String[]              @map("evidence_urls")
   imageUrls             String[]              @map("image_urls")
+  sourceLinks           String[]              @map("source_links")
   decisionRationale     String?               @map("decision_rationale") @db.Text
   
   // Metadata
   createdAt             DateTime              @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt             DateTime              @updatedAt @map("updated_at") @db.Timestamptz(3)
   
-  @@index([leaderId])
   @@index([status])
   @@index([visibility])
   @@index([initiationDate])

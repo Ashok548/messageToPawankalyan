@@ -132,6 +132,27 @@ export default function GovernanceHighlightDetailPage({ params }: { params: { id
                             bgcolor: getStatusColor(highlight.status)
                         }} />
 
+                        {/* Cover Image */}
+                        {highlight.image && (
+                            <Box sx={{
+                                width: '100%',
+                                height: 300,
+                                mb: 4,
+                                borderRadius: 2,
+                                overflow: 'hidden'
+                            }}>
+                                <img
+                                    src={highlight.image}
+                                    alt={highlight.title}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover'
+                                    }}
+                                />
+                            </Box>
+                        )}
+
                         {/* Header Section */}
                         <Box sx={{ mb: 4, pl: { md: 2 } }}>
                             <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2, flexWrap: 'wrap' }}>
@@ -265,6 +286,50 @@ export default function GovernanceHighlightDetailPage({ params }: { params: { id
                                 </Button>
                             </Box>
                         </Box>
+
+                        {/* Gallery Section */}
+                        {highlight.gallery && highlight.gallery.length > 0 && (
+                            <>
+                                <Divider sx={{ my: 4, ml: { md: 2 } }} />
+                                <Box sx={{ pl: { md: 2 } }}>
+                                    <Typography variant="overline" display="block" color="text.secondary" gutterBottom>
+                                        Gallery
+                                    </Typography>
+                                    <Grid container spacing={2}>
+                                        {highlight.gallery.map((imageUrl, index) => (
+                                            <Grid item xs={6} sm={4} key={index}>
+                                                <Box sx={{
+                                                    width: '100%',
+                                                    paddingTop: '100%',
+                                                    position: 'relative',
+                                                    borderRadius: 1,
+                                                    overflow: 'hidden',
+                                                    border: '1px solid',
+                                                    borderColor: 'divider',
+                                                    cursor: 'pointer',
+                                                    '&:hover': {
+                                                        opacity: 0.9
+                                                    }
+                                                }}>
+                                                    <img
+                                                        src={imageUrl}
+                                                        alt={`Gallery ${index + 1}`}
+                                                        style={{
+                                                            position: 'absolute',
+                                                            top: 0,
+                                                            left: 0,
+                                                            width: '100%',
+                                                            height: '100%',
+                                                            objectFit: 'cover'
+                                                        }}
+                                                    />
+                                                </Box>
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                </Box>
+                            </>
+                        )}
                     </Paper>
 
                     {/* Metadata Footer */}

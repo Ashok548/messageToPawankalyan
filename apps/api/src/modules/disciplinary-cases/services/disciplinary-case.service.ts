@@ -33,6 +33,24 @@ export class DisciplinaryCaseService {
         const caseNumber = this.generateCaseNumber();
         let evidenceUrls: string[] = input.evidenceUrls || [];
         let imageUrls: string[] = [];
+        let leaderPhotoUrl: string | undefined = input.leaderPhotoUrl;
+
+        // Handle leader photo upload if provided (base64 string)
+        if (input.leaderPhotoUrl && !input.leaderPhotoUrl.startsWith('http')) {
+            try {
+                this.imagekitService.validateImageSize(input.leaderPhotoUrl);
+                const fileName = `leader_photo_${caseNumber}_${Date.now()}.jpg`;
+                const uploadedUrls = await this.imagekitService.uploadMultipleImages(
+                    [input.leaderPhotoUrl] as unknown as Uploadable[],
+                    [fileName],
+                    'disciplinary-cases/leader-photos'
+                );
+                leaderPhotoUrl = uploadedUrls[0];
+            } catch (error) {
+                this.logger.error(`Failed to upload leader photo: ${error instanceof Error ? error.message : 'Unknown error'}`);
+                throw new BadRequestException(`Failed to upload leader photo: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            }
+        }
 
         // Handle image uploads if provided (base64 strings or URLs)
         if (input.imageUrls && input.imageUrls.length > 0) {
@@ -91,11 +109,13 @@ export class DisciplinaryCaseService {
             }
         }
 
-        // Update input with processed image URLs
+        // Update input with processed URLs
         const caseInput = {
             ...input,
+            leaderPhotoUrl,
             imageUrls,
-            evidenceUrls
+            evidenceUrls,
+            sourceLinks: input.sourceLinks || []
         };
 
         return this.repository.create(caseInput, initiatedBy, caseNumber);

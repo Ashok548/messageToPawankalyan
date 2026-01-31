@@ -12,19 +12,20 @@ export class DisciplinaryCasesRepository {
         return this.prisma.disciplinaryCase.create({
             data: {
                 caseNumber,
-                leaderId: input.leaderId,
                 leaderName: input.leaderName,
+                leaderPhotoUrl: input.leaderPhotoUrl,
                 position: input.position,
                 constituency: input.constituency,
+                district: input.district,
                 issueCategory: input.issueCategory,
                 issueDescription: input.issueDescription,
                 issueSource: input.issueSource,
                 initiatedBy,
                 evidenceUrls: input.evidenceUrls || [],
                 imageUrls: input.imageUrls || [],
+                sourceLinks: input.sourceLinks || [],
             },
             include: {
-                leader: true,
                 initiatedByUser: true,
             },
         });
@@ -34,7 +35,6 @@ export class DisciplinaryCasesRepository {
         return this.prisma.disciplinaryCase.findUnique({
             where: { id },
             include: {
-                leader: true,
                 initiatedByUser: true,
                 reviewAuthorityUser: true,
                 decisionAuthorityUser: true,
@@ -57,9 +57,7 @@ export class DisciplinaryCasesRepository {
             if (filter.issueCategory) {
                 where.issueCategory = filter.issueCategory;
             }
-            if (filter.leaderId) {
-                where.leaderId = filter.leaderId;
-            }
+            // Remove leaderId filter since we no longer have foreign key
             if (filter.visibility && (userRole === 'SUPER_ADMIN' || userRole === 'ADMIN')) {
                 where.visibility = filter.visibility;
             }
@@ -74,7 +72,6 @@ export class DisciplinaryCasesRepository {
         return this.prisma.disciplinaryCase.findMany({
             where,
             include: {
-                leader: true,
                 initiatedByUser: true,
                 reviewAuthorityUser: true,
                 decisionAuthorityUser: true,
@@ -95,7 +92,6 @@ export class DisciplinaryCasesRepository {
                 reviewStartDate: input.reviewStartDate ? new Date(input.reviewStartDate) : undefined,
             },
             include: {
-                leader: true,
                 initiatedByUser: true,
                 reviewAuthorityUser: true,
                 decisionAuthorityUser: true,
@@ -116,7 +112,6 @@ export class DisciplinaryCasesRepository {
                 status: 'ACTION_TAKEN',
             },
             include: {
-                leader: true,
                 initiatedByUser: true,
                 reviewAuthorityUser: true,
                 decisionAuthorityUser: true,
@@ -129,7 +124,6 @@ export class DisciplinaryCasesRepository {
             where: { id },
             data: { visibility },
             include: {
-                leader: true,
                 initiatedByUser: true,
                 reviewAuthorityUser: true,
                 decisionAuthorityUser: true,
@@ -147,7 +141,6 @@ export class DisciplinaryCasesRepository {
             where: { id },
             data: { internalNotes: updatedNotes },
             include: {
-                leader: true,
                 initiatedByUser: true,
                 reviewAuthorityUser: true,
                 decisionAuthorityUser: true,
@@ -163,7 +156,6 @@ export class DisciplinaryCasesRepository {
             where: { id },
             data: { imageUrls: updatedImages },
             include: {
-                leader: true,
                 initiatedByUser: true,
                 reviewAuthorityUser: true,
                 decisionAuthorityUser: true,

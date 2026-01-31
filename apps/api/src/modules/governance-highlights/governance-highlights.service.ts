@@ -26,6 +26,7 @@ export class GovernanceHighlightsService {
 
     async create(input: CreateGovernanceHighlightInput): Promise<GovernanceHighlight> {
         let imageUrl: string | undefined;
+        let galleryUrls: string[] = [];
 
         // Handle image upload if provided
         if (input.image) {
@@ -48,10 +49,34 @@ export class GovernanceHighlightsService {
             }
         }
 
-        // Create highlight with uploaded image URL
+        // Handle gallery upload if provided
+        if (input.gallery && input.gallery.length > 0) {
+            try {
+                const base64Images = input.gallery.filter(img => img.startsWith('data:'));
+                if (base64Images.length > 0) {
+                    // Validate each image
+                    base64Images.forEach(img => this.imagekitService.validateImageSize(img));
+
+                    // Upload to ImageKit
+                    const fileNames = base64Images.map((_, i) => `governance_gallery_${Date.now()}_${i}.jpg`);
+                    galleryUrls = await this.imagekitService.uploadMultipleImages(
+                        base64Images as unknown as Uploadable[],
+                        fileNames,
+                        'governance-highlights',
+                    );
+                }
+            } catch (error) {
+                throw new BadRequestException(
+                    `Failed to upload gallery images: ${error instanceof Error ? error.message : 'Unknown error'}`,
+                );
+            }
+        }
+
+        // Create highlight with uploaded image URLs
         return this.repository.create({
             ...input,
             image: imageUrl,
+            gallery: galleryUrls.length > 0 ? galleryUrls : undefined,
         });
     }
 
@@ -62,6 +87,7 @@ export class GovernanceHighlightsService {
         }
 
         let imageUrl: string | undefined = input.image;
+        let galleryUrls: string[] | undefined = input.gallery;
 
         // Handle image upload if new image provided
         if (input.image && input.image.startsWith('data:')) {
@@ -84,9 +110,37 @@ export class GovernanceHighlightsService {
             }
         }
 
+        // Handle gallery upload if new gallery images provided
+        if (input.gallery && input.gallery.length > 0) {
+            try {
+                const base64Images = input.gallery.filter(img => img.startsWith('data:'));
+                if (base64Images.length > 0) {
+                    // Validate each image
+                    base64Images.forEach(img => this.imagekitService.validateImageSize(img));
+
+                    // Upload to ImageKit
+                    const fileNames = base64Images.map((_, i) => `governance_gallery_${Date.now()}_${i}.jpg`);
+                    const uploadedUrls = await this.imagekitService.uploadMultipleImages(
+                        base64Images as unknown as Uploadable[],
+                        fileNames,
+                        'governance-highlights',
+                    );
+
+                    // Keep existing URLs and add new ones
+                    const existingUrls = input.gallery.filter(img => !img.startsWith('data:'));
+                    galleryUrls = [...existingUrls, ...uploadedUrls];
+                }
+            } catch (error) {
+                throw new BadRequestException(
+                    `Failed to upload gallery images: ${error instanceof Error ? error.message : 'Unknown error'}`,
+                );
+            }
+        }
+
         return this.repository.update(id, {
             ...input,
             image: imageUrl,
+            gallery: galleryUrls,
         });
     }
 

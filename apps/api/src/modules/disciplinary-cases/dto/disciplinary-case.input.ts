@@ -5,10 +5,6 @@ import { IssueCategory, IssueSource, CaseStatus, ActionOutcome, CaseVisibility }
 @InputType()
 export class CreateDisciplinaryCaseInput {
     @Field()
-    @IsUUID()
-    leaderId: string;
-
-    @Field()
     @IsString()
     leaderName: string;
 
@@ -20,6 +16,16 @@ export class CreateDisciplinaryCaseInput {
     @IsString()
     @IsOptional()
     constituency?: string;
+
+    @Field({ nullable: true })
+    @IsString()
+    @IsOptional()
+    district?: string;
+
+    @Field({ nullable: true })
+    @IsString()
+    @IsOptional()
+    leaderPhotoUrl?: string;
 
     @Field(() => IssueCategory)
     @IsEnum(IssueCategory)
@@ -44,6 +50,12 @@ export class CreateDisciplinaryCaseInput {
     @IsString({ each: true })
     @IsOptional()
     imageUrls?: string[];
+
+    @Field(() => [String], { nullable: true })
+    @IsArray()
+    @IsString({ each: true })
+    @IsOptional()
+    sourceLinks?: string[];
 }
 
 @InputType()

@@ -6,19 +6,16 @@ export const GET_DISCIPLINARY_CASES = gql`
       id
       caseNumber
       leaderName
+      leaderPhotoUrl
       position
       constituency
+      district
       issueCategory
       issueDescription
       status
       actionOutcome
       visibility
       initiationDate
-      leader {
-        id
-        name
-        photo
-      }
     }
   }
 `;
@@ -28,10 +25,11 @@ export const GET_DISCIPLINARY_CASE_DETAILS = gql`
     disciplinaryCase(id: $id) {
       id
       caseNumber
-      leaderId
       leaderName
+      leaderPhotoUrl
       position
       constituency
+      district
       issueCategory
       issueDescription
       issueSource
@@ -47,18 +45,11 @@ export const GET_DISCIPLINARY_CASE_DETAILS = gql`
       internalNotes
       evidenceUrls
       imageUrls
+      sourceLinks
       decisionRationale
       
       createdAt
       updatedAt
-      
-      leader {
-        id
-        name
-        photo
-        district
-        partyPosition
-      }
       
       initiatedByUser {
         id
