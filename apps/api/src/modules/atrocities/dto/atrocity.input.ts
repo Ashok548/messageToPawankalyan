@@ -39,10 +39,10 @@ export class CreateAtrocityInput {
     @IsNotEmpty()
     mandal: string;
 
-    @Field()
+    @Field({ nullable: true })
+    @IsOptional()
     @IsString()
-    @IsNotEmpty()
-    village: string;
+    village?: string;
 
     @Field({ nullable: true })
     @IsOptional()

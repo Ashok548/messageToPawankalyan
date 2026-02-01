@@ -21,11 +21,190 @@ const CREATE_ATROCITY = gql`
 `;
 
 // Sample data - replace with actual data from API
-const STATES = ['Andhra Pradesh', 'Telangana', 'Karnataka', 'Tamil Nadu'];
-const DISTRICTS = ['Hyderabad', 'Rangareddy', 'Medchal', 'Vikarabad'];
-const CONSTITUENCIES = ['Kukatpally', 'Serilingampally', 'Quthbullapur'];
-const MANDALS = ['Miyapur', 'Bachupally', 'Nizampet'];
-const VILLAGES = ['Village 1', 'Village 2', 'Village 3'];
+const STATES = ['Andhra Pradesh'];
+const DISTRICTS = [
+    "Alluri Sitharama Raju",
+    "Anakapalli",
+    "Anantapur",
+    "Annamayya",
+    "Bapatla",
+    "Chittoor",
+    "Dr. B. R. Ambedkar Konaseema",
+    "East Godavari",
+    "Eluru",
+    "Guntur",
+    "Kakinada",
+    "Krishna",
+    "Kurnool",
+    "Nandyal",
+    "NTR",
+    "Palnadu",
+    "Parvathipuram Manyam",
+    "Prakasam",
+    "Sri Potti Sriramulu Nellore",
+    "Sri Sathya Sai",
+    "Srikakulam",
+    "Tirupati",
+    "Visakhapatnam",
+    "Vizianagaram",
+    "West Godavari",
+    "YSR Kadapa"
+];
+
+const CONSTITUENCIES = [
+    "Achanta",
+    "Addanki",
+    "Adoni",
+    "Alamuru",
+    "Allagadda",
+    "Alur",
+    "Amadalavalasa",
+    "Amalapuram",
+    "Anakapalli",
+    "Anantapur Urban",
+    "Anantapur Rural",
+    "Anaparthy",
+    "Araku Valley",
+    "Atmakur",
+    "Avanigadda",
+    "Bapatla",
+    "Bhimavaram",
+    "Bhimili",
+    "Bobbili",
+    "Chandragiri",
+    "Cheepurupalli",
+    "Chilakaluripet",
+    "Chintalapudi",
+    "Chirala",
+    "Chittoor",
+    "Chodavaram",
+    "Darsi",
+    "Denduluru",
+    "Dharmavaram",
+    "Dhone",
+    "Elamanchili",
+    "Eluru",
+    "Etcherla",
+    "Gajapathinagaram",
+    "Gannavaram",
+    "Giddalur",
+    "Gopalapuram",
+    "Gudivada",
+    "Gudur",
+    "Guntakal",
+    "Guntur East",
+    "Guntur West",
+    "Gurazala",
+    "Hindupur",
+    "Ichchapuram",
+    "Jaggampeta",
+    "Jaggayyapeta",
+    "Jammalamadugu",
+    "Kadapa",
+    "Kadiri",
+    "Kaikalur",
+    "Kakinada City",
+    "Kakinada Rural",
+    "Kandukur",
+    "Kanigiri",
+    "Kavali",
+    "Kodumur",
+    "Kodur",
+    "Kondapi",
+    "Kothapeta",
+    "Kovur",
+    "Kovvur",
+    "Kuppam",
+    "Kurnool",
+    "Kurupam",
+    "Macherla",
+    "Machilipatnam",
+    "Madanapalle",
+    "Mandapeta",
+    "Markapuram",
+    "Mangalagiri",
+    "Medakonduru",
+    "Mummidivaram",
+    "Mydukur",
+    "Nagari",
+    "Nandyal",
+    "Narasannapeta",
+    "Narasapuram",
+    "Narasaraopet",
+    "Nellimarla",
+    "Nellore City",
+    "Nellore Rural",
+    "Nidadavole",
+    "Nuzvid",
+    "Ongole",
+    "Paderu",
+    "Palakonda",
+    "Palasa",
+    "Palnadu",
+    "Pamarru",
+    "Parvathipuram",
+    "Pathapatnam",
+    "Payakaraopet",
+    "Pedakurapadu",
+    "Pedana",
+    "Penamaluru",
+    "Penukonda",
+    "Pithapuram",
+    "Polavaram",
+    "Ponnur",
+    "Prathipadu",
+    "Proddatur",
+    "Pulivendula",
+    "Punganur",
+    "Puthalapattu",
+    "Pydibhimavaram",
+    "Rajahmundry City",
+    "Rajahmundry Rural",
+    "Rajampet",
+    "Rajanagaram",
+    "Ramachandrapuram",
+    "Ramagundam",
+    "Rampachodavaram",
+    "Rayachoti",
+    "Rayadurg",
+    "Razole",
+    "Repalle",
+    "Salur",
+    "Santhanuthalapadu",
+    "Sarvepalli",
+    "Sattenapalli",
+    "Singarayakonda",
+    "Srikakulam",
+    "Srisailam",
+    "Srungavarapukota",
+    "Sullurpeta",
+    "Tadepalli",
+    "Tadepalligudem",
+    "Tadikonda",
+    "Tanuku",
+    "Tenali",
+    "Thamballapalle",
+    "Tirupati",
+    "Tuni",
+    "Udayagiri",
+    "Unguturu",
+    "Uravakonda",
+    "Vemuru",
+    "Venkatagiri",
+    "Vijayawada Central",
+    "Vijayawada East",
+    "Vijayawada West",
+    "Vinukonda",
+    "Visakhapatnam East",
+    "Visakhapatnam North",
+    "Visakhapatnam South",
+    "Visakhapatnam West",
+    "Vizianagaram",
+    "Yemmiganur",
+    "Yerragondapalem",
+    "Yuvathapalli"
+];
+
 
 interface ImageFile {
     file: File;
@@ -182,7 +361,8 @@ export default function ReportAtrocityPage() {
         if (!formData.district) newErrors.district = 'District is required';
         if (!formData.constituency) newErrors.constituency = 'Constituency is required';
         if (!formData.mandal) newErrors.mandal = 'Mandal is required';
-        if (!formData.village) newErrors.village = 'Village is required';
+        // Village is optional - no validation required
+
 
         // Position: max 100 characters (only required if not TO_JANASENA_PARTY)
         if (formData.atrocityType !== 'TO_JANASENA_PARTY') {
@@ -435,7 +615,6 @@ export default function ReportAtrocityPage() {
 
                             <TextField
                                 size="small"
-                                select
                                 label="Mandal"
                                 value={formData.mandal}
                                 onChange={(e) => handleChange('mandal', e.target.value)}
@@ -443,33 +622,19 @@ export default function ReportAtrocityPage() {
                                 helperText={errors.mandal}
                                 required
                                 InputLabelProps={{ sx: { fontSize: '0.7rem' } }}
-                            >
-                                {MANDALS.map((mandal) => (
-                                    <MenuItem key={mandal} value={mandal}>
-                                        {mandal}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
+                            />
                         </Box>
 
                         <TextField
                             size="small"
-                            select
-                            label="Village"
+                            label="Village (Optional)"
                             value={formData.village}
                             onChange={(e) => handleChange('village', e.target.value)}
                             error={!!errors.village}
                             helperText={errors.village}
                             fullWidth
-                            required
                             InputLabelProps={{ sx: { fontSize: '0.7rem' } }}
-                        >
-                            {VILLAGES.map((village) => (
-                                <MenuItem key={village} value={village}>
-                                    {village}
-                                </MenuItem>
-                            ))}
-                        </TextField>
+                        />
 
                         {/* Position - Hidden when TO_JANASENA_PARTY */}
                         {formData.atrocityType !== 'TO_JANASENA_PARTY' && (

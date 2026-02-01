@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { join } from 'path';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './modules/users/users.module';
@@ -13,6 +14,7 @@ import { SocialMediaWarriorsModule } from './modules/social-media-warriors/socia
 import { GovernanceHighlightsModule } from './modules/governance-highlights/governance-highlights.module';
 import { ImageKitModule } from './common/imagekit/imagekit.module';
 import { DisciplinaryCaseModule } from './modules/disciplinary-cases/disciplinary-case.module';
+import { VisitorStatsModule } from './modules/visitor-stats/visitor-stats.module';
 
 @Module({
     imports: [
@@ -20,6 +22,10 @@ import { DisciplinaryCaseModule } from './modules/disciplinary-cases/disciplinar
             isGlobal: true,
             envFilePath: '.env',
         }),
+        ThrottlerModule.forRoot([{
+            ttl: 60000,  // 60 seconds
+            limit: 10,   // 10 requests per minute per IP (global default)
+        }]),
         GraphQLModule.forRoot<ApolloDriverConfig>({
             driver: ApolloDriver,
             autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
@@ -37,6 +43,7 @@ import { DisciplinaryCaseModule } from './modules/disciplinary-cases/disciplinar
         SocialMediaWarriorsModule,
         GovernanceHighlightsModule,
         DisciplinaryCaseModule,
+        VisitorStatsModule,
     ],
 })
 export class AppModule { }

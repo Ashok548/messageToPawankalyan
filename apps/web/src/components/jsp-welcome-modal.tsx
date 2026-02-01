@@ -3,20 +3,37 @@
 import { useEffect, useState } from 'react';
 import { Box, Modal, Stack, Typography } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useMutation } from '@apollo/client';
 import { MagnetButton } from './ui/magnet-button';
 import ElectricBorder from './ElectricBorder';
 import DecryptedText from './DecryptedText';
+import { INCREMENT_VISITOR_COUNT } from '@/graphql/visitor-stats';
 
 export function JspWelcomeModal() {
     const [open, setOpen] = useState(false);
+    const [incrementVisitorCount] = useMutation(INCREMENT_VISITOR_COUNT);
 
     useEffect(() => {
         // Show modal with a slight delay for smooth entrance
-        const timer = setTimeout(() => setOpen(true), 300);
-        return () => clearTimeout(timer);
+        setOpen(true)
+        // const timer = setTimeout(() => setOpen(true), 300);
+        // return () => clearTimeout(timer);
     }, []);
 
     const handleClose = (response: 'yes' | 'no') => {
+        // Check if visitor has already been counted this session
+        const hasBeenCounted = sessionStorage.getItem('visitorCounted');
+
+        if (!hasBeenCounted) {
+            // Increment visitor count
+            incrementVisitorCount().catch(err => {
+                console.error('Failed to increment visitor count:', err);
+            });
+
+            // Mark as counted for this session
+            sessionStorage.setItem('visitorCounted', 'true');
+        }
+
         // Close the modal when user clicks Yes or No
         setOpen(false);
     };
@@ -66,7 +83,7 @@ export function JspWelcomeModal() {
                                     type: 'spring',
                                     stiffness: 200,
                                     damping: 20,
-                                    duration: 0.5
+                                    duration: 4
                                 }}
                                 style={{
                                     width: 'auto',
@@ -87,7 +104,8 @@ export function JspWelcomeModal() {
                                             borderRadius: '22px',
                                             position: 'relative',
                                             overflow: 'hidden',
-                                            padding: { xs: '24px 16px', sm: '48px 40px' },
+                                            padding: { xs: '1.2rem', sm: '1.2rem' },
+                                            // padding: { xs: '24px 16px', sm: '48px 40px' },
                                             width: { xs: 'calc(100vw - 40px)', sm: 'auto' },
                                             minWidth: { sm: '420px' },
                                             maxWidth: '500px',
@@ -100,7 +118,7 @@ export function JspWelcomeModal() {
                                             justifyContent="center"
                                         >
                                             {/* Question Text */}
-                                            <Box sx={{ width: '100%', textAlign: 'center' }}>
+                                            <Box sx={{ width: '100%', textAlign: 'center', padding: '1rem 1rem 0rem 1rem' }}>
                                                 <Typography
                                                     variant="h5"
                                                     component="div"
@@ -118,11 +136,11 @@ export function JspWelcomeModal() {
                                                 >
                                                     <DecryptedText
                                                         text="Are you a Janasena Party supporter?"
-                                                        speed={60}
+                                                        speed={90}
                                                         animateOn="view"
-                                                        maxIterations={10}
+                                                        maxIterations={40}
                                                         revealDirection="start"
-                                                        characters="ABCD1234#$%&!?"
+                                                        characters="XYZ?!@#$"
                                                         sequential={true}
                                                     />
                                                 </Typography>
@@ -132,7 +150,7 @@ export function JspWelcomeModal() {
                                             <motion.div
                                                 initial={{ opacity: 0, y: 10 }}
                                                 animate={{ opacity: 1, y: 0 }}
-                                                transition={{ delay: 0.6, duration: 0.4 }}
+                                                transition={{ duration: 0.4 }}
                                                 style={{ width: '100%' }}
                                             >
                                                 <Stack

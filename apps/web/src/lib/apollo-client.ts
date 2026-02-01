@@ -28,18 +28,28 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 // Loading interceptor link
 const loadingLink = new ApolloLink((operation, forward) => {
-    // Start loading when request begins
-    loadingManager.startLoading();
+    // Skip loading spinner for frequent polling queries
+    const skipLoadingOperations = ['GetVisitorStats'];
+    const shouldShowLoading = !skipLoadingOperations.includes(operation.operationName);
+
+    // Start loading when request begins (only if not skipped)
+    if (shouldShowLoading) {
+        loadingManager.startLoading();
+    }
 
     // Use Observable to handle both success and error cases
     return new Observable((observer) => {
         const subscription = forward(operation).subscribe({
             next: (result) => {
-                loadingManager.stopLoading();
+                if (shouldShowLoading) {
+                    loadingManager.stopLoading();
+                }
                 observer.next(result);
             },
             error: (error) => {
-                loadingManager.stopLoading();
+                if (shouldShowLoading) {
+                    loadingManager.stopLoading();
+                }
                 observer.error(error);
             },
             complete: () => {

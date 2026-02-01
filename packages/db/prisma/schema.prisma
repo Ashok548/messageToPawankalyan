@@ -49,6 +49,18 @@ model User {
 }
 
 // ============================================
+// Visitor Statistics Entity
+// ============================================
+model VisitorStats {
+  id            String   @id @default(uuid()) @db.Uuid
+  totalVisitors Int      @default(0) @map("total_visitors")
+  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  
+  @@map("visitor_stats")
+}
+
+
+// ============================================
 // Project Entity
 // ============================================
 model Project {
@@ -103,7 +115,7 @@ model Atrocity {
   district     String   @db.VarChar(50)
   constituency String   @db.VarChar(50)
   mandal       String   @db.VarChar(50)
-  village      String   @db.VarChar(50)
+  village      String?  @db.VarChar(50)
   position     String?  @db.VarChar(100)
   subject      String?  @db.VarChar(200)
   description  String   @db.Text

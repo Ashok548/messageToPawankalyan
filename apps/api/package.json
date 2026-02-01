@@ -26,6 +26,7 @@
         "@nestjs/graphql": "^12.2.2",
         "@nestjs/jwt": "^10.2.0",
         "@nestjs/platform-express": "^10.4.22",
+        "@nestjs/throttler": "^6.5.0",
         "@prisma/client": "^5.22.0",
         "@questiontopk/db": "workspace:*",
         "@repo/constants": "workspace:*",

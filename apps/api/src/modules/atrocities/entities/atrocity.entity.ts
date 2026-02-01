@@ -36,8 +36,8 @@ export class Atrocity {
     @Field()
     mandal: string;
 
-    @Field()
-    village: string;
+    @Field({ nullable: true })
+    village?: string;
 
     @Field({ nullable: true })
     position?: string;

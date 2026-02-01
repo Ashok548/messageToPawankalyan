@@ -47,6 +47,7 @@ export default function Header() {
     };
 
     const menuItems = [
+        { label: 'Message to Janasainiks', href: '/message-to-janasainiks' },
         { label: 'Atrocities to Janasainiks', href: '/atrocities-to-janasainiks' },
         { label: 'Leaders Society Needs', href: '/leaders-society-needs' },
         { label: 'Social Media Warriors', href: '/social-media-warriors' },
@@ -174,53 +175,7 @@ export default function Header() {
                         spacing={{ xs: 1, sm: 2 }}
                         alignItems="center"
                     >
-                        <MuiLink
-                            component={Link}
-                            href="/message-to-janasainiks"
-                            underline="none"
-                            sx={{
-                                display: { xs: 'none', md: 'block' },
-                                fontSize: { xs: 13, sm: 14 },
-                                fontWeight: 500,
-                                color: 'text.secondary',
-                                px: { xs: 1, sm: 1.5 },
-                                py: 0.5,
-                                borderRadius: 0.5,
-                                transition: 'all 0.15s ease',
-                                lineHeight: 1,
-                                whiteSpace: 'nowrap',
-                                '&:hover': {
-                                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                                    color: 'text.primary',
-                                },
-                            }}
-                        >
-                            Message to Janasainiks
-                        </MuiLink>
 
-                        <MuiLink
-                            component={Link}
-                            href="/atrocities-to-janasainiks"
-                            underline="none"
-                            sx={{
-                                display: { xs: 'none', md: 'block' },
-                                fontSize: { xs: 13, sm: 14 },
-                                fontWeight: 500,
-                                color: 'text.secondary',
-                                px: { xs: 1, sm: 1.5 },
-                                py: 0.5,
-                                borderRadius: 0.5,
-                                transition: 'all 0.15s ease',
-                                lineHeight: 1,
-                                whiteSpace: 'nowrap',
-                                '&:hover': {
-                                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                                    color: 'text.primary',
-                                },
-                            }}
-                        >
-                            Atrocities to Janasainiks
-                        </MuiLink>
 
                         {/* Conditional: Login Link or Profile Icon */}
                         {isAuthenticated ? (

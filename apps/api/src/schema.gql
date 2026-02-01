@@ -28,7 +28,7 @@ type Atrocity {
   state: String!
   subject: String
   updatedAt: DateTime!
-  village: String!
+  village: String
 }
 
 """Type of atrocity report"""
@@ -73,7 +73,7 @@ input CreateAtrocityInput {
   position: String
   state: String!
   subject: String
-  village: String!
+  village: String
 }
 
 input CreateDisciplinaryCaseInput {
@@ -348,6 +348,7 @@ type Mutation {
   deleteSocialMediaWarrior(id: String!): SocialMediaWarrior!
   deleteUser(id: String!): User!
   forgotPassword(input: ForgotPasswordInput!): VerifyOtpResponse!
+  incrementVisitorCount: VisitorStats!
   login(input: LoginInput!): AuthPayload!
   logout: Boolean!
 
@@ -433,6 +434,7 @@ type Query {
 
   """SUPER_ADMIN only: Get all users for management"""
   getAllUsers: [User!]!
+  getVisitorStats: VisitorStats!
   governanceHighlight(id: String!): GovernanceHighlight
 
   """Get all verified and visible governance highlights"""
@@ -665,6 +667,12 @@ type VerifyOtpResponse {
   success: Boolean!
   token: String
   user: User
+}
+
+type VisitorStats {
+  id: ID!
+  totalVisitors: Int!
+  updatedAt: DateTime!
 }
 
 type WarriorOtherPlatform {
