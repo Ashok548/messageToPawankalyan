@@ -385,6 +385,9 @@ type Mutation {
   updateSocialMediaWarriorStatus(adminNotes: String, id: String!, status: WarriorStatus!): SocialMediaWarrior!
   updateUser(id: String!, input: UpdateUserInput!): User!
 
+  """SUPER_ADMIN only: Update user role"""
+  updateUserRole(input: UpdateUserRoleInput!): User!
+
   """Upload and attach additional photos to a case"""
   uploadCaseImages(id: ID!, images: [String!]!): DisciplinaryCase!
   verifyOtp(input: VerifyOtpInput!): VerifyOtpResponse!
@@ -427,6 +430,9 @@ type Query {
 
   """List disciplinary cases with optional filtering"""
   disciplinaryCases(filter: DisciplinaryCaseFilterInput): [DisciplinaryCase!]!
+
+  """SUPER_ADMIN only: Get all users for management"""
+  getAllUsers: [User!]!
   governanceHighlight(id: String!): GovernanceHighlight
 
   """Get all verified and visible governance highlights"""
@@ -621,6 +627,11 @@ input UpdateUserInput {
   otp: String
   otpExpiresAt: DateTime
   passwordHash: String
+}
+
+input UpdateUserRoleInput {
+  role: UserRole!
+  userId: String!
 }
 
 type User {

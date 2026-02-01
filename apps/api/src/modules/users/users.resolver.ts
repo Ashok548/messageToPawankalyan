@@ -1,9 +1,10 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './entities/user.entity';
-import { UpdateUserInput } from './dto/user.input';
+import { User, UserRole } from './entities/user.entity';
+import { UpdateUserInput, UpdateUserRoleInput } from './dto/user.input';
 import { GqlAuthGuard } from '../../common/guards/gql-auth.guard';
+import { SuperAdminGuard } from '../../common/guards/super-admin.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
 @Resolver(() => User)
@@ -29,12 +30,26 @@ export class UsersResolver {
         return this.usersService.findAll();
     }
 
+    @Query(() => [User], { description: 'SUPER_ADMIN only: Get all users for management' })
+    @UseGuards(GqlAuthGuard, SuperAdminGuard)
+    async getAllUsers(): Promise<User[]> {
+        return this.usersService.getAllUsersForAdmin();
+    }
+
     @Mutation(() => User)
     async updateUser(
         @Args('id') id: string,
         @Args('input') input: UpdateUserInput,
     ): Promise<User> {
         return this.usersService.update(id, input);
+    }
+
+    @Mutation(() => User, { description: 'SUPER_ADMIN only: Update user role' })
+    @UseGuards(GqlAuthGuard, SuperAdminGuard)
+    async updateUserRole(
+        @Args('input') input: UpdateUserRoleInput,
+    ): Promise<User> {
+        return this.usersService.updateUserRole(input.userId, input.role);
     }
 
     @Mutation(() => User)

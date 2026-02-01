@@ -1,8 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_GOVERNANCE_HIGHLIGHT } from '@/graphql/queries/governance-highlights';
-import { Box, Container, Typography, Chip, Link as MuiLink, Button, Grid, Paper, Divider, CircularProgress, Alert } from '@mui/material';
+import { Box, Container, Typography, Chip, Link as MuiLink, Button, Grid, Paper, Divider, CircularProgress, Alert, Stack, Tooltip } from '@mui/material';
 import Link from 'next/link';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -10,6 +11,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import BusinessIcon from '@mui/icons-material/Business';
 import LinkIcon from '@mui/icons-material/Link';
 import VerifiedIcon from '@mui/icons-material/Verified';
+import ImageLightbox from '@/components/ui/image-lightbox';
+
 import { motion } from 'framer-motion';
 
 // Redefining enums locally since they aren't in a shared package yet
@@ -37,7 +40,9 @@ export default function GovernanceHighlightDetailPage({ params }: { params: { id
     const { data, loading, error } = useQuery(GET_GOVERNANCE_HIGHLIGHT, {
         variables: { id: params.id },
     });
-
+    // Lightbox State
+    const [lightboxOpen, setLightboxOpen] = useState(false);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const getStatusLabel = (status: HighlightStatus) => {
         switch (status) {
             case HighlightStatus.ADDRESSED: return 'Completed';
@@ -90,72 +95,73 @@ export default function GovernanceHighlightDetailPage({ params }: { params: { id
 
     const highlight = data.governanceHighlight;
 
+    // Combine main image and gallery for lightbox
+    const allImages = [highlight.image, ...(highlight.gallery || [])].filter(Boolean);
+
+    const handleImageClick = (index: number) => {
+        setCurrentImageIndex(index);
+        setLightboxOpen(true);
+    };
+
     return (
-        <Box component="main" sx={{ backgroundColor: '#fafafa', minHeight: '100vh', py: 6 }}>
-            <Container maxWidth="md">
-                {/* Navigation */}
-                <Box sx={{ mb: 4 }}>
-                    <Button
-                        component={Link}
-                        href="/governance-highlights"
-                        startIcon={<ArrowBackIcon />}
-                        sx={{ color: 'text.secondary', '&:hover': { bgcolor: 'transparent', textDecoration: 'underline' } }}
-                    >
-                        Back to Governance Docket
-                    </Button>
-                </Box>
-
-                {/* Main Digital Docket Paper */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
+        <Box component="main" sx={{ minHeight: '100vh', backgroundColor: '#f8f9fa', py: { xs: 2, md: 5 } }}>
+            <Container maxWidth="lg">
+                {/* Back Navigation */}
+                <Button
+                    startIcon={<ArrowBackIcon />}
+                    component={Link}
+                    href="/governance-highlights"
+                    sx={{ mb: 3, color: 'text.secondary', '&:hover': { background: 'transparent', color: 'text.primary' } }}
                 >
-                    <Paper
-                        elevation={0}
-                        sx={{
-                            p: { xs: 3, md: 6 },
-                            borderRadius: 2,
-                            border: '1px solid',
-                            borderColor: 'divider',
-                            position: 'relative',
-                            overflow: 'hidden'
-                        }}
-                    >
-                        {/* Status Strip */}
-                        <Box sx={{
-                            position: 'absolute',
-                            left: 0,
-                            top: 0,
-                            bottom: 0,
-                            width: 6,
-                            bgcolor: getStatusColor(highlight.status)
-                        }} />
+                    Back to Governance Highlights
+                </Button>
 
-                        {/* Cover Image */}
-                        {highlight.image && (
-                            <Box sx={{
-                                width: '100%',
-                                height: 300,
-                                mb: 4,
-                                borderRadius: 2,
-                                overflow: 'hidden'
-                            }}>
-                                <img
-                                    src={highlight.image}
-                                    alt={highlight.title}
-                                    style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        objectFit: 'cover'
-                                    }}
-                                />
+                <Paper elevation={0} sx={{ p: { xs: 3, md: 5 }, borderRadius: 3, border: '1px solid', borderColor: 'divider', position: 'relative' }}>
+
+                    {/* 1. Header / Identity Section - Grid Layout */}
+                    <Grid container spacing={4} alignItems="flex-start">
+
+                        {/* LEFT COLUMN: Photo */}
+                        <Grid item xs={12} md={4} lg={3}>
+                            <Box
+                                sx={{
+                                    height: { xs: 300, md: 260 },
+                                    width: '100%',
+                                    backgroundColor: '#f5f5f5',
+                                    borderRadius: 2,
+                                    overflow: 'hidden',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    border: '1px solid',
+                                    borderColor: 'divider',
+                                    mb: 2
+                                }}
+                            >
+                                {highlight.image ? (
+                                    <Box
+                                        component="img"
+                                        onClick={() => handleImageClick(0)}
+                                        src={highlight.image}
+                                        alt={highlight.title}
+                                        sx={{
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'contain',
+                                            cursor: 'pointer',
+                                            '&:hover': { opacity: 0.95 }
+                                        }}
+                                    />
+                                ) : (
+                                    <Typography variant="caption" color="text.secondary">No Photo</Typography>
+                                )}
                             </Box>
-                        )}
+                        </Grid>
 
-                        {/* Header Section */}
-                        <Box sx={{ mb: 4, pl: { md: 2 } }}>
-                            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2, flexWrap: 'wrap' }}>
+                        {/* RIGHT COLUMN: Title & Key Info */}
+                        <Grid item xs={12} md={8} lg={9}>
+                            <Box>
+                                {/* Status Chip */}
                                 <Chip
                                     label={getStatusLabel(highlight.status)}
                                     sx={{
@@ -163,182 +169,203 @@ export default function GovernanceHighlightDetailPage({ params }: { params: { id
                                             highlight.status === HighlightStatus.IN_PROGRESS ? '#fff3e0' : '#e1f5fe',
                                         color: getStatusColor(highlight.status),
                                         fontWeight: 700,
-                                        borderRadius: 1,
-                                        height: 24,
-                                        fontSize: '0.75rem',
-                                        textTransform: 'uppercase'
+                                        fontSize: '0.7rem',
+                                        textTransform: 'uppercase',
+                                        mb: 2
                                     }}
                                 />
-                                <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                    RECORD ID: {highlight.id.substring(0, 8).toUpperCase()}
+
+                                <Typography variant="h4" component="h1" sx={{ fontWeight: 600, color: 'text.primary', mb: 0.5 }}>
+                                    {highlight.title}
                                 </Typography>
-                            </Box>
+                                <Typography variant="subtitle1" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 3 }}>
+                                    {highlight.district}, {highlight.state} • {highlight.yearCompleted}
+                                </Typography>
 
-                            <Typography variant="h4" component="h1" sx={{
-                                fontFamily: '"Merriweather", "Roboto Slab", serif',
-                                fontWeight: 700,
-                                color: '#1a1a1a',
-                                mb: 2,
-                                lineHeight: 1.3
-                            }}>
-                                {highlight.title}
-                            </Typography>
-
-                            {/* Meta Data Grid */}
-                            <Grid container spacing={2} sx={{ mt: 1 }}>
-                                <Grid item xs={12} sm={4}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'text.secondary' }}>
-                                        <CalendarTodayIcon sx={{ fontSize: 18 }} />
-                                        <Typography variant="body2" fontWeight={500}>
-                                            Completed: {highlight.yearCompleted}
+                                {/* Key Metadata with Icons */}
+                                <Stack spacing={1}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, color: 'text.primary' }}>
+                                        <BusinessIcon fontSize="small" color="action" />
+                                        <Typography variant="body2">
+                                            <Typography component="span" variant="body2" color="text.secondary" sx={{ mr: 0.5 }}>
+                                                Area:
+                                            </Typography>
+                                            {highlight.area}
                                         </Typography>
                                     </Box>
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'text.secondary' }}>
-                                        <LocationOnIcon sx={{ fontSize: 18 }} />
-                                        <Typography variant="body2" fontWeight={500}>
-                                            {highlight.district}, {highlight.state}
-                                        </Typography>
-                                    </Box>
-                                </Grid>
-                                {highlight.department && (
-                                    <Grid item xs={12} sm={4}>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'text.secondary' }}>
-                                            <BusinessIcon sx={{ fontSize: 18 }} />
-                                            <Typography variant="body2" fontWeight={500}>
+                                    {highlight.department && (
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, color: 'text.primary' }}>
+                                            <BusinessIcon fontSize="small" color="action" />
+                                            <Typography variant="body2">
+                                                <Typography component="span" variant="body2" color="text.secondary" sx={{ mr: 0.5 }}>
+                                                    Department:
+                                                </Typography>
                                                 {highlight.department}
                                             </Typography>
                                         </Box>
-                                    </Grid>
-                                )}
-                            </Grid>
-                        </Box>
-
-                        <Divider sx={{ mb: 4, ml: { md: 2 } }} />
-
-                        {/* Content Section */}
-                        <Box sx={{ pl: { md: 2 } }}>
-                            <Box sx={{ mb: 4 }}>
-                                <Typography variant="overline" display="block" color="text.secondary" gutterBottom>
-                                    {highlight.category === HighlightCategory.INNOVATIVE_INITIATIVE
-                                        ? "Description of Initiative"
-                                        : "Description of long pending issue"}
-                                </Typography>
-                                <Typography variant="body1" sx={{
-                                    whiteSpace: 'pre-wrap',
-                                    lineHeight: 1.7,
-                                    color: '#2c3e50',
-                                    fontSize: '1.05rem'
-                                }}>
-                                    {highlight.description}
-                                </Typography>
+                                    )}
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, color: 'text.primary' }}>
+                                        <CalendarTodayIcon fontSize="small" color="action" />
+                                        <Typography variant="body2">
+                                            <Typography component="span" variant="body2" color="text.secondary" sx={{ mr: 0.5 }}>
+                                                Year Completed:
+                                            </Typography>
+                                            {highlight.yearCompleted}
+                                        </Typography>
+                                    </Box>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, color: 'text.primary' }}>
+                                        <VerifiedIcon fontSize="small" color="action" />
+                                        <Typography variant="body2">
+                                            <Typography component="span" variant="body2" color="text.secondary" sx={{ mr: 0.5 }}>
+                                                Status:
+                                            </Typography>
+                                            {getStatusLabel(highlight.status)}
+                                        </Typography>
+                                    </Box>
+                                </Stack>
                             </Box>
+                        </Grid>
+                    </Grid>
 
-                            {/* Area & Context */}
-                            <Grid container spacing={4} sx={{ mb: 4 }}>
-                                <Grid item xs={12}>
-                                    <Typography variant="overline" display="block" color="text.secondary" gutterBottom>
+                    <Divider sx={{ my: 5 }} />
+
+                    {/* 2. Project Details Grid */}
+                    <Grid container spacing={6}>
+                        <Grid item xs={12} md={6}>
+                            <Typography variant="subtitle2" sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'text.secondary', mb: 2 }}>
+                                Project Details
+                            </Typography>
+                            <Stack spacing={1.5}>
+                                <Box>
+                                    <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                        Category
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ mt: 0.5 }}>
+                                        {highlight.category === HighlightCategory.INNOVATIVE_INITIATIVE ? 'Innovative Initiative' : 'Long-Pending Issue Addressed'}
+                                    </Typography>
+                                </Box>
+                                <Box>
+                                    <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                                         Focus Area
                                     </Typography>
-                                    <Typography variant="body1" fontWeight={500}>
+                                    <Typography variant="body2" sx={{ mt: 0.5 }}>
                                         {highlight.area}
                                     </Typography>
-                                </Grid>
+                                </Box>
                                 {highlight.issueContext && (
-                                    <Grid item xs={12}>
-                                        <Typography variant="overline" display="block" color="text.secondary" gutterBottom>
-                                            Context & Background
+                                    <Box>
+                                        <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                            Context
                                         </Typography>
-                                        <Typography variant="body2" color="text.secondary" sx={{ fontSize: '1rem', lineHeight: 1.6 }}>
+                                        <Typography variant="body2" sx={{ mt: 0.5, lineHeight: 1.6 }}>
                                             {highlight.issueContext}
                                         </Typography>
-                                    </Grid>
+                                    </Box>
                                 )}
-                            </Grid>
-
-                            {/* Source Verification */}
-                            <Box sx={{
-                                bgcolor: '#f8f9fa',
-                                p: 3,
-                                borderRadius: 2,
-                                border: '1px dashed',
-                                borderColor: 'divider'
-                            }}>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
-                                    <VerifiedIcon color="primary" sx={{ fontSize: 20 }} />
-                                    <Typography variant="subtitle2" fontWeight={700}>
-                                        Verification Source
+                            </Stack>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <Typography variant="subtitle2" sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'text.secondary', mb: 2 }}>
+                                Source Information
+                            </Typography>
+                            <Stack spacing={1.5}>
+                                <Box>
+                                    <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                        Source Type
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ mt: 0.5 }}>
+                                        {getSourceTypeLabel(highlight.sourceType)}
                                     </Typography>
                                 </Box>
-                                <Typography variant="body2" sx={{ mb: 2 }}>
-                                    This record is verified via <strong>{getSourceTypeLabel(highlight.sourceType)}</strong>.
-                                </Typography>
-                                <Button
-                                    variant="outlined"
-                                    size="small"
-                                    startIcon={<LinkIcon />}
-                                    href={highlight.sourceUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    View Original Source
-                                </Button>
-                            </Box>
-                        </Box>
-
-                        {/* Gallery Section */}
-                        {highlight.gallery && highlight.gallery.length > 0 && (
-                            <>
-                                <Divider sx={{ my: 4, ml: { md: 2 } }} />
-                                <Box sx={{ pl: { md: 2 } }}>
-                                    <Typography variant="overline" display="block" color="text.secondary" gutterBottom>
-                                        Gallery
+                                <Box>
+                                    <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                        Verification Link
                                     </Typography>
-                                    <Grid container spacing={2}>
-                                        {highlight.gallery.map((imageUrl, index) => (
-                                            <Grid item xs={6} sm={4} key={index}>
-                                                <Box sx={{
-                                                    width: '100%',
-                                                    paddingTop: '100%',
-                                                    position: 'relative',
-                                                    borderRadius: 1,
-                                                    overflow: 'hidden',
-                                                    border: '1px solid',
-                                                    borderColor: 'divider',
-                                                    cursor: 'pointer',
-                                                    '&:hover': {
-                                                        opacity: 0.9
-                                                    }
-                                                }}>
-                                                    <img
-                                                        src={imageUrl}
-                                                        alt={`Gallery ${index + 1}`}
-                                                        style={{
-                                                            position: 'absolute',
-                                                            top: 0,
-                                                            left: 0,
-                                                            width: '100%',
-                                                            height: '100%',
-                                                            objectFit: 'cover'
-                                                        }}
-                                                    />
-                                                </Box>
-                                            </Grid>
-                                        ))}
-                                    </Grid>
+                                    <Box sx={{ mt: 0.5 }}>
+                                        <Button
+                                            variant="outlined"
+                                            size="small"
+                                            startIcon={<LinkIcon />}
+                                            href={highlight.sourceUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            View Source
+                                        </Button>
+                                    </Box>
                                 </Box>
-                            </>
-                        )}
-                    </Paper>
+                            </Stack>
+                        </Grid>
+                    </Grid>
 
-                    {/* Metadata Footer */}
-                    <Box sx={{ mt: 2, textAlign: 'center' }}>
-                        <Typography variant="caption" color="text.secondary">
-                            Document added on {new Date(highlight.createdAt).toLocaleDateString()} • Last updated on {new Date(highlight.updatedAt || highlight.createdAt).toLocaleDateString()}
+                    <Divider sx={{ my: 5 }} />
+
+                    {/* 3. Main Content */}
+                    <Box sx={{ maxWidth: '80ch' }}>
+                        <Typography variant="h5" sx={{ fontWeight: 600, mb: 3 }}>
+                            Description
+                        </Typography>
+                        <Typography
+                            variant="body1"
+                            sx={{
+                                whiteSpace: 'pre-wrap',
+                                lineHeight: 1.8,
+                                color: 'text.primary',
+                                fontSize: '1.05rem'
+                            }}
+                        >
+                            {highlight.description}
                         </Typography>
                     </Box>
-                </motion.div>
+
+                    {/* 4. Gallery Section */}
+                    {highlight.gallery && highlight.gallery.length > 0 && (
+                        <Box sx={{ mt: 6 }}>
+                            <Typography variant="subtitle2" sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'text.secondary', mb: 2 }}>
+                                Gallery ({highlight.gallery.length})
+                            </Typography>
+                            <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                                {highlight.gallery.map((img: string, idx: number) => (
+                                    <Box
+                                        key={idx}
+                                        onClick={() => handleImageClick(highlight.image ? idx + 1 : idx)}
+                                        sx={{
+                                            width: 120,
+                                            height: 120,
+                                            borderRadius: 2,
+                                            overflow: 'hidden',
+                                            cursor: 'pointer',
+                                            border: '1px solid',
+                                            borderColor: 'divider',
+                                            '&:hover': { opacity: 0.9 }
+                                        }}
+                                    >
+                                        <Box
+                                            component="img"
+                                            src={img}
+                                            alt={`Gallery ${idx + 1}`}
+                                            sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                        />
+                                    </Box>
+                                ))}
+                            </Box>
+                        </Box>
+                    )}
+                </Paper>
+
+                {/* Metadata Footer */}
+                <Box sx={{ mt: 2, textAlign: 'center' }}>
+                    <Typography variant="caption" color="text.secondary">
+                        Document added on {new Date(highlight.createdAt).toLocaleDateString()} • Last updated on {new Date(highlight.updatedAt || highlight.createdAt).toLocaleDateString()}
+                    </Typography>
+                </Box>
+                {/* Image Lightbox */}
+                <ImageLightbox
+                    images={allImages}
+                    open={lightboxOpen}
+                    initialIndex={currentImageIndex}
+                    onClose={() => setLightboxOpen(false)}
+                />
             </Container>
         </Box>
     );

@@ -119,7 +119,14 @@ export function AppLayout({ children }: AppLayoutProps) {
     );
 
     return (
-        <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
+        <Box sx={{
+            display: 'flex',
+            minHeight: {
+                xs: 'calc(100vh - 52px)', // Mobile header height
+                sm: 'calc(100vh - 48px)'  // Desktop header height
+            },
+            bgcolor: 'background.default'
+        }}>
             {/* AppBar */}
             <AppBar
                 position="fixed"

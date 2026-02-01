@@ -1,5 +1,6 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { IsEmail, IsString, MinLength, IsOptional } from 'class-validator';
+import { IsEmail, IsString, MinLength, IsOptional, IsEnum } from 'class-validator';
+import { UserRole } from '../entities/user.entity';
 
 @InputType()
 export class CreateUserInput {
@@ -72,4 +73,15 @@ export class UpdateUserInput {
     @Field({ nullable: true })
     @IsOptional()
     otpExpiresAt?: Date;
+}
+
+@InputType()
+export class UpdateUserRoleInput {
+    @Field()
+    @IsString()
+    userId: string;
+
+    @Field(() => UserRole)
+    @IsEnum(UserRole)
+    role: UserRole;
 }

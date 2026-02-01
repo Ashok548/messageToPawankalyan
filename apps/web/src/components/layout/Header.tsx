@@ -25,6 +25,7 @@ export default function Header() {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const { user, isAuthenticated, logout } = useAuth();
     const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
+    const isSuperAdmin = user?.role === 'SUPER_ADMIN';
 
     const toggleDrawer = (open: boolean) => () => {
         setDrawerOpen(open);
@@ -51,6 +52,7 @@ export default function Header() {
         { label: 'Governance Highlights', href: '/governance-highlights' },
         { label: 'Disciplinary Register', href: '/disciplinary-cases' },
         { label: 'Voices', href: '/voices' },
+        ...(isSuperAdmin ? [{ label: 'User Management', href: '/user-management' }] : []),
     ];
 
     return (

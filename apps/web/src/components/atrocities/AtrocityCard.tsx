@@ -1,6 +1,8 @@
-import { Card, CardContent, CardMedia, Typography, Box, Chip, CardActionArea } from '@mui/material';
+import { Card, CardContent, Typography, Box, Chip, IconButton } from '@mui/material';
 import { useState } from 'react';
 import Link from 'next/link';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 interface AtrocityCardProps {
     id: string;
@@ -31,136 +33,176 @@ export default function AtrocityCard({
     images,
     isVerified = false,
 }: AtrocityCardProps) {
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-    const handleImageClick = () => {
-        if (images.length > 1) {
-            setCurrentImageIndex((prev) => (prev + 1) % images.length);
-        }
-    };
-
-    const locationText = `${village}, ${mandal}, ${constituency}, ${district}, ${state}`;
+    const locationText = `${village}, ${mandal}, ${constituency}, ${district}`;
 
     return (
         <Card
             sx={{
-                position: 'relative',
-                height: '100%',
                 display: 'flex',
-                flexDirection: 'column',
-                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                flexDirection: { xs: 'column', sm: 'row' },
+                overflow: 'hidden',
+                cursor: 'pointer',
+                boxShadow: 1,
+                border: '1px solid',
+                borderColor: 'divider',
+                transition: 'box-shadow 0.2s ease',
+                position: 'relative',
                 '&:hover': {
-                    transform: 'translateY(-4px)',
                     boxShadow: 3,
                 },
             }}
         >
-            {/* Image Section */}
-            {images.length > 0 && (
-                <Box sx={{ position: 'relative' }}>
-                    <CardMedia
+            {/* Clickable Link Overlay */}
+            <Link
+                href={`/atrocity-description/${id}`}
+                passHref
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 1,
+                }}
+            />
+
+            {/* LEFT SECTION: Image */}
+            <Box
+                sx={{
+                    width: { xs: '100%', sm: 140 },
+                    minWidth: { sm: 140 },
+                    height: { xs: 200, sm: 'auto' },
+                    bgcolor: '#f5f5f5',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'relative',
+                }}
+            >
+                {images.length > 0 ? (
+                    <Box
                         component="img"
-                        height="240"
-                        image={images[currentImageIndex]}
-                        alt={`${leaderName} - Image ${currentImageIndex + 1}`}
-                        onClick={handleImageClick}
+                        src={images[0]}
+                        alt={leaderName}
                         sx={{
-                            cursor: images.length > 1 ? 'pointer' : 'default',
-                            objectFit: 'cover',
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'contain',
+                            maxHeight: { xs: 200, sm: '100%' },
                         }}
                     />
-                    {images.length > 1 && (
-                        <Box
+                ) : (
+                    <Typography variant="caption" color="text.secondary">
+                        No Photo
+                    </Typography>
+                )}
+
+                {/* Image Counter Badge */}
+                {images.length > 1 && (
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            bottom: 8,
+                            right: 8,
+                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                            color: 'white',
+                            px: 1,
+                            py: 0.5,
+                            borderRadius: 1,
+                            fontSize: 11,
+                            fontWeight: 600,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 0.5,
+                        }}
+                    >
+                        +{images.length - 1} More
+                    </Box>
+                )}
+            </Box>
+
+            {/* RIGHT SECTION: Content */}
+            <CardContent
+                sx={{
+                    flex: 1,
+                    p: 3,
+                    '&:last-child': { pb: 3 },
+                }}
+            >
+                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2 }}>
+                    {/* CENTER: Main Content */}
+                    <Box sx={{ flex: 1 }}>
+                        {/* Name & Location */}
+                        <Box sx={{ mb: 1 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        fontWeight: 700,
+                                        lineHeight: 1.2,
+                                        color: '#1a1a1a',
+                                    }}
+                                >
+                                    {leaderName}
+                                </Typography>
+                                {isVerified && (
+                                    <CheckCircleIcon color="primary" sx={{ fontSize: 18 }} />
+                                )}
+                            </Box>
+                            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+                                {position} • {district}{mandal ? `, ${mandal}` : ''}
+                            </Typography>
+                        </Box>
+
+                        {/* Description */}
+                        <Typography
+                            variant="body2"
+                            color="text.secondary"
                             sx={{
-                                position: 'absolute',
-                                bottom: 8,
-                                right: 8,
-                                backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                                color: 'white',
-                                px: 1.5,
-                                py: 0.5,
-                                borderRadius: 1,
-                                fontSize: 12,
-                                fontWeight: 500,
+                                mb: 2,
+                                lineHeight: 1.6,
+                                display: '-webkit-box',
+                                WebkitLineClamp: 2,
+                                WebkitBoxOrient: 'vertical',
+                                overflow: 'hidden',
                             }}
                         >
-                            {currentImageIndex + 1} / {images.length}
+                            {subject && (
+                                <Box component="span" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                                    {subject}:{' '}
+                                </Box>
+                            )}
+                            {description}
+                        </Typography>
+
+                        {/* State Badge */}
+                        <Box>
+                            <Chip
+                                label={state}
+                                size="small"
+                                variant="outlined"
+                                sx={{ borderRadius: 1, height: 24, fontSize: 11, fontWeight: 600 }}
+                            />
                         </Box>
-                    )}
-                </Box>
-            )}
+                    </Box>
 
-            {/* Content Section */}
-            <CardContent sx={{ flexGrow: 1, p: 3 }}>
-                {/* Leader Name */}
-                <Typography
-                    variant="h6"
-                    component="h3"
-                    sx={{
-                        fontWeight: 600,
-                        mb: 1,
-                        fontSize: { xs: 18, sm: 20 },
-                    }}
-                >
-                    {leaderName}
-                </Typography>
-
-                {/* Position & Verification */}
-                <Box sx={{ display: 'flex', gap: 1, mb: 1.5, flexWrap: 'wrap' }}>
-                    <Chip
-                        label={position}
-                        size="small"
+                    {/* RIGHT: Actions */}
+                    <Box
                         sx={{
-                            backgroundColor: 'primary.light',
-                            color: 'primary.dark',
-                            fontWeight: 500,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: { xs: 'flex-start', md: 'flex-end' },
+                            justifyContent: 'center',
+                            minWidth: { md: 80 },
                         }}
-                    />
-                    {isVerified && (
-                        <Chip
-                            label="Verified"
-                            size="small"
-                            color="success"
-                            sx={{
-                                fontWeight: 500,
-                            }}
-                        />
-                    )}
+                    >
+                        {/* Arrow Icon (desktop only) */}
+                        <Box sx={{ display: { xs: 'none', sm: 'block' }, color: 'action.disabled' }}>
+                            <ArrowForwardIosIcon fontSize="small" />
+                        </Box>
+                    </Box>
                 </Box>
-
-                {/* Location */}
-                <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{
-                        mb: 2,
-                        fontSize: 13,
-                        fontStyle: 'italic',
-                    }}
-                >
-                    📍 {locationText}
-                </Typography>
-
-                {/* Description */}
-                <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{
-                        lineHeight: 1.6,
-                        fontSize: 14,
-                        fontWeight: subject ? 600 : 400,
-                        display: '-webkit-box',
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden',
-                        color: subject ? 'text.primary' : 'text.secondary',
-                    }}
-                >
-                    {subject || description}
-                </Typography>
             </CardContent>
-
-            <Link href={`/atrocity-description/${id}`} passHref style={{ textDecoration: 'none', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }} />
         </Card>
     );
 }

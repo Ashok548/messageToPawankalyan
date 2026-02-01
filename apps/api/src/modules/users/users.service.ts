@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
 import { CreateUserInput, UpdateUserInput } from './dto/user.input';
-import { User } from './entities/user.entity';
+import { User, UserRole } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -64,5 +64,32 @@ export class UsersService {
         // Check if user exists
         await this.findById(id);
         return this.usersRepository.delete(id);
+    }
+
+    /**
+     * Update user role (SUPER_ADMIN only)
+     * Prevents removing the last SUPER_ADMIN
+     */
+    async updateUserRole(userId: string, newRole: UserRole): Promise<User> {
+        const user = await this.findById(userId);
+
+        // If demoting from SUPER_ADMIN, check if this is the last one
+        if (user.role === UserRole.SUPER_ADMIN && newRole !== UserRole.SUPER_ADMIN) {
+            const allUsers = await this.findAll();
+            const superAdminCount = allUsers.filter(u => u.role === UserRole.SUPER_ADMIN).length;
+
+            if (superAdminCount <= 1) {
+                throw new BadRequestException('Cannot demote the last SUPER_ADMIN');
+            }
+        }
+
+        return this.usersRepository.update(userId, { role: newRole } as UpdateUserInput);
+    }
+
+    /**
+     * Get all users for admin panel (SUPER_ADMIN only)
+     */
+    async getAllUsersForAdmin(): Promise<User[]> {
+        return this.findAll();
     }
 }

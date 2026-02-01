@@ -1,12 +1,13 @@
 'use client';
 
-import { Box, Container, Typography, Grid, CircularProgress, Alert, Button, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { Box, Container, Typography, CircularProgress, Alert, Button, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { useQuery } from '@apollo/client';
 import { GET_ATROCITIES, GET_UNVERIFIED_ATROCITIES } from '@/graphql/queries/atrocities';
 import AtrocityCard from '@/components/atrocities/AtrocityCard';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import AddIcon from '@mui/icons-material/Add';
+import { Spinner } from '@/components/ui/spinner';
 
 interface Atrocity {
     id: string;
@@ -50,42 +51,74 @@ export default function AttrocitiesToJanasainiksPage() {
         <Box
             component="main"
             sx={{
-                minHeight: '100vh',
+                minHeight: {
+                    xs: 'calc(100vh - 52px)', // Mobile header: 52px
+                    sm: 'calc(100vh - 48px)'  // Desktop header: 48px
+                },
                 backgroundColor: '#fafafa',
                 py: { xs: 4, sm: 6 },
             }}
         >
             <Container maxWidth="lg">
-                {/* Page Header */}
-                <Box sx={{ mb: 5, textAlign: 'center' }}>
-                    <Typography
-                        component="h1"
-                        sx={{
-                            fontSize: { xs: 28, sm: 36, md: 42 },
-                            fontWeight: 700,
-                            lineHeight: 1.2,
-                            color: '#1a1a1a',
-                            mb: 2,
-                            letterSpacing: '-0.02em',
-                        }}
-                    >
-                        Atrocities Against Janasainiks
-                    </Typography>
-                    <Typography
-                        sx={{
-                            fontSize: { xs: 16, sm: 18 },
-                            color: 'text.secondary',
-                            maxWidth: 680,
-                            mx: 'auto',
-                            mb: 3,
-                        }}
-                    >
-                        Documenting incidents of violence, harassment, and injustice against our political workers
-                    </Typography>
+                {/* Header Section */}
+                <Box
+                    sx={{
+                        mb: 5,
+                        display: 'flex',
+                        flexDirection: { xs: 'column', md: 'row' },
+                        alignItems: { xs: 'center', md: 'flex-start' },
+                        justifyContent: 'space-between',
+                        gap: 3,
+                        textAlign: { xs: 'center', md: 'left' }
+                    }}
+                >
+                    <Box sx={{ maxWidth: 680 }}>
+                        <Typography
+                            component="h1"
+                            sx={{
+                                fontSize: { xs: 28, sm: 36, md: 42 },
+                                fontWeight: 700,
+                                lineHeight: 1.2,
+                                color: '#1a1a1a',
+                                mb: 1.5,
+                                letterSpacing: '-0.02em',
+                            }}
+                        >
+                            Atrocities Against Janasainiks
+                        </Typography>
+                        <Typography
+                            sx={{
+                                fontSize: { xs: 16, sm: 18 },
+                                color: 'text.secondary',
+                            }}
+                        >
+                            Documenting incidents of violence, harassment, and injustice against our political workers
+                        </Typography>
+                    </Box>
 
-                    {/* SUPER_ADMIN Filter Toggle */}
-                    {isSuperAdmin && (
-                        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+                    {/* Actions Row */}
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: { xs: 'center', md: 'flex-end' } }}>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            startIcon={<AddIcon />}
+                            onClick={() => router.push('/report-atrocity')}
+                            sx={{
+                                px: 3,
+                                py: 1.2,
+                                fontSize: 15,
+                                fontWeight: 600,
+                                borderRadius: 2,
+                                textTransform: 'none',
+                                boxShadow: 2,
+                                whiteSpace: 'nowrap'
+                            }}
+                        >
+                            Report Atrocity
+                        </Button>
+
+                        {/* SUPER_ADMIN Filter Toggle */}
+                        {isSuperAdmin && (
                             <ToggleButtonGroup
                                 value={filter}
                                 exclusive
@@ -96,44 +129,38 @@ export default function AttrocitiesToJanasainiksPage() {
                                 }}
                                 sx={{
                                     backgroundColor: 'white',
+                                    borderRadius: 2,
+                                    boxShadow: '0 0 0 1px rgba(0,0,0,0.1)',
+                                    height: 36,
                                     '& .MuiToggleButton-root': {
-                                        px: 3,
-                                        py: 1,
+                                        px: 2,
+                                        py: 0.5,
                                         textTransform: 'none',
+                                        fontSize: 13,
                                         fontWeight: 500,
+                                        border: 'none',
+                                        borderRadius: 2,
+                                        margin: '2px',
+                                        '&.Mui-selected': {
+                                            backgroundColor: 'error.main',
+                                            color: 'white',
+                                            '&:hover': {
+                                                backgroundColor: 'error.dark',
+                                            }
+                                        }
                                     },
                                 }}
                             >
-                                <ToggleButton value="all">All</ToggleButton>
-                                <ToggleButton value="unverified">Unverified</ToggleButton>
+                                <ToggleButton value="all">All View</ToggleButton>
+                                <ToggleButton value="unverified">Unverified Only</ToggleButton>
                             </ToggleButtonGroup>
-                        </Box>
-                    )}
-
-                    {/* Report Button */}
-                    <Button
-                        variant="contained"
-                        size="large"
-                        startIcon={<AddIcon />}
-                        onClick={() => router.push('/report-atrocity')}
-                        sx={{
-                            px: 4,
-                            py: 1.5,
-                            fontSize: 16,
-                            fontWeight: 600,
-                            borderRadius: 2,
-                            textTransform: 'none',
-                        }}
-                    >
-                        Report Atrocity
-                    </Button>
+                        )}
+                    </Box>
                 </Box>
 
                 {/* Loading State */}
                 {loading && (
-                    <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
-                        <CircularProgress />
-                    </Box>
+                    <Spinner message="Loading atrocities..." fullScreen />
                 )}
 
                 {/* Error State */}
@@ -143,36 +170,43 @@ export default function AttrocitiesToJanasainiksPage() {
                     </Alert>
                 )}
 
-                {/* Cards Grid */}
+                {/* Atrocities List (Vertical Stack) */}
                 {data?.atrocities && (
-                    <Grid container spacing={{ xs: 3, sm: 4 }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                         {data.atrocities.map((atrocity: Atrocity) => (
-                            <Grid item xs={12} sm={6} md={4} key={atrocity.id}>
-                                <AtrocityCard
-                                    id={atrocity.id}
-                                    leaderName={atrocity.leaderName}
-                                    state={atrocity.state}
-                                    district={atrocity.district}
-                                    constituency={atrocity.constituency}
-                                    mandal={atrocity.mandal}
-                                    village={atrocity.village}
-                                    position={atrocity.position}
-                                    description={atrocity.description}
-                                    subject={atrocity.subject}
-                                    images={atrocity.images}
-                                    isVerified={atrocity.isVerified}
-                                />
-                            </Grid>
+                            <AtrocityCard
+                                key={atrocity.id}
+                                id={atrocity.id}
+                                leaderName={atrocity.leaderName}
+                                state={atrocity.state}
+                                district={atrocity.district}
+                                constituency={atrocity.constituency}
+                                mandal={atrocity.mandal}
+                                village={atrocity.village}
+                                position={atrocity.position}
+                                description={atrocity.description}
+                                subject={atrocity.subject}
+                                images={atrocity.images}
+                                isVerified={atrocity.isVerified}
+                            />
                         ))}
-                    </Grid>
+                    </Box>
                 )}
 
                 {/* Empty State */}
                 {data?.atrocities && data.atrocities.length === 0 && (
-                    <Box sx={{ textAlign: 'center', py: 8 }}>
-                        <Typography variant="h6" color="text.secondary">
+                    <Box sx={{ textAlign: 'center', py: 10, bgcolor: 'white', borderRadius: 2, border: '1px dashed #e0e0e0' }}>
+                        <Typography variant="h6" color="text.secondary" gutterBottom>
                             No atrocities reported yet
                         </Typography>
+                        <Button
+                            variant="outlined"
+                            size="small"
+                            onClick={() => router.push('/report-atrocity')}
+                            sx={{ mt: 1, textTransform: 'none' }}
+                        >
+                            Report the first one
+                        </Button>
                     </Box>
                 )}
             </Container>

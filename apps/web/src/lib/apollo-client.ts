@@ -1,5 +1,6 @@
-import { ApolloClient, InMemoryCache, HttpLink, from, ApolloLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, HttpLink, from, ApolloLink, Observable } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
+import { loadingManager } from './loading-manager';
 
 // Error handling link
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -23,6 +24,34 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (networkError) {
         console.error(`[Network error]: ${networkError}`);
     }
+});
+
+// Loading interceptor link
+const loadingLink = new ApolloLink((operation, forward) => {
+    // Start loading when request begins
+    loadingManager.startLoading();
+
+    // Use Observable to handle both success and error cases
+    return new Observable((observer) => {
+        const subscription = forward(operation).subscribe({
+            next: (result) => {
+                loadingManager.stopLoading();
+                observer.next(result);
+            },
+            error: (error) => {
+                loadingManager.stopLoading();
+                observer.error(error);
+            },
+            complete: () => {
+                observer.complete();
+            },
+        });
+
+        // Return cleanup function
+        return () => {
+            subscription.unsubscribe();
+        };
+    });
 });
 
 // HTTP link to GraphQL API
@@ -53,7 +82,7 @@ const authLink = new ApolloLink((operation, forward) => {
 function createApolloClient() {
     return new ApolloClient({
         ssrMode: typeof window === 'undefined', // Enable SSR mode on server
-        link: from([errorLink, authLink, httpLink]),
+        link: from([loadingLink, errorLink, authLink, httpLink]),
         cache: new InMemoryCache({
             typePolicies: {
                 Query: {

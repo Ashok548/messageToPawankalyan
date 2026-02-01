@@ -2,16 +2,14 @@
 
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_ATROCITY, APPROVE_ATROCITY_MUTATION, REMOVE_ATROCITY_IMAGE_MUTATION } from '@/graphql/queries/atrocities';
-import { Box, Container, Typography, Grid, Paper, Chip, CircularProgress, Alert, Divider, Breadcrumbs, Dialog, IconButton, Zoom, Fade, Slide, Button, Snackbar } from '@mui/material';
+import { Box, Container, Typography, Grid, Paper, Chip, CircularProgress, Alert, Divider, Breadcrumbs, IconButton, Button, Snackbar } from '@mui/material';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import CloseIcon from '@mui/icons-material/Close';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useState, useEffect } from 'react';
+import ImageLightbox from '@/components/ui/image-lightbox';
 
 interface Atrocity {
     id: string;
@@ -34,7 +32,6 @@ export default function AtrocityDescriptionPage() {
     const { id } = params;
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('left');
     const [isSuperAdmin, setIsSuperAdmin] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -97,20 +94,6 @@ export default function AtrocityDescriptionPage() {
 
     const handleCloseLightbox = () => {
         setLightboxOpen(false);
-    };
-
-    const handleNextImage = () => {
-        if (data?.atrocity?.images) {
-            setSlideDirection('left');
-            setCurrentImageIndex((prev) => (prev + 1) % data.atrocity.images.length);
-        }
-    };
-
-    const handlePrevImage = () => {
-        if (data?.atrocity?.images) {
-            setSlideDirection('right');
-            setCurrentImageIndex((prev) => (prev - 1 + data.atrocity.images.length) % data.atrocity.images.length);
-        }
     };
 
     const { data, loading, error } = useQuery(GET_ATROCITY, {
@@ -314,108 +297,15 @@ export default function AtrocityDescriptionPage() {
             </Container>
 
             {/* Lightbox Dialog using standard MUI Dialog */}
-            {/* Lightbox Dialog using standard MUI Dialog */}
-            <Dialog
-                open={lightboxOpen}
-                onClose={handleCloseLightbox}
-                maxWidth={false}
-                TransitionComponent={Zoom}
-                transitionDuration={300}
-                PaperProps={{
-                    style: {
-                        backgroundColor: 'transparent',
-                        boxShadow: 'none',
-                        width: '100%',
-                        height: '100%',
-                        margin: 0,
-                        maxHeight: '100%',
-                        borderRadius: 0,
-                        overflow: 'hidden'
-                    }
-                }}
-                slotProps={{
-                    backdrop: {
-                        style: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.85)', // Semi-transparent dark background
-                        }
-                    }
-                }}
-            >
-                <Box sx={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-
-                    {/* Close Button */}
-                    <IconButton
-                        onClick={handleCloseLightbox}
-                        sx={{ position: 'absolute', top: 16, right: 16, color: 'white', zIndex: 10 }}
-                    >
-                        <CloseIcon />
-                    </IconButton>
-
-                    {/* Navigation Buttons */}
-                    {atrocity.images && atrocity.images.length > 1 && (
-                        <>
-                            <IconButton
-                                onClick={handlePrevImage}
-                                sx={{ position: 'absolute', left: 16, color: 'white', zIndex: 10 }}
-                            >
-                                <NavigateBeforeIcon fontSize="large" />
-                            </IconButton>
-                            <IconButton
-                                onClick={handleNextImage}
-                                sx={{ position: 'absolute', right: 16, color: 'white', zIndex: 10 }}
-                            >
-                                <NavigateNextIcon fontSize="large" />
-                            </IconButton>
-                        </>
-                    )}
-
-                    {/* Main Lightbox Image */}
-                    {atrocity.images && atrocity.images.length > 0 && (
-                        <div style={{ position: 'relative', width: '100%', height: '90%', maxWidth: '1200px', overflow: 'hidden' }}>
-                            {/* We use a transition group concept by keying the Slide.
-                                To overlap smoothly, we need absolute positioning.
-                            */}
-                            {/* Custom Easing: Fast start, slow end (approx 2s "delay" feel) */}
-                            {/* Custom CSS Animation Styles */}
-                            <style jsx global>{`
-                                @keyframes slideFromRight {
-                                    0% { transform: translateX(100%); opacity: 0; }
-                                    100% { transform: translateX(0); opacity: 1; }
-                                }
-                                @keyframes slideFromLeft {
-                                    0% { transform: translateX(-100%); opacity: 0; }
-                                    100% { transform: translateX(0); opacity: 1; }
-                                }
-                                .animate-slide-next {
-                                    animation: slideFromRight 2.5s cubic-bezier(0.05, 0.9, 0.2, 1) forwards;
-                                }
-                                .animate-slide-prev {
-                                    animation: slideFromLeft 2.5s cubic-bezier(0.05, 0.9, 0.2, 1) forwards;
-                                }
-                            `}</style>
-
-                            <div
-                                key={currentImageIndex}
-                                className={slideDirection === 'left' ? 'animate-slide-next' : 'animate-slide-prev'}
-                                style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}
-                            >
-                                <Image
-                                    src={atrocity.images[currentImageIndex]}
-                                    alt={`Gallery Image ${currentImageIndex + 1}`}
-                                    fill
-                                    style={{ objectFit: 'contain' }}
-                                    unoptimized
-                                />
-                            </div>
-                            {atrocity.images.length > 1 && (
-                                <Typography sx={{ position: 'absolute', bottom: -30, width: '100%', textAlign: 'center', color: 'white' }}>
-                                    {currentImageIndex + 1} / {atrocity.images.length}
-                                </Typography>
-                            )}
-                        </div>
-                    )}
-                </Box>
-            </Dialog>
+            {/* Reusable Image Lightbox */}
+            {atrocity.images && (
+                <ImageLightbox
+                    images={atrocity.images}
+                    open={lightboxOpen}
+                    initialIndex={currentImageIndex}
+                    onClose={handleCloseLightbox}
+                />
+            )}
 
             {/* Snackbar for notifications */}
             <Snackbar

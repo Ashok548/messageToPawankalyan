@@ -6,6 +6,7 @@ import { GET_GOVERNANCE_HIGHLIGHTS, CREATE_GOVERNANCE_HIGHLIGHT_MUTATION, UPDATE
 import { Box, Container, Typography, ToggleButtonGroup, ToggleButton, Grid, CircularProgress, Alert, Chip, Card, CardContent, CardMedia, Link as MuiLink, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Select, MenuItem, FormControl, InputLabel, IconButton, Snackbar } from '@mui/material';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import LinkIcon from '@mui/icons-material/Link';
 import AddIcon from '@mui/icons-material/Add';
@@ -49,6 +50,7 @@ interface GovernanceHighlight {
 }
 
 export default function GovernanceHighlightsPage() {
+    const router = useRouter();
     const [category, setCategory] = useState<HighlightCategory | null>(HighlightCategory.PENDING_ISSUE_ADDRESSED);
     const [isSuperAdmin, setIsSuperAdmin] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -445,147 +447,147 @@ export default function GovernanceHighlightsPage() {
                             animate="enter"
                             exit="exit"
                         >
-                            <Grid container spacing={3}>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                                 {highlights.map((highlight) => (
-                                    <Grid item xs={12} md={4} key={highlight.id}>
-                                        <Link href={`/governance-highlights/${highlight.id}`} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
-                                            <Card sx={{
-                                                height: '100%',
+                                    <Card
+                                        key={highlight.id}
+                                        onClick={() => router.push(`/governance-highlights/${highlight.id}`)}
+                                        sx={{
+                                            display: 'flex',
+                                            flexDirection: { xs: 'column', sm: 'row' },
+                                            overflow: 'hidden',
+                                            cursor: 'pointer',
+                                            boxShadow: 1,
+                                            border: '1px solid',
+                                            borderColor: 'divider',
+                                            transition: 'box-shadow 0.2s ease',
+                                            '&:hover': {
+                                                boxShadow: 3,
+                                            },
+                                        }}
+                                    >
+                                        {/* LEFT SECTION: Image (Fixed 140px width on desktop) */}
+                                        <Box
+                                            sx={{
+                                                width: { xs: '100%', sm: 140 },
+                                                minWidth: { sm: 140 },
+                                                height: { xs: 200, sm: 'auto' },
+                                                bgcolor: '#f5f5f5',
                                                 display: 'flex',
-                                                flexDirection: 'column',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
                                                 position: 'relative',
-                                                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                                                border: '1px solid',
-                                                borderColor: 'divider',
-                                                boxShadow: 'none',
-                                                borderRadius: 2,
-                                                overflow: 'hidden',
-                                                '&:hover': {
-                                                    boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-                                                    transform: 'translateY(-2px)',
-                                                },
-                                            }}>
-                                                {/* Status Strip (Left Border) */}
-                                                <Box sx={{
-                                                    position: 'absolute',
-                                                    left: 0,
-                                                    top: 0,
-                                                    bottom: 0,
-                                                    width: 4,
-                                                    bgcolor: highlight.status === HighlightStatus.ADDRESSED ? '#2e7d32' :
-                                                        highlight.status === HighlightStatus.IN_PROGRESS ? '#ed6c02' : '#0288d1'
-                                                }} />
+                                            }}
+                                        >
+                                            {highlight.image ? (
+                                                <Box
+                                                    component="img"
+                                                    src={highlight.image}
+                                                    alt={highlight.title}
+                                                    sx={{
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        objectFit: 'contain',
+                                                        maxHeight: { xs: 200, sm: '100%' },
+                                                    }}
+                                                />
+                                            ) : (
+                                                <Typography variant="caption" color="text.secondary">
+                                                    No Image
+                                                </Typography>
+                                            )}
+                                        </Box>
 
-                                                {/* Profile/Cover Photo */}
-                                                {highlight.image && (
-                                                    <CardMedia
-                                                        component="img"
-                                                        height="200"
-                                                        image={highlight.image}
-                                                        alt={highlight.title}
-                                                        sx={{ objectFit: 'cover' }}
-                                                    />
-                                                )}
-
-                                                <CardContent sx={{ p: 3, flexGrow: 1, display: 'flex', flexDirection: 'column', paddingLeft: '24px' }}>
-                                                    {/* Metadata Header */}
-                                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-                                                        <Typography variant="caption" sx={{
-                                                            fontSize: '0.75rem',
-                                                            fontWeight: 600,
-                                                            letterSpacing: '0.05em',
-                                                            textTransform: 'uppercase',
-                                                            color: 'text.secondary',
-                                                        }}>
-                                                            {highlight.yearCompleted} • {highlight.district}
+                                        {/* CENTER & RIGHT SECTIONS: Content */}
+                                        <CardContent sx={{ flex: 1, p: 3, '&:last-child': { pb: 3 } }}>
+                                            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2 }}>
+                                                {/* CENTER: Main Content */}
+                                                <Box sx={{ flex: 1 }}>
+                                                    {/* Title & Location */}
+                                                    <Box sx={{ mb: 1 }}>
+                                                        <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2, mb: 0.5, color: '#1a1a1a' }}>
+                                                            {highlight.title}
                                                         </Typography>
-
-                                                        {/* Status Label */}
-                                                        <Typography variant="caption" sx={{
-                                                            fontSize: '0.7rem',
-                                                            fontWeight: 700,
-                                                            color: highlight.status === HighlightStatus.ADDRESSED ? '#2e7d32' :
-                                                                highlight.status === HighlightStatus.IN_PROGRESS ? '#ed6c02' : '#0288d1',
-                                                            bgcolor: highlight.status === HighlightStatus.ADDRESSED ? '#e8f5e9' :
-                                                                highlight.status === HighlightStatus.IN_PROGRESS ? '#fff3e0' : '#e1f5fe',
-                                                            px: 1,
-                                                            py: 0.25,
-                                                            borderRadius: 1,
-                                                            textTransform: 'uppercase',
-                                                        }}>
-                                                            {getStatusLabel(highlight.status)}
+                                                        <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+                                                            {highlight.district}, {highlight.state} • {highlight.yearCompleted}
                                                         </Typography>
                                                     </Box>
 
-                                                    {/* Title */}
-                                                    <Typography variant="h6" sx={{
-                                                        fontWeight: 700,
-                                                        mb: 2,
-                                                        fontFamily: '"Merriweather", "Roboto Slab", serif',
-                                                        lineHeight: 1.4,
-                                                        color: '#1a1a1a',
-                                                        fontSize: '1.1rem'
-                                                    }}>
-                                                        {highlight.title}
+                                                    {/* Description (2 lines max) */}
+                                                    <Typography
+                                                        variant="body2"
+                                                        color="text.secondary"
+                                                        sx={{
+                                                            mb: 2,
+                                                            lineHeight: 1.6,
+                                                            display: '-webkit-box',
+                                                            WebkitLineClamp: 2,
+                                                            WebkitBoxOrient: 'vertical',
+                                                            overflow: 'hidden'
+                                                        }}
+                                                    >
+                                                        {highlight.description}
                                                     </Typography>
 
-                                                    {/* Description */}
-                                                    <Typography variant="body2" sx={{
-                                                        mb: 2,
-                                                        flexGrow: 1,
-                                                        color: 'text.secondary',
-                                                        lineHeight: 1.6
-                                                    }}>
-                                                        {truncateText(highlight.description, 180)}
+                                                    {/* Metadata - Horizontal List (1 line) */}
+                                                    <Typography
+                                                        variant="body2"
+                                                        color="text.secondary"
+                                                        sx={{
+                                                            display: '-webkit-box',
+                                                            WebkitLineClamp: 1,
+                                                            WebkitBoxOrient: 'vertical',
+                                                            overflow: 'hidden'
+                                                        }}
+                                                    >
+                                                        {highlight.area} • {getStatusLabel(highlight.status)} • {getSourceTypeLabel(highlight.sourceType)}
                                                     </Typography>
+                                                </Box>
 
-                                                    {/* Source Link */}
-                                                    <Box sx={{ mt: 2 }}>
-                                                        <MuiLink
-                                                            href={highlight.sourceUrl}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            sx={{
-                                                                display: 'inline-flex',
-                                                                alignItems: 'center',
-                                                                fontSize: '0.8rem',
-                                                                fontWeight: 600,
-                                                                color: 'primary.main',
-                                                                textDecoration: 'none',
-                                                                '&:hover': { textDecoration: 'underline' }
-                                                            }}
-                                                        >
-                                                            <LinkIcon sx={{ fontSize: 14, mr: 0.5 }} />
-                                                            Source: {getSourceTypeLabel(highlight.sourceType)}
-                                                        </MuiLink>
-                                                    </Box>
-                                                </CardContent>
-
-                                                {/* Admin Footer */}
-                                                {isSuperAdmin && (
-                                                    <Box sx={{
-                                                        px: 2,
-                                                        py: 1,
-                                                        borderTop: '1px solid',
-                                                        borderColor: 'divider',
-                                                        bgcolor: '#fafafa',
+                                                {/* RIGHT: Actions */}
+                                                <Box
+                                                    sx={{
                                                         display: 'flex',
-                                                        justifyContent: 'flex-end',
-                                                        gap: 1
-                                                    }}>
-                                                        <IconButton size="small" onClick={() => handleOpenDialog(highlight)} title="Edit">
-                                                            <EditIcon fontSize="small" sx={{ fontSize: 18 }} />
-                                                        </IconButton>
-                                                        <IconButton size="small" onClick={() => handleDelete(highlight.id)} color="error" title="Delete">
-                                                            <DeleteIcon fontSize="small" sx={{ fontSize: 18 }} />
-                                                        </IconButton>
-                                                    </Box>
-                                                )}
-                                            </Card>
-                                        </Link>
-                                    </Grid>
+                                                        flexDirection: 'column',
+                                                        alignItems: { xs: 'flex-start', md: 'flex-end' },
+                                                        justifyContent: 'center',
+                                                        gap: 1,
+                                                        minWidth: { md: 100 }
+                                                    }}
+                                                >
+                                                    {/* Admin Edit/Delete Buttons */}
+                                                    {isSuperAdmin && (
+                                                        <>
+                                                            <IconButton
+                                                                color="primary"
+                                                                size="small"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleOpenDialog(highlight);
+                                                                }}
+                                                                aria-label="Edit Highlight"
+                                                            >
+                                                                <EditIcon />
+                                                            </IconButton>
+                                                            <IconButton
+                                                                color="error"
+                                                                size="small"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleDelete(highlight.id);
+                                                                }}
+                                                                aria-label="Delete Highlight"
+                                                            >
+                                                                <DeleteIcon />
+                                                            </IconButton>
+                                                        </>
+                                                    )}
+                                                </Box>
+                                            </Box>
+                                        </CardContent>
+                                    </Card>
                                 ))}
-                            </Grid>
+                            </Box>
                         </motion.div>
                     )}
                 </AnimatePresence>
