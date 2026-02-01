@@ -34,32 +34,58 @@ export function Footer() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: 1,
+                    gap: 2,
+                    flexWrap: 'wrap',
                 }}
             >
-                <VisibilityIcon
+                {/* Visitor Counter */}
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <VisibilityIcon
+                        sx={{
+                            fontSize: 16,
+                            color: '#E31E24',
+                            animation: 'pulse 2s ease-in-out infinite',
+                            '@keyframes pulse': {
+                                '0%, 100%': { opacity: 1 },
+                                '50%': { opacity: 0.6 },
+                            },
+                        }}
+                    />
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            color: '#fff',
+                            fontSize: '0.813rem',
+                            fontWeight: 500,
+                            letterSpacing: '0.5px',
+                        }}
+                    >
+                        Visitors: <Box component="span" sx={{ color: '#E31E24', fontWeight: 700 }}>
+                            {visitorCount.toLocaleString()}
+                        </Box>
+                    </Typography>
+                </Box>
+
+                {/* Divider for larger screens */}
+                <Box
                     sx={{
-                        fontSize: 16,
-                        color: '#E31E24',
-                        animation: 'pulse 2s ease-in-out infinite',
-                        '@keyframes pulse': {
-                            '0%, 100%': { opacity: 1 },
-                            '50%': { opacity: 0.6 },
-                        },
+                        display: { xs: 'none', sm: 'block' },
+                        height: '14px',
+                        width: '1px',
+                        bgcolor: 'rgba(255,255,255,0.3)'
                     }}
                 />
+
+                {/* Disclaimer */}
                 <Typography
-                    variant="body2"
+                    variant="caption"
                     sx={{
-                        color: '#fff',
-                        fontSize: '0.813rem',
-                        fontWeight: 500,
-                        letterSpacing: '0.5px',
+                        color: 'rgba(255, 255, 255, 0.6)',
+                        fontSize: '0.75rem',
+                        textAlign: 'center',
                     }}
                 >
-                    Visitors: <Box component="span" sx={{ color: '#E31E24', fontWeight: 700 }}>
-                        {visitorCount.toLocaleString()}
-                    </Box>
+                    Disclaimer: This is a volunteer initiative, not an official JSP website.
                 </Typography>
             </Box>
         </Box>

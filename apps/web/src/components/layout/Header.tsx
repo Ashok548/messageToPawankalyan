@@ -24,9 +24,18 @@ export default function Header() {
     const router = useRouter();
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [isJanaSenaSupporter, setIsJanaSenaSupporter] = useState<boolean>(true); // Default to true
     const { user, isAuthenticated, logout } = useAuth();
     const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
     const isSuperAdmin = user?.role === 'SUPER_ADMIN';
+
+    // Check localStorage for user's choice
+    useEffect(() => {
+        const storedChoice = localStorage.getItem('isJanaSenaSupporter');
+        if (storedChoice !== null) {
+            setIsJanaSenaSupporter(storedChoice === 'yes');
+        }
+    }, []);
 
     const toggleDrawer = (open: boolean) => () => {
         setDrawerOpen(open);
@@ -46,16 +55,23 @@ export default function Header() {
         router.push('/');
     };
 
-    const menuItems = [
-        { label: 'Message to Janasainiks', href: '/message-to-janasainiks' },
-        { label: 'Atrocities to Janasainiks', href: '/atrocities-to-janasainiks' },
-        { label: 'Leaders Society Needs', href: '/leaders-society-needs' },
-        { label: 'Social Media Warriors', href: '/social-media-warriors' },
-        { label: 'Governance Highlights', href: '/governance-highlights' },
-        { label: 'Disciplinary Register', href: '/disciplinary-cases' },
-        { label: 'Voices', href: '/voices' },
-        ...(isSuperAdmin ? [{ label: 'User Management', href: '/user-management' }] : []),
+    // Define all menu items
+    const allMenuItems = [
+        { label: 'Why Join JanaSena', href: '/why-join-janasena', showForAll: true },
+        { label: 'Message to Janasainiks', href: '/message-to-janasainiks', showForAll: false },
+        { label: 'Atrocities to Janasainiks', href: '/atrocities-to-janasainiks', showForAll: false },
+        { label: 'Leaders Society Needs', href: '/leaders-society-needs', showForAll: true },
+        { label: 'Social Media Warriors', href: '/social-media-warriors', showForAll: false },
+        { label: 'Governance Highlights', href: '/governance-highlights', showForAll: true },
+        { label: 'Disciplinary Register', href: '/disciplinary-cases', showForAll: true },
+        { label: 'Voices', href: '/voices', showForAll: true },
+        ...(isSuperAdmin ? [{ label: 'User Management', href: '/user-management', showForAll: true }] : []),
     ];
+
+    // Filter menu items based on user's supporter status
+    const menuItems = allMenuItems.filter(item =>
+        item.showForAll || isJanaSenaSupporter
+    );
 
     return (
         <>

@@ -14,13 +14,17 @@ export function JspWelcomeModal() {
     const [incrementVisitorCount] = useMutation(INCREMENT_VISITOR_COUNT);
 
     useEffect(() => {
-        // Show modal with a slight delay for smooth entrance
-        setOpen(true)
-        // const timer = setTimeout(() => setOpen(true), 300);
-        // return () => clearTimeout(timer);
+        // Only show modal if user hasn't made a choice yet
+        const storedChoice = localStorage.getItem('isJanaSenaSupporter');
+        if (storedChoice === null) {
+            setOpen(true);
+        }
     }, []);
 
     const handleClose = (response: 'yes' | 'no') => {
+        // Store user's choice in localStorage
+        localStorage.setItem('isJanaSenaSupporter', response);
+
         // Check if visitor has already been counted this session
         const hasBeenCounted = sessionStorage.getItem('visitorCounted');
 
