@@ -112,7 +112,7 @@ export default function AtrocityDescriptionPage() {
 
     if (error) {
         return (
-            <Container maxWidth="lg" sx={{ py: 4 }}>
+            <Container maxWidth={false} sx={{ py: 4, px: { xs: 2, sm: 3 } }}>
                 <Alert severity="error">Failed to load atrocity details: {error.message}</Alert>
             </Container>
         );
@@ -120,7 +120,7 @@ export default function AtrocityDescriptionPage() {
 
     if (!data?.atrocity) {
         return (
-            <Container maxWidth="lg" sx={{ py: 4 }}>
+            <Container maxWidth={false} sx={{ py: 4, px: { xs: 2, sm: 3 } }}>
                 <Alert severity="info">Atrocity not found.</Alert>
             </Container>
         );
@@ -131,7 +131,7 @@ export default function AtrocityDescriptionPage() {
 
     return (
         <Box component="main" sx={{ backgroundColor: '#ffffff', minHeight: '100vh', py: 4 }}>
-            <Container maxWidth="lg">
+            <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3 } }}>
                 {/* Breadcrumbs */}
                 <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2, fontSize: '0.9rem' }}>
                     <Link href="/" style={{ textDecoration: 'none', color: '#1976d2' }}>

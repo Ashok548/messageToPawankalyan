@@ -130,7 +130,7 @@ export default function CreateGovernanceHighlightPage() {
 
     return (
         <Box component="main" sx={{ backgroundColor: '#fafafa', minHeight: '100vh', py: 4 }}>
-            <Container maxWidth="md">
+            <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3 }, maxWidth: '900px', mx: 'auto' }}>
                 <Button
                     startIcon={<ArrowBackIcon />}
                     onClick={() => router.back()}

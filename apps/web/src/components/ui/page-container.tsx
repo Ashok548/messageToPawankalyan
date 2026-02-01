@@ -9,7 +9,7 @@ interface PageContainerProps extends ContainerProps {
 
 export function PageContainer({ children, ...props }: PageContainerProps) {
     return (
-        <Container maxWidth="xl" {...props}>
+        <Container maxWidth={false} {...props}>
             <Box sx={{ py: 3 }}>{children}</Box>
         </Container>
     );

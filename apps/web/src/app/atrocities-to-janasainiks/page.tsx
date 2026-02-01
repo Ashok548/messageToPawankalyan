@@ -59,7 +59,7 @@ export default function AttrocitiesToJanasainiksPage() {
                 py: { xs: 4, sm: 6 },
             }}
         >
-            <Container maxWidth="lg">
+            <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3 } }}>
                 {/* Header Section */}
                 <Box
                     sx={{

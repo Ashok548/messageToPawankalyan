@@ -277,7 +277,7 @@ export default function ReportAtrocityPage() {
                 Back
             </Button>
 
-            <Container maxWidth="md" sx={{ mt: { xs: 0, md: 4 }, pb: 4 }}>
+            <Container maxWidth={false} sx={{ mt: { xs: 0, md: 4 }, pb: 4, px: { xs: 2, sm: 3 }, maxWidth: '900px', mx: 'auto' }}>
                 {/* Header */}
                 <Box sx={{ mb: 4, textAlign: 'center' }}>
                     <Typography variant="h4" component="h1" sx={{ fontWeight: 600, mb: 1 }}>

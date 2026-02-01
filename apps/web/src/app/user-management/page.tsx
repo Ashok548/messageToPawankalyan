@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { Box, Container, Typography, Alert, Snackbar } from '@mui/material';
 import { useRouter } from 'next/navigation';
@@ -21,26 +21,17 @@ interface User {
     updatedAt: string;
 }
 
-export default function UserManagementPage() {
-    const router = useRouter();
-    const { user: currentUser, isAuthenticated } = useAuth();
+/**
+ * Inner component that handles the actual user management logic.
+ * Only rendered when user is confirmed to be SUPER_ADMIN.
+ */
+function UserManagementContent() {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [newRole, setNewRole] = useState('');
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' });
 
-    // Check if user is SUPER_ADMIN
-    const isSuperAdmin = currentUser?.role === 'SUPER_ADMIN';
-
-    // Redirect if not SUPER_ADMIN
-    if (isAuthenticated && !isSuperAdmin) {
-        router.push('/');
-        return null;
-    }
-
-    const { data, loading, error, refetch } = useQuery(GET_ALL_USERS, {
-        skip: !isSuperAdmin,
-    });
+    const { data, loading, error, refetch } = useQuery(GET_ALL_USERS);
 
     const [updateUserRole] = useMutation(UPDATE_USER_ROLE, {
         onCompleted: () => {
@@ -94,10 +85,6 @@ export default function UserManagementPage() {
         setSnackbar({ ...snackbar, open: false });
     };
 
-    if (!isSuperAdmin) {
-        return null;
-    }
-
     if (loading) {
         return <Spinner fullScreen />;
     }
@@ -115,7 +102,7 @@ export default function UserManagementPage() {
                     py: { xs: 4, sm: 6 },
                 }}
             >
-                <Container maxWidth="lg">
+                <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3 } }}>
                     <Alert severity="error">
                         <Typography variant="body1">
                             Error loading users: {error.message}
@@ -141,7 +128,7 @@ export default function UserManagementPage() {
                     py: { xs: 4, sm: 6 },
                 }}
             >
-                <Container maxWidth="lg">
+                <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3 } }}>
                     {/* Page Header */}
                     <Box sx={{ mb: 4 }}>
                         <Typography
@@ -259,4 +246,31 @@ export default function UserManagementPage() {
             </Snackbar>
         </>
     );
+}
+
+/**
+ * Wrapper component that handles authorization check.
+ * Prevents queries from running for unauthorized users.
+ */
+export default function UserManagementPage() {
+    const router = useRouter();
+    const { user: currentUser, isAuthenticated } = useAuth();
+
+    // Check if user is SUPER_ADMIN
+    const isSuperAdmin = currentUser?.role === 'SUPER_ADMIN';
+
+    // Redirect if not SUPER_ADMIN
+    useEffect(() => {
+        if (isAuthenticated && !isSuperAdmin) {
+            router.push('/');
+        }
+    }, [isAuthenticated, isSuperAdmin, router]);
+
+    // Don't render content for unauthorized users (prevents useQuery from running)
+    if (!isSuperAdmin) {
+        return null;
+    }
+
+    // Only render content component when authorized
+    return <UserManagementContent />;
 }

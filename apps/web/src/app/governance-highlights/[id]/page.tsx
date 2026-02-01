@@ -82,7 +82,7 @@ export default function GovernanceHighlightDetailPage({ params }: { params: { id
 
     if (error || !data?.governanceHighlight) {
         return (
-            <Container maxWidth="md" sx={{ py: 8 }}>
+            <Container maxWidth={false} sx={{ py: 8, px: { xs: 2, sm: 3 } }}>
                 <Alert severity="error" sx={{ mb: 2 }}>
                     Record not found or access denied.
                 </Alert>
@@ -105,7 +105,7 @@ export default function GovernanceHighlightDetailPage({ params }: { params: { id
 
     return (
         <Box component="main" sx={{ minHeight: '100vh', backgroundColor: '#f8f9fa', py: { xs: 2, md: 5 } }}>
-            <Container maxWidth="lg">
+            <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3 } }}>
                 {/* Back Navigation */}
                 <Button
                     startIcon={<ArrowBackIcon />}

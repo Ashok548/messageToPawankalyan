@@ -2,6 +2,7 @@
 
 import { Box, Container, Link as MuiLink, Stack, Typography, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText, Divider, Avatar, Menu, MenuItem } from '@mui/material';
 import Link from 'next/link';
+import Image from 'next/image';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -70,7 +71,7 @@ export default function Header() {
                 }}
             >
                 <Container
-                    maxWidth="lg"
+                    maxWidth={false}
                     sx={{
                         height: '100%',
                         display: 'flex',
@@ -95,23 +96,77 @@ export default function Header() {
                         <MenuIcon />
                     </IconButton>
 
-                    {/* Center: Title */}
-                    <Typography
-                        component="h1"
-                        sx={{
-                            fontSize: { xs: 15, sm: 16 }, // Compact font size
-                            fontWeight: 500,
-                            color: 'text.primary',
-                            letterSpacing: '-0.01em',
-                            lineHeight: 1,
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            flex: 1,
-                        }}
-                    >
-                        Message to Pawan Kalyan
-                    </Typography>
+                    {/* Center: Logo & Title */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', flex: 1, overflow: 'hidden' }}>
+                        <Box
+                            component="img"
+                            src="/assets/logo.svg"
+                            alt="PK Logo"
+                            sx={{
+                                width: { xs: 24, sm: 28 },
+                                height: { xs: 24, sm: 28 },
+                                mr: 1.5,
+                                flexShrink: 0,
+                                objectFit: 'contain'
+                            }}
+                        />
+                        <Box
+                            component="h1"
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: { xs: 0.3, sm: 0.5 },
+                                fontSize: { xs: 15, sm: 17 },
+                                fontWeight: 800,
+                                lineHeight: 1,
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                m: 0,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.03em',
+                            }}
+                        >
+                            {/* "MESSAGE" - Black start of gradient */}
+                            <Box
+                                component="span"
+                                sx={{
+                                    background: 'linear-gradient(90deg, #000 0%, #333 100%)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                    backgroundClip: 'text',
+                                }}
+                            >
+                                MESSAGE
+                            </Box>
+
+                            {/* "2" - Transition gradient */}
+                            <Box
+                                component="span"
+                                sx={{
+                                    background: 'linear-gradient(90deg, #555 0%, #d32f2f 100%)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                    backgroundClip: 'text',
+                                }}
+                            >
+                                2
+                            </Box>
+
+                            {/* "PAWAN KALYAN" - Red end of gradient */}
+                            <Box
+                                component="span"
+                                sx={{
+                                    background: 'linear-gradient(90deg, #d32f2f 0%, #b71c1c 100%)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                    backgroundClip: 'text',
+                                    textShadow: 'none', // Remove shadow for gradient
+                                }}
+                            >
+                                PAWAN KALYAN
+                            </Box>
+                        </Box>
+                    </Box>
 
                     {/* Right: Navigation Links */}
                     <Stack

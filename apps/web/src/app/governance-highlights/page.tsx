@@ -321,7 +321,7 @@ export default function GovernanceHighlightsPage() {
 
     if (error) {
         return (
-            <Container maxWidth="lg" sx={{ py: 4 }}>
+            <Container maxWidth={false} sx={{ py: 4, px: { xs: 2, sm: 3 } }}>
                 <Alert severity="error">Failed to load governance highlights: {error.message}</Alert>
             </Container>
         );
@@ -331,7 +331,7 @@ export default function GovernanceHighlightsPage() {
 
     return (
         <Box component="main" sx={{ backgroundColor: '#fafafa', minHeight: '100vh', py: 4 }}>
-            <Container maxWidth="lg">
+            <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3 } }}>
                 {/* Header */}
                 <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <Box>

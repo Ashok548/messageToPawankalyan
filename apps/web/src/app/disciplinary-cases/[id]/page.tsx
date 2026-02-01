@@ -86,8 +86,8 @@ export default function DisciplinaryCaseDetailPage() {
     const [addNote] = useMutation(ADD_CASE_INTERNAL_NOTE);
 
     if (loading) return <Box display="flex" justifyContent="center" py={8}><CircularProgress /></Box>;
-    if (error) return <Container maxWidth="md" sx={{ py: 4 }}><Alert severity="error">Error: {error.message}</Alert></Container>;
-    if (!data?.disciplinaryCase) return <Container maxWidth="md" sx={{ py: 4 }}><Alert severity="warning">Case not found</Alert></Container>;
+    if (error) return <Container maxWidth={false} sx={{ py: 4, px: { xs: 2, sm: 3 } }}><Alert severity="error">Error: {error.message}</Alert></Container>;
+    if (!data?.disciplinaryCase) return <Container maxWidth={false} sx={{ py: 4, px: { xs: 2, sm: 3 } }}><Alert severity="warning">Case not found</Alert></Container>;
 
     const caseData = data.disciplinaryCase;
 
@@ -176,7 +176,7 @@ export default function DisciplinaryCaseDetailPage() {
 
     return (
         <Box component="main" sx={{ minHeight: '100vh', backgroundColor: '#f8f9fa', py: { xs: 2, md: 5 } }}>
-            <Container maxWidth="lg">
+            <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3 } }}>
                 {/* Back Navigation & Admin Actions Header */}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
                     <Button

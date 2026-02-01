@@ -152,7 +152,7 @@ export default function LeaderProfilePage({ params }: { params: { id: string } }
 
     if (error) {
         return (
-            <Container maxWidth="lg" sx={{ py: 4 }}>
+            <Container maxWidth={false} sx={{ py: 4, px: { xs: 2, sm: 3 } }}>
                 <Alert severity="error">Failed to load leader profile: {error.message}</Alert>
             </Container>
         );
@@ -162,7 +162,7 @@ export default function LeaderProfilePage({ params }: { params: { id: string } }
 
     if (!leader) {
         return (
-            <Container maxWidth="lg" sx={{ py: 4 }}>
+            <Container maxWidth={false} sx={{ py: 4, px: { xs: 2, sm: 3 } }}>
                 <Alert severity="warning">Leader profile not found</Alert>
             </Container>
         );
@@ -204,7 +204,7 @@ export default function LeaderProfilePage({ params }: { params: { id: string } }
                 Back
             </Button>
 
-            <Container maxWidth="md" sx={{ py: 8 }}>
+            <Container maxWidth={false} sx={{ py: 8, px: { xs: 2, sm: 3 } }}>
 
 
                 <Paper sx={{ overflow: 'hidden', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)' }}>

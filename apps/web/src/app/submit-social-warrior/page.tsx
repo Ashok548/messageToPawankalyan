@@ -630,7 +630,7 @@ function SubmitSocialWarriorContent() {
                 Back
             </Button>
 
-            <Container maxWidth="md" sx={{ py: 8 }}>
+            <Container maxWidth={false} sx={{ py: 8, px: { xs: 2, sm: 3 }, maxWidth: '900px', mx: 'auto' }}>
                 <Alert severity="warning" sx={{ mb: 3 }}>
                     <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
                         Before You Submit
