@@ -371,8 +371,6 @@ export default function CreateDisciplinaryCasePage() {
                                 startIcon={<CloudUpload />}
                                 fullWidth
                                 sx={{ height: 56 }}
-                                fullWidth
-                                sx={{ height: 56 }}
                             >
                                 Upload Documents (PDF/Doc)
                                 <input

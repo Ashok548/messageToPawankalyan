@@ -3,7 +3,7 @@
 import { useMutation, gql } from '@apollo/client';
 import { Box, Button, Container, TextField, Typography, Alert, Paper } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 
 const RESET_PASSWORD_MUTATION = gql`
     mutation ResetPassword($input: ResetPasswordInput!) {
@@ -14,7 +14,7 @@ const RESET_PASSWORD_MUTATION = gql`
     }
 `;
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const mobile = searchParams.get('mobile');
@@ -200,5 +200,13 @@ export default function ResetPasswordPage() {
                 </Paper>
             </Container>
         </Box>
+    );
+}
+
+export default function ResetPasswordPage() {
+    return (
+        <Suspense fallback={<Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Typography>Loading...</Typography></Box>}>
+            <ResetPasswordForm />
+        </Suspense>
     );
 }

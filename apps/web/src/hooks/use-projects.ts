@@ -2,7 +2,29 @@
 
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_PROJECTS, GET_PROJECT_BY_ID } from '@/graphql/queries';
+
 import { CREATE_PROJECT, UPDATE_PROJECT, DELETE_PROJECT } from '@/graphql/mutations';
+
+interface Project {
+    id: string;
+    name: string;
+    description: string;
+    status: string;
+    createdAt: string;
+    owner: {
+        id: string;
+        name: string;
+        email: string;
+    };
+}
+
+interface GetProjectsQuery {
+    projects: Project[];
+}
+
+interface CreateProjectMutation {
+    createProject: Project;
+}
 
 // ============================================
 // Example: Query Hook Usage
@@ -55,7 +77,7 @@ export function useCreateProject() {
             if (!data?.createProject) return;
 
             // Read existing projects from cache
-            const existingProjects = cache.readQuery({
+            const existingProjects = cache.readQuery<GetProjectsQuery>({
                 query: GET_PROJECTS,
             });
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery, useMutation } from '@apollo/client';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { GET_GOVERNANCE_HIGHLIGHTS, CREATE_GOVERNANCE_HIGHLIGHT_MUTATION, UPDATE_GOVERNANCE_HIGHLIGHT_MUTATION, DELETE_GOVERNANCE_HIGHLIGHT_MUTATION } from '@/graphql/queries/governance-highlights';
 import { Box, Container, Typography, ToggleButtonGroup, ToggleButton, Grid, CircularProgress, Alert, Chip, Card, CardContent, CardMedia, Link as MuiLink, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Select, MenuItem, FormControl, InputLabel, IconButton, Snackbar } from '@mui/material';
 import { useState, useEffect } from 'react';
@@ -81,7 +81,7 @@ export default function GovernanceHighlightsPage() {
         adminNotes: '',
     });
 
-    const tabContentVariants = {
+    const tabContentVariants: Variants = {
         initial: { opacity: 0, y: 12 },
         enter: {
             opacity: 1,

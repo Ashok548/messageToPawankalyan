@@ -1,6 +1,3 @@
-// This is your Prisma schema file for the monorepo
-// Learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,37 +7,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ============================================
-// Enums
-// ============================================
-enum UserRole {
-  USER
-  ADMIN
-  SUPER_ADMIN
-}
-
-// ============================================
-// User Entity
-// ============================================
 model User {
-  id           String   @id @default(uuid()) @db.Uuid
-  name         String
-  mobile       String   @unique
-  email        String?  @unique
-  age          Int?
-  passwordHash String   @map("password_hash")
-  role         UserRole @default(USER)
-  isVerified   Boolean  @default(false) @map("is_verified")
-  otp          String?
-  otpExpiresAt DateTime? @map("otp_expires_at")
-  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
-
-  // Relations
-  projects Project[]
-  initiatedCases     DisciplinaryCase[] @relation("InitiatedCases")
-  reviewedCases      DisciplinaryCase[] @relation("ReviewedCases")
-  decidedCases       DisciplinaryCase[] @relation("DecidedCases")
+  id             String             @id @default(uuid()) @db.Uuid
+  email          String?            @unique
+  name           String
+  passwordHash   String             @map("password_hash")
+  createdAt      DateTime           @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime           @updatedAt @map("updated_at") @db.Timestamptz(3)
+  age            Int?
+  isVerified     Boolean            @default(false) @map("is_verified")
+  mobile         String             @unique
+  otp            String?
+  otpExpiresAt   DateTime?          @map("otp_expires_at")
+  role           UserRole           @default(USER)
+  decidedCases   DisciplinaryCase[] @relation("DecidedCases")
+  initiatedCases DisciplinaryCase[] @relation("InitiatedCases")
+  reviewedCases  DisciplinaryCase[] @relation("ReviewedCases")
+  projects       Project[]
 
   @@index([mobile])
   @@index([email])
@@ -48,32 +31,23 @@ model User {
   @@map("users")
 }
 
-// ============================================
-// Visitor Statistics Entity
-// ============================================
 model VisitorStats {
   id            String   @id @default(uuid()) @db.Uuid
   totalVisitors Int      @default(0) @map("total_visitors")
   updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
-  
+
   @@map("visitor_stats")
 }
 
-
-// ============================================
-// Project Entity
-// ============================================
 model Project {
-  id          String   @id @default(uuid()) @db.Uuid
+  id          String        @id @default(uuid()) @db.Uuid
   name        String
-  description String?  @db.Text
+  description String?
   status      ProjectStatus @default(ACTIVE)
-  ownerId     String   @map("owner_id") @db.Uuid
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
-
-  // Relations
-  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId     String        @map("owner_id") @db.Uuid
+  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+  owner       User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
   @@index([ownerId])
   @@index([status])
@@ -81,48 +55,23 @@ model Project {
   @@map("projects")
 }
 
-// ============================================
-// Enums
-// ============================================
-enum ProjectStatus {
-  ACTIVE
-  ARCHIVED
-  COMPLETED
-  ON_HOLD
-
-  @@map("project_status")
-}
-
-// ============================================
-// Atrocity Type Enum
-// ============================================
-enum AtrocityType {
-  TO_JSP_LEADER
-  TO_JANASENA_PARTY
-
-  @@map("atrocity_type")
-}
-
-// ============================================
-// Atrocity Entity
-// ============================================
 model Atrocity {
-  id           String   @id @default(uuid()) @db.Uuid
+  id           String       @id @default(uuid()) @db.Uuid
+  leaderName   String       @map("leader_name") @db.VarChar(100)
+  position     String?      @db.VarChar(100)
+  description  String
+  images       String[]
+  createdAt    DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  constituency String       @db.VarChar(50)
+  district     String       @db.VarChar(50)
+  isVerified   Boolean      @default(false) @map("is_verified")
+  mandal       String       @db.VarChar(50)
+  state        String       @db.VarChar(50)
+  village      String?      @db.VarChar(50)
+  atrocityBy   String?      @map("atrocity_by") @db.VarChar(100)
   atrocityType AtrocityType @default(TO_JSP_LEADER) @map("atrocity_type")
-  leaderName   String   @map("leader_name") @db.VarChar(100)
-  atrocityBy   String?  @map("atrocity_by") @db.VarChar(100)
-  state        String   @db.VarChar(50)
-  district     String   @db.VarChar(50)
-  constituency String   @db.VarChar(50)
-  mandal       String   @db.VarChar(50)
-  village      String?  @db.VarChar(50)
-  position     String?  @db.VarChar(100)
-  subject      String?  @db.VarChar(200)
-  description  String   @db.Text
-  images       String[] // Array of image URLs
-  isVerified   Boolean  @default(false) @map("is_verified")
-  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  subject      String?      @db.VarChar(200)
 
   @@index([createdAt])
   @@index([isVerified])
@@ -130,53 +79,27 @@ model Atrocity {
   @@map("atrocities")
 }
 
-// ============================================
-// Leader Status Enum
-// ============================================
-enum LeaderStatus {
-  PENDING
-  APPROVED
-  HIDDEN
-  ARCHIVED
-
-  @@map("leader_status")
-}
-
-// ============================================
-// Submitted By Enum
-// ============================================
-enum SubmittedBy {
-  SELF
-  SUPPORTER
-  ANONYMOUS
-
-  @@map("submitted_by")
-}
-
-// ============================================
-// Leader Entity
-// ============================================
 model Leader {
-  id              String        @id @default(uuid()) @db.Uuid
-  name            String        @db.VarChar(100)
-  district        String        @db.VarChar(50)
-  mandal          String?       @db.VarChar(50)
-  reason          String        @db.Text
-  serviceAreas    String[]      // Array of service areas
-  values          String[]      // Array of values
-  photo           String?       // Image URL
-  gallery         String[]      // Array of gallery image URLs
-  partyYears      Int?          // Years of association with the party
-  partyPosition   String?       // Position in the party
-  nominatedPost   String?       // Nominated post (if any)
-  primaryPlatform    String?    // TWITTER, FACEBOOK, INSTAGRAM, YOUTUBE
-  primaryProfileUrl  String?    // Primary social media profile URL
-  otherPlatforms     Json?      // Array of {platform, profileUrl}
-  submittedBy     SubmittedBy   @map("submitted_by")
-  status          LeaderStatus  @default(PENDING)
-  adminNotes      String?       @map("admin_notes") @db.Text
-  createdAt       DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt       DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+  id                String       @id @default(uuid()) @db.Uuid
+  name              String       @db.VarChar(100)
+  district          String       @db.VarChar(50)
+  mandal            String?      @db.VarChar(50)
+  reason            String
+  serviceAreas      String[]
+  values            String[]
+  photo             String?
+  submittedBy       SubmittedBy  @map("submitted_by")
+  status            LeaderStatus @default(PENDING)
+  adminNotes        String?      @map("admin_notes")
+  createdAt         DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  gallery           String[]
+  nominatedPost     String?
+  otherPlatforms    Json?
+  partyPosition     String?
+  partyYears        Int?
+  primaryPlatform   String?
+  primaryProfileUrl String?
 
   @@index([status])
   @@index([district])
@@ -184,42 +107,27 @@ model Leader {
   @@map("leaders")
 }
 
-// ============================================
-// Warrior Status Enum
-// ============================================
-enum WarriorStatus {
-  PENDING
-  APPROVED
-  HIDDEN
-  ARCHIVED
-
-  @@map("warrior_status")
-}
-
-// ============================================
-// Social Media Warrior Entity
-// ============================================
 model SocialMediaWarrior {
-  id                    String        @id @default(uuid()) @db.Uuid
-  name                  String        @db.VarChar(100)
-  district              String        @db.VarChar(50)
-  mandal                String?       @db.VarChar(50)
-  reason                String        @db.Text
-  digitalContributions  String[]      // Digital Contribution Areas
-  engagementStyle       String[]      // Digital Engagement Style
-  photo                 String?       // Image URL
-  gallery               String[]      // Array of gallery image URLs
-  partyYears            Int?          // Years of association with the party
-  partyPosition         String?       // Position in the party
-  nominatedPost         String?       // Nominated post (if any)
-  primaryPlatform       String?       // TWITTER, FACEBOOK, INSTAGRAM, YOUTUBE
-  primaryProfileUrl     String?       // Primary social media profile URL
-  otherPlatforms        Json?         // Array of {platform, profileUrl}
-  submittedBy           SubmittedBy   @map("submitted_by")
-  status                WarriorStatus @default(PENDING)
-  adminNotes            String?       @map("admin_notes") @db.Text
-  createdAt             DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt             DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+  id                   String        @id @default(uuid()) @db.Uuid
+  name                 String        @db.VarChar(100)
+  district             String        @db.VarChar(50)
+  mandal               String?       @db.VarChar(50)
+  reason               String
+  digitalContributions String[]
+  engagementStyle      String[]
+  photo                String?
+  gallery              String[]
+  partyYears           Int?
+  partyPosition        String?
+  nominatedPost        String?
+  primaryPlatform      String?
+  primaryProfileUrl    String?
+  otherPlatforms       Json?
+  submittedBy          SubmittedBy   @map("submitted_by")
+  status               WarriorStatus @default(PENDING)
+  adminNotes           String?       @map("admin_notes")
+  createdAt            DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt            DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   @@index([status])
   @@index([district])
@@ -227,91 +135,33 @@ model SocialMediaWarrior {
   @@map("social_media_warriors")
 }
 
-
-// ============================================
-// Governance Highlight Category Enum
-// ============================================
-enum HighlightCategory {
-  INNOVATIVE_INITIATIVE
-  PENDING_ISSUE_ADDRESSED
-
-  @@map("highlight_category")
-}
-
-// ============================================
-// Governance Highlight Status Enum
-// ============================================
-enum HighlightStatus {
-  ADDRESSED
-  IN_PROGRESS
-  FOLLOW_UP_ONGOING
-
-  @@map("highlight_status")
-}
-
-// ============================================
-// Source Type Enum
-// ============================================
-enum SourceType {
-  GOVERNMENT_PORTAL
-  PRESS_RELEASE
-  PUBLIC_RECORD
-  NEWS_REPORT
-  FIELD_VERIFICATION
-
-  @@map("source_type")
-}
-
-// ============================================
-// Governance Highlight Entity
-// ============================================
 model GovernanceHighlight {
-  id              String            @id @default(uuid()) @db.Uuid
-  
-  // Core Content
-  title           String            @db.VarChar(200)
-  category        HighlightCategory
-  description     String            @db.Text
-  
-  // Classification
-  area            String            @db.VarChar(100)
-  department      String?           @db.VarChar(100)
-  
-  // Location
-  state           String            @db.VarChar(50)
-  district        String            @db.VarChar(50)
-  constituency    String?           @db.VarChar(50)
-  mandal          String?           @db.VarChar(50)
-  village         String?           @db.VarChar(50)
-  
-  // Timeline
-  yearStarted     Int?
-  yearCompleted   Int
-  period          String?           @db.VarChar(50)
-  
-  // Status
-  status          HighlightStatus   @default(ADDRESSED)
-  
-  // Source
-  sourceType      SourceType
-  sourceUrl       String            @db.VarChar(500)
-  sourceTitle     String?           @db.VarChar(200)
-  
-  // Additional Context
-  issueContext    String?           @db.Text
-  
-  // Media
-  image           String?
-  gallery         String[]  // Array of gallery image URLs
-  
-  // Moderation
-  isVerified      Boolean           @default(false) @map("is_verified")
-  isVisible       Boolean           @default(true) @map("is_visible")
-  adminNotes      String?           @map("admin_notes") @db.Text
-  
-  // Metadata
-  createdAt       DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt       DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+  id            String            @id @default(uuid()) @db.Uuid
+  title         String            @db.VarChar(200)
+  category      HighlightCategory
+  description   String
+  area          String            @db.VarChar(100)
+  department    String?           @db.VarChar(100)
+  state         String            @db.VarChar(50)
+  district      String            @db.VarChar(50)
+  constituency  String?           @db.VarChar(50)
+  mandal        String?           @db.VarChar(50)
+  village       String?           @db.VarChar(50)
+  yearStarted   Int?
+  yearCompleted Int
+  period        String?           @db.VarChar(50)
+  status        HighlightStatus   @default(ADDRESSED)
+  sourceType    SourceType
+  sourceUrl     String            @db.VarChar(500)
+  sourceTitle   String?           @db.VarChar(200)
+  issueContext  String?
+  image         String?
+  isVerified    Boolean           @default(false) @map("is_verified")
+  isVisible     Boolean           @default(true) @map("is_visible")
+  adminNotes    String?           @map("admin_notes")
+  createdAt     DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+  gallery       String[]
 
   @@index([category])
   @@index([isVerified])
@@ -322,9 +172,119 @@ model GovernanceHighlight {
   @@map("governance_highlights")
 }
 
-// ============================================
-// Disciplinary Case Enums
-// ============================================
+model DisciplinaryCase {
+  id                    String         @id @default(uuid()) @db.Uuid
+  caseNumber            String         @unique @map("case_number") @db.VarChar(50)
+  leaderName            String         @map("leader_name") @db.VarChar(100)
+  position              String         @db.VarChar(100)
+  constituency          String?        @db.VarChar(50)
+  issueCategory         IssueCategory  @map("issue_category")
+  issueDescription      String         @map("issue_description")
+  issueSource           IssueSource    @map("issue_source")
+  initiationDate        DateTime       @default(now()) @map("initiation_date") @db.Timestamptz(3)
+  reviewStartDate       DateTime?      @map("review_start_date") @db.Timestamptz(3)
+  decisionDate          DateTime?      @map("decision_date") @db.Timestamptz(3)
+  effectiveFrom         DateTime?      @map("effective_from") @db.Timestamptz(3)
+  effectiveTo           DateTime?      @map("effective_to") @db.Timestamptz(3)
+  initiatedBy           String         @map("initiated_by") @db.Uuid
+  reviewAuthority       String?        @map("review_authority") @db.Uuid
+  decisionAuthority     String?        @map("decision_authority") @db.Uuid
+  status                CaseStatus     @default(UNDER_REVIEW)
+  actionOutcome         ActionOutcome? @map("action_outcome")
+  visibility            CaseVisibility @default(INTERNAL_ONLY)
+  internalNotes         String?        @map("internal_notes")
+  evidenceUrls          String[]       @map("evidence_urls")
+  imageUrls             String[]       @map("image_urls")
+  decisionRationale     String?        @map("decision_rationale")
+  createdAt             DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt             DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
+  leaderPhotoUrl        String?        @map("leader_photo_url")
+  sourceLinks           String[]       @map("source_links")
+  district              String?        @db.VarChar(50)
+  decisionAuthorityUser User?          @relation("DecidedCases", fields: [decisionAuthority], references: [id])
+  initiatedByUser       User           @relation("InitiatedCases", fields: [initiatedBy], references: [id])
+  reviewAuthorityUser   User?          @relation("ReviewedCases", fields: [reviewAuthority], references: [id])
+
+  @@index([status])
+  @@index([visibility])
+  @@index([initiationDate])
+  @@index([caseNumber])
+  @@map("disciplinary_cases")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum ProjectStatus {
+  ACTIVE
+  ARCHIVED
+  COMPLETED
+  ON_HOLD
+
+  @@map("project_status")
+}
+
+enum AtrocityType {
+  TO_JSP_LEADER
+  TO_JANASENA_PARTY
+
+  @@map("atrocity_type")
+}
+
+enum LeaderStatus {
+  PENDING
+  APPROVED
+  HIDDEN
+  ARCHIVED
+
+  @@map("leader_status")
+}
+
+enum SubmittedBy {
+  SELF
+  SUPPORTER
+  ANONYMOUS
+
+  @@map("submitted_by")
+}
+
+enum WarriorStatus {
+  PENDING
+  APPROVED
+  HIDDEN
+  ARCHIVED
+
+  @@map("warrior_status")
+}
+
+enum HighlightCategory {
+  INNOVATIVE_INITIATIVE
+  PENDING_ISSUE_ADDRESSED
+
+  @@map("highlight_category")
+}
+
+enum HighlightStatus {
+  ADDRESSED
+  IN_PROGRESS
+  FOLLOW_UP_ONGOING
+
+  @@map("highlight_status")
+}
+
+enum SourceType {
+  GOVERNMENT_PORTAL
+  PRESS_RELEASE
+  PUBLIC_RECORD
+  NEWS_REPORT
+  FIELD_VERIFICATION
+
+  @@map("source_type")
+}
+
 enum IssueCategory {
   MISCONDUCT
   POLICY_VIOLATION
@@ -376,63 +336,3 @@ enum CaseVisibility {
 
   @@map("case_visibility")
 }
-
-// ============================================
-// Disciplinary Case Entity
-// ============================================
-model DisciplinaryCase {
-  id                    String                @id @default(uuid()) @db.Uuid
-  caseNumber            String                @unique @map("case_number") @db.VarChar(50)
-  
-  // Subject Information (Independent - No Foreign Key)
-  leaderName            String                @map("leader_name") @db.VarChar(100)
-  leaderPhotoUrl        String?               @map("leader_photo_url")
-  position              String                @db.VarChar(100)
-  constituency          String?               @db.VarChar(50)
-  district              String?               @db.VarChar(50)
-  
-  // Case Details
-  issueCategory         IssueCategory         @map("issue_category")
-  issueDescription      String                @map("issue_description") @db.Text
-  issueSource           IssueSource           @map("issue_source")
-  
-  // Timeline
-  initiationDate        DateTime              @default(now()) @map("initiation_date") @db.Timestamptz(3)
-  reviewStartDate       DateTime?             @map("review_start_date") @db.Timestamptz(3)
-  decisionDate          DateTime?             @map("decision_date") @db.Timestamptz(3)
-  effectiveFrom         DateTime?             @map("effective_from") @db.Timestamptz(3)
-  effectiveTo           DateTime?             @map("effective_to") @db.Timestamptz(3)
-  
-  // Authorities
-  initiatedBy           String                @map("initiated_by") @db.Uuid
-  initiatedByUser       User                  @relation("InitiatedCases", fields: [initiatedBy], references: [id])
-  reviewAuthority       String?               @map("review_authority") @db.Uuid
-  reviewAuthorityUser   User?                 @relation("ReviewedCases", fields: [reviewAuthority], references: [id])
-  decisionAuthority     String?               @map("decision_authority") @db.Uuid
-  decisionAuthorityUser User?                 @relation("DecidedCases", fields: [decisionAuthority], references: [id])
-  
-  // Status & Decision
-  status                CaseStatus            @default(UNDER_REVIEW)
-  actionOutcome         ActionOutcome?        @map("action_outcome")
-  
-  // Visibility
-  visibility            CaseVisibility        @default(INTERNAL_ONLY)
-  
-  // Evidence & Notes
-  internalNotes         String?               @map("internal_notes") @db.Text
-  evidenceUrls          String[]              @map("evidence_urls")
-  imageUrls             String[]              @map("image_urls")
-  sourceLinks           String[]              @map("source_links")
-  decisionRationale     String?               @map("decision_rationale") @db.Text
-  
-  // Metadata
-  createdAt             DateTime              @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt             DateTime              @updatedAt @map("updated_at") @db.Timestamptz(3)
-  
-  @@index([status])
-  @@index([visibility])
-  @@index([initiationDate])
-  @@index([caseNumber])
-  @@map("disciplinary_cases")
-}
-
