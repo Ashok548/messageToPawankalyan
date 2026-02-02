@@ -1,13 +1,15 @@
 'use client';
 
-import { Box, Container, Typography, TextField, MenuItem, Button, Alert, Card, CardMedia, IconButton, RadioGroup, FormControlLabel, Radio, FormControl, FormLabel } from '@mui/material';
-import { useState, useRef } from 'react';
+import { Box, Container, Typography, TextField, MenuItem, Button, Alert, RadioGroup, FormControlLabel, Radio, FormControl, FormLabel, Card, CardMedia } from '@mui/material';
+import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { gql } from '@apollo/client';
 import { useRouter } from 'next/navigation';
-import DeleteIcon from '@mui/icons-material/Delete';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { STATES, ANDHRA_PRADESH_DISTRICTS, ANDHRA_PRADESH_CONSTITUENCIES } from '@repo/constants';
+import { useImageUpload } from '@/hooks/use-image-upload';
+import { getErrorMessage } from '@/utils/error-helpers';
+import { ImageUploadField } from '@/components/forms/ImageUploadField';
 
 const CREATE_ATROCITY = gql`
     mutation CreateAtrocity($input: CreateAtrocityInput!) {
@@ -20,197 +22,7 @@ const CREATE_ATROCITY = gql`
     }
 `;
 
-// Sample data - replace with actual data from API
-const STATES = ['Andhra Pradesh'];
-const DISTRICTS = [
-    "Alluri Sitharama Raju",
-    "Anakapalli",
-    "Anantapur",
-    "Annamayya",
-    "Bapatla",
-    "Chittoor",
-    "Dr. B. R. Ambedkar Konaseema",
-    "East Godavari",
-    "Eluru",
-    "Guntur",
-    "Kakinada",
-    "Krishna",
-    "Kurnool",
-    "Nandyal",
-    "NTR",
-    "Palnadu",
-    "Parvathipuram Manyam",
-    "Prakasam",
-    "Sri Potti Sriramulu Nellore",
-    "Sri Sathya Sai",
-    "Srikakulam",
-    "Tirupati",
-    "Visakhapatnam",
-    "Vizianagaram",
-    "West Godavari",
-    "YSR Kadapa"
-];
-
-const CONSTITUENCIES = [
-    "Achanta",
-    "Addanki",
-    "Adoni",
-    "Alamuru",
-    "Allagadda",
-    "Alur",
-    "Amadalavalasa",
-    "Amalapuram",
-    "Anakapalli",
-    "Anantapur Urban",
-    "Anantapur Rural",
-    "Anaparthy",
-    "Araku Valley",
-    "Atmakur",
-    "Avanigadda",
-    "Bapatla",
-    "Bhimavaram",
-    "Bhimili",
-    "Bobbili",
-    "Chandragiri",
-    "Cheepurupalli",
-    "Chilakaluripet",
-    "Chintalapudi",
-    "Chirala",
-    "Chittoor",
-    "Chodavaram",
-    "Darsi",
-    "Denduluru",
-    "Dharmavaram",
-    "Dhone",
-    "Elamanchili",
-    "Eluru",
-    "Etcherla",
-    "Gajapathinagaram",
-    "Gannavaram",
-    "Giddalur",
-    "Gopalapuram",
-    "Gudivada",
-    "Gudur",
-    "Guntakal",
-    "Guntur East",
-    "Guntur West",
-    "Gurazala",
-    "Hindupur",
-    "Ichchapuram",
-    "Jaggampeta",
-    "Jaggayyapeta",
-    "Jammalamadugu",
-    "Kadapa",
-    "Kadiri",
-    "Kaikalur",
-    "Kakinada City",
-    "Kakinada Rural",
-    "Kandukur",
-    "Kanigiri",
-    "Kavali",
-    "Kodumur",
-    "Kodur",
-    "Kondapi",
-    "Kothapeta",
-    "Kovur",
-    "Kovvur",
-    "Kuppam",
-    "Kurnool",
-    "Kurupam",
-    "Macherla",
-    "Machilipatnam",
-    "Madanapalle",
-    "Mandapeta",
-    "Markapuram",
-    "Mangalagiri",
-    "Medakonduru",
-    "Mummidivaram",
-    "Mydukur",
-    "Nagari",
-    "Nandyal",
-    "Narasannapeta",
-    "Narasapuram",
-    "Narasaraopet",
-    "Nellimarla",
-    "Nellore City",
-    "Nellore Rural",
-    "Nidadavole",
-    "Nuzvid",
-    "Ongole",
-    "Paderu",
-    "Palakonda",
-    "Palasa",
-    "Palnadu",
-    "Pamarru",
-    "Parvathipuram",
-    "Pathapatnam",
-    "Payakaraopet",
-    "Pedakurapadu",
-    "Pedana",
-    "Penamaluru",
-    "Penukonda",
-    "Pithapuram",
-    "Polavaram",
-    "Ponnur",
-    "Prathipadu",
-    "Proddatur",
-    "Pulivendula",
-    "Punganur",
-    "Puthalapattu",
-    "Pydibhimavaram",
-    "Rajahmundry City",
-    "Rajahmundry Rural",
-    "Rajampet",
-    "Rajanagaram",
-    "Ramachandrapuram",
-    "Ramagundam",
-    "Rampachodavaram",
-    "Rayachoti",
-    "Rayadurg",
-    "Razole",
-    "Repalle",
-    "Salur",
-    "Santhanuthalapadu",
-    "Sarvepalli",
-    "Sattenapalli",
-    "Singarayakonda",
-    "Srikakulam",
-    "Srisailam",
-    "Srungavarapukota",
-    "Sullurpeta",
-    "Tadepalli",
-    "Tadepalligudem",
-    "Tadikonda",
-    "Tanuku",
-    "Tenali",
-    "Thamballapalle",
-    "Tirupati",
-    "Tuni",
-    "Udayagiri",
-    "Unguturu",
-    "Uravakonda",
-    "Vemuru",
-    "Venkatagiri",
-    "Vijayawada Central",
-    "Vijayawada East",
-    "Vijayawada West",
-    "Vinukonda",
-    "Visakhapatnam East",
-    "Visakhapatnam North",
-    "Visakhapatnam South",
-    "Visakhapatnam West",
-    "Vizianagaram",
-    "Yemmiganur",
-    "Yerragondapalem",
-    "Yuvathapalli"
-];
-
-
-interface ImageFile {
-    file: File;
-    preview: string;
-    base64: string;
-}
+// Location constants now imported from @repo/constants
 
 export default function ReportAtrocityPage() {
     const router = useRouter();
@@ -229,10 +41,9 @@ export default function ReportAtrocityPage() {
         description: '',
     });
 
-    const [images, setImages] = useState<ImageFile[]>([]);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [mutationError, setMutationError] = useState<string | null>(null);
-    const fileInputRef = useRef<HTMLInputElement>(null);
+    const { images, handleImageSelect: onImageSelect } = useImageUpload({ maxImages: 2, maxSizeKB: 500 });
     const [createAtrocity, { loading }] = useMutation(CREATE_ATROCITY);
 
     const handleChange = (field: string, value: string) => {
@@ -261,80 +72,7 @@ export default function ReportAtrocityPage() {
         }
     };
 
-    const convertToBase64 = (file: File): Promise<string> => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result as string);
-            reader.onerror = (error) => reject(error);
-        });
-    };
 
-    const handleImageSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files;
-        if (!files) return;
-
-        // Clear previous errors
-        setErrors((prev) => ({ ...prev, images: '' }));
-
-        // Check if adding these files would exceed the limit
-        if (images.length + files.length > 2) {
-            setErrors((prev) => ({ ...prev, images: 'Maximum 2 images allowed' }));
-            return;
-        }
-
-        const newImages: ImageFile[] = [];
-
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-
-            // Validate file type
-            if (!file.type.startsWith('image/')) {
-                setErrors((prev) => ({ ...prev, images: 'Only image files are allowed' }));
-                continue;
-            }
-
-            // Validate file size (500KB = 512000 bytes)
-            if (file.size > 512000) {
-                setErrors((prev) => ({
-                    ...prev,
-                    images: `Image "${file.name}" exceeds 500KB limit (${(file.size / 1024).toFixed(2)}KB)`,
-                }));
-                continue;
-            }
-
-            try {
-                const base64 = await convertToBase64(file);
-                newImages.push({
-                    file,
-                    preview: URL.createObjectURL(file),
-                    base64,
-                });
-            } catch (error) {
-                console.error('Error converting file to base64:', error);
-            }
-        }
-
-        setImages((prev) => [...prev, ...newImages]);
-        // Reset file input
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
-    };
-
-    const handleRemoveImage = (index: number) => {
-        setImages((prev) => {
-            const newImages = [...prev];
-            // Revoke object URL to prevent memory leaks
-            URL.revokeObjectURL(newImages[index].preview);
-            newImages.splice(index, 1);
-            return newImages;
-        });
-        // Clear error if exists
-        if (errors.images) {
-            setErrors((prev) => ({ ...prev, images: '' }));
-        }
-    };
 
     const validate = () => {
         const newErrors: Record<string, string> = {};
@@ -431,12 +169,7 @@ export default function ReportAtrocityPage() {
             }
         } catch (err: unknown) {
             console.error('Error creating atrocity:', err);
-            // Extract and display the error message
-            if (err instanceof Error) {
-                setMutationError(err.message);
-            } else {
-                setMutationError('Failed to submit report. Please try again.');
-            }
+            setMutationError(getErrorMessage(err));
         }
     };
 
@@ -588,7 +321,7 @@ export default function ReportAtrocityPage() {
                                 required
                                 InputLabelProps={{ sx: { fontSize: '0.7rem' } }}
                             >
-                                {DISTRICTS.map((district) => (
+                                {ANDHRA_PRADESH_DISTRICTS.map((district) => (
                                     <MenuItem key={district} value={district}>
                                         {district}
                                     </MenuItem>
@@ -606,7 +339,7 @@ export default function ReportAtrocityPage() {
                                 required
                                 InputLabelProps={{ sx: { fontSize: '0.7rem' } }}
                             >
-                                {CONSTITUENCIES.map((constituency) => (
+                                {ANDHRA_PRADESH_CONSTITUENCIES.map((constituency) => (
                                     <MenuItem key={constituency} value={constituency}>
                                         {constituency}
                                     </MenuItem>
@@ -685,30 +418,11 @@ export default function ReportAtrocityPage() {
                                 Attach Images (Max 2, each max 500KB)
                             </Typography>
 
-                            <input
-                                ref={fileInputRef}
-                                type="file"
-                                accept="image/*"
-                                multiple
-                                onChange={handleImageSelect}
-                                style={{ display: 'none' }}
-                            />
 
-                            <Button
-                                variant="outlined"
-                                startIcon={<CloudUploadIcon />}
-                                onClick={() => fileInputRef.current?.click()}
-                                disabled={images.length >= 2}
-                                fullWidth
-                            >
-                                {images.length >= 2 ? 'Maximum images reached' : 'Choose Images'}
-                            </Button>
 
-                            {errors.images && (
-                                <Typography color="error" variant="caption" sx={{ mt: 1, display: 'block' }}>
-                                    {errors.images}
-                                </Typography>
-                            )}
+
+
+
 
                             {/* Image Previews */}
                             {images.length > 0 && (
@@ -721,22 +435,7 @@ export default function ReportAtrocityPage() {
                                                 alt={`Preview ${index + 1}`}
                                                 sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                             />
-                                            <IconButton
-                                                onClick={() => handleRemoveImage(index)}
-                                                sx={{
-                                                    position: 'absolute',
-                                                    top: 4,
-                                                    right: 4,
-                                                    bgcolor: 'rgba(0, 0, 0, 0.6)',
-                                                    color: 'white',
-                                                    '&:hover': {
-                                                        bgcolor: 'rgba(0, 0, 0, 0.8)',
-                                                    },
-                                                }}
-                                                size="small"
-                                            >
-                                                <DeleteIcon fontSize="small" />
-                                            </IconButton>
+
                                             <Typography
                                                 variant="caption"
                                                 sx={{

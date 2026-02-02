@@ -15,6 +15,7 @@
         "@emotion/styled": "^11.14.0",
         "@mui/icons-material": "^5.16.10",
         "@mui/material": "^5.16.10",
+        "@repo/constants": "workspace:*",
         "date-fns": "^4.1.0",
         "framer-motion": "^12.29.2",
         "graphql": "^16.9.0",
