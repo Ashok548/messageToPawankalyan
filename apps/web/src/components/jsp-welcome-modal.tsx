@@ -140,11 +140,11 @@ export function JspWelcomeModal() {
                                                 >
                                                     <DecryptedText
                                                         text="Are you a Janasena Party supporter?"
-                                                        speed={90}
+                                                        speed={100}
                                                         animateOn="view"
-                                                        maxIterations={40}
+                                                        maxIterations={5}
                                                         revealDirection="start"
-                                                        characters="XYZ?!@#$"
+                                                        characters="パワン"
                                                         sequential={true}
                                                     />
                                                 </Typography>

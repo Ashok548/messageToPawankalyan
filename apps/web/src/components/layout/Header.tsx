@@ -115,18 +115,7 @@ export default function Header() {
 
                     {/* Center: Logo & Title */}
                     <Box sx={{ display: 'flex', alignItems: 'center', flex: 1, overflow: 'hidden' }}>
-                        <Box
-                            component="img"
-                            src="/assets/logo.svg"
-                            alt="PK Logo"
-                            sx={{
-                                width: { xs: 24, sm: 28 },
-                                height: { xs: 24, sm: 28 },
-                                mr: 1.5,
-                                flexShrink: 0,
-                                objectFit: 'contain'
-                            }}
-                        />
+
                         <Box
                             component="h1"
                             sx={{
