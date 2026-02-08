@@ -140,12 +140,6 @@ input CreateLeaderInput {
   values: [String!]!
 }
 
-input CreateProjectInput {
-  description: String
-  name: String!
-  status: ProjectStatus
-}
-
 input CreateSocialMediaWarriorInput {
   digitalContributions: [String!]!
   district: String!
@@ -331,7 +325,6 @@ type Mutation {
 
   """Admin only: Create new leader profile"""
   createLeader(input: CreateLeaderInput!): Leader!
-  createProject(input: CreateProjectInput!): Project!
 
   """Admin only: Create new social media warrior profile"""
   createSocialMediaWarrior(input: CreateSocialMediaWarriorInput!): SocialMediaWarrior!
@@ -342,7 +335,6 @@ type Mutation {
 
   """Admin only: Delete leader profile"""
   deleteLeader(id: String!): Leader!
-  deleteProject(id: String!): Project!
 
   """Admin only: Delete warrior profile"""
   deleteSocialMediaWarrior(id: String!): SocialMediaWarrior!
@@ -377,7 +369,6 @@ type Mutation {
 
   """Admin only: Update leader status"""
   updateLeaderStatus(adminNotes: String, id: String!, status: LeaderStatus!): Leader!
-  updateProject(id: String!, input: UpdateProjectInput!): Project!
 
   """Admin only: Update social media warrior profile"""
   updateSocialMediaWarrior(id: String!, input: UpdateSocialMediaWarriorInput!): SocialMediaWarrior!
@@ -402,24 +393,6 @@ type OtherPlatform {
 input OtherPlatformInput {
   platform: String!
   profileUrl: String!
-}
-
-type Project {
-  createdAt: DateTime!
-  description: String
-  id: ID!
-  name: String!
-  owner: User!
-  status: ProjectStatus!
-  updatedAt: DateTime!
-}
-
-"""The status of a project"""
-enum ProjectStatus {
-  ACTIVE
-  ARCHIVED
-  COMPLETED
-  ON_HOLD
 }
 
 type Query {
@@ -447,8 +420,6 @@ type Query {
   """Admin only: Get leaders by status"""
   leadersByStatus(status: LeaderStatus!): [Leader!]!
   me: User
-  project(id: String!): Project!
-  projects(status: String): [Project!]!
   socialMediaWarrior(id: String!): SocialMediaWarrior
 
   """Get all approved social media warriors"""
@@ -458,7 +429,6 @@ type Query {
   socialMediaWarriorsByStatus(status: WarriorStatus!): [SocialMediaWarrior!]!
   unverifiedAtrocities: [Atrocity!]!
   user(id: String!): User!
-  userProjects(userId: String!): [Project!]!
   users: [User!]!
 }
 
@@ -595,12 +565,6 @@ input UpdateLeaderInput {
   values: [String!]
 }
 
-input UpdateProjectInput {
-  description: String
-  name: String
-  status: ProjectStatus
-}
-
 input UpdateSocialMediaWarriorInput {
   adminNotes: String
   digitalContributions: [String!]
@@ -644,7 +608,6 @@ type User {
   mobile: String!
   name: String!
   otp: String
-  projects: [Project!]
   role: UserRole!
   updatedAt: DateTime!
 }

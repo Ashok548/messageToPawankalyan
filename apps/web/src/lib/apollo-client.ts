@@ -32,33 +32,45 @@ const loadingLink = new ApolloLink((operation, forward) => {
     const skipLoadingOperations = ['GetVisitorStats'];
     const shouldShowLoading = !skipLoadingOperations.includes(operation.operationName);
 
-    // Start loading when request begins (only if not skipped)
-    if (shouldShowLoading) {
-        loadingManager.startLoading();
-    }
-
-    // Use Observable to handle both success and error cases
+    // Use Observable to handle both success, error, and cancellation cases
     return new Observable((observer) => {
+        let isLoading = shouldShowLoading;
+
+        if (isLoading) {
+            loadingManager.startLoading();
+        }
+
         const subscription = forward(operation).subscribe({
             next: (result) => {
-                if (shouldShowLoading) {
+                if (isLoading) {
                     loadingManager.stopLoading();
+                    isLoading = false;
                 }
                 observer.next(result);
             },
             error: (error) => {
-                if (shouldShowLoading) {
+                if (isLoading) {
                     loadingManager.stopLoading();
+                    isLoading = false;
                 }
                 observer.error(error);
             },
             complete: () => {
+                if (isLoading) {
+                    loadingManager.stopLoading();
+                    isLoading = false;
+                }
                 observer.complete();
             },
         });
 
         // Return cleanup function
         return () => {
+            // If the observable is unsubscribed (cancelled) while still loading
+            if (isLoading) {
+                loadingManager.stopLoading();
+                isLoading = false;
+            }
             subscription.unsubscribe();
         };
     });

@@ -1,0 +1,936 @@
+{
+    "common": {
+        "home": "Home",
+        "about": "About",
+        "login": "Login",
+        "logout": "Logout",
+        "register": "Register",
+        "submit": "Submit",
+        "cancel": "Cancel",
+        "save": "Save",
+        "delete": "Delete",
+        "edit": "Edit",
+        "search": "Search",
+        "loading": "Loading...",
+        "error": "Error",
+        "success": "Success",
+        "approve": "Approve",
+        "reject": "Reject",
+        "upload": "Upload",
+        "download": "Download",
+        "view": "View",
+        "close": "Close",
+        "back": "Back",
+        "next": "Next",
+        "previous": "Previous",
+        "filter": "Filter",
+        "clear": "Clear",
+        "reset": "Reset",
+        "resend": "Resend",
+        "approving": "Approving...",
+        "creating": "Creating...",
+        "updating": "Updating...",
+        "update": "Update",
+        "beforeYouSubmit": "Before You Submit",
+        "editProfile": "Edit Profile",
+        "gallery": "Gallery",
+        "optional": "Optional",
+        "notFound": "Not Found",
+        "copied": "Copied",
+        "noPhoto": "No Photo",
+        "more": "more"
+    },
+    "header": {
+        "title": "Mana JSP",
+        "navigation": {
+            "home": "Home",
+            "leaders": "Leaders Society Needs",
+            "governance": "Governance Highlights",
+            "atrocities": "Atrocities to Janasainiks",
+            "warriors": "Social Media Warriors",
+            "whyJoin": "Why Join JanaSena",
+            "disciplinary": "Disciplinary Cases",
+            "logout": "Logout",
+            "voices": "Voices",
+            "userManagement": "User Management",
+            "reports": "Reports",
+            "settings": "Settings",
+            "messageToJanasainiks": "Message to Janasainiks"
+        }
+    },
+    "validation": {
+        "required": "This field is required",
+        "mobileInvalid": "Mobile number must be 10 digits",
+        "emailInvalid": "Please enter a valid email address",
+        "ageRange": "Age must be between 18 and 100",
+        "passwordLength": "Password must be between 5 and 10 characters",
+        "passwordFormat": "Password must contain at least one uppercase letter and one number",
+        "passwordMismatch": "Passwords do not match",
+        "fillAllFields": "Please fill in all required fields",
+        "invalidCredentials": "Invalid mobile or password",
+        "alreadyRegistered": "This mobile number is already registered. Try logging in",
+        "emailFormat": "Valid email format required if provided",
+        "leaderNameRequired": "Leader name is required",
+        "leaderNameLength": "Leader name must be 100 characters or less",
+        "atrocityByRequired": "Please select who committed the atrocity",
+        "atrocityByOtherRequired": "Please specify the party/group",
+        "stateRequired": "State is required",
+        "districtRequired": "District is required",
+        "constituencyRequired": "Constituency is required",
+        "mandalRequired": "Mandal is required",
+        "positionRequired": "Position is required",
+        "positionLength": "Position must be 100 characters or less",
+        "subjectLength": "Subject must be 200 characters or less",
+        "descriptionRequired": "Description is required",
+        "descriptionLength": "Description must be 2000 characters or less"
+    },
+    "messages": {
+        "success": {
+            "saved": "Saved successfully",
+            "updated": "Updated successfully",
+            "deleted": "Deleted successfully",
+            "submitted": "Submitted successfully",
+            "verified": "Verification successful!",
+            "approved": "Approved successfully",
+            "verificationSuccess": "Verification successful! Please login"
+        },
+        "error": {
+            "generic": "An error occurred",
+            "network": "Network error. Please try again",
+            "unauthorized": "You are not authorized",
+            "notFound": "Not found",
+            "serverError": "Server error. Please try again later",
+            "registrationFailed": "Registration failed",
+            "loginFailed": "Login failed - no token received"
+        },
+        "loading": {
+            "generic": "Loading...",
+            "submitting": "Submitting...",
+            "saving": "Saving...",
+            "uploading": "Uploading...",
+            "signingIn": "Signing in...",
+            "registering": "Registering..."
+        }
+    },
+    "auth": {
+        "login": {
+            "title": "Sign In",
+            "welcomeBack": "Welcome Back",
+            "signInToAccount": "Sign in to your account",
+            "mobile": "Mobile Number",
+            "password": "Password",
+            "forgotPassword": "Forgot Password?",
+            "noAccount": "Don't have an account? Create one",
+            "submit": "Sign In",
+            "signIn": "Sign In"
+        },
+        "register": {
+            "title": "Create Account",
+            "createAccount": "Create Account",
+            "name": "Full Name",
+            "mobile": "Mobile Number",
+            "email": "Email Address (Optional)",
+            "age": "Age",
+            "password": "Password",
+            "confirmPassword": "Confirm Password",
+            "passwordHint": "5-10 chars, 1 uppercase, 1 number",
+            "alreadyHaveAccount": "Already have an account? Sign In",
+            "submit": "Register",
+            "register": "Register"
+        },
+        "verify": {
+            "title": "Verify OTP",
+            "verifyOtp": "Verify OTP",
+            "instruction": "Enter the OTP sent to your mobile number",
+            "otp": "OTP",
+            "otpLabel": "Enter 6-digit OTP",
+            "resend": "Resend OTP",
+            "submit": "Verify",
+            "verify": "Verify",
+            "expired": "OTP has expired. Please request a new one.",
+            "invalid": "Invalid OTP. Please check and try again."
+        },
+        "forgotPassword": {
+            "title": "Forgot Password",
+            "instruction": "Enter your mobile number",
+            "mobile": "Mobile Number",
+            "submit": "Send OTP",
+            "sendOtp": "Send OTP",
+            "backToLogin": "Back to Login"
+        },
+        "resetPassword": {
+            "title": "Reset Password",
+            "otp": "OTP",
+            "newPassword": "New Password",
+            "confirmPassword": "Confirm Password",
+            "submit": "Reset Password",
+            "resetPassword": "Reset Password",
+            "success": "Password reset successful! Redirecting to login...",
+            "missingMobile": "Missing mobile number. Please restart the process.",
+            "invalidOtp": "Please enter a valid 6-digit OTP"
+        }
+    },
+    "footer": {
+        "copyright": "© 2026 JanaSena Party. All rights reserved.",
+        "disclaimer": "Disclaimer: This is a volunteer initiative, not an official JSP website",
+        "visitors": "Visitors",
+        "links": {
+            "privacy": "Privacy Policy",
+            "terms": "Terms & Conditions",
+            "contact": "Contact"
+        }
+    },
+    "welcomeModal": {
+        "question": "Are you a Janasena Party supporter?",
+        "yes": "Yes",
+        "no": "No"
+    },
+    "atrocityCard": {
+        "noPhoto": "No Photo",
+        "more": "More"
+    },
+    "ui": {
+        "loading": "Loading...",
+        "error": "Error",
+        "status": {
+            "active": "Active",
+            "archived": "Archived",
+            "completed": "Completed",
+            "onHold": "On Hold"
+        }
+    },
+    "caseStatus": {
+        "status": {
+            "UNDER_REVIEW": "Under Review",
+            "CLARIFICATION_REQUIRED": "Clarification Needed",
+            "REVIEW_COMPLETED": "Review Completed",
+            "ACTION_TAKEN": "Action Taken",
+            "CLOSED": "Closed",
+            "ARCHIVED": "Archived"
+        },
+        "action": {
+            "NO_ACTION": "No Action Taken",
+            "WARNING": "Warning Issued",
+            "TEMPORARY_SUSPENSION": "Temporary Suspension",
+            "PERMANENT_SUSPENSION": "Permanent Suspension",
+            "POSITION_REVOKED": "Position Revoked",
+            "MEMBERSHIP_REVOKED": "Membership Revoked"
+        },
+        "visibility": {
+            "INTERNAL_ONLY": "Internal Only",
+            "PUBLIC": "Public",
+            "RESTRICTED": "Restricted"
+        }
+    },
+    "leaders": {
+        "title": "Leaders Society Needs",
+        "subtitle": "Documenting grassroots voices on community service and social contribution",
+        "submitLeader": "Submit Leader",
+        "noLeaders": "No leaders found",
+        "loadingLeaders": "Loading leaders...",
+        "profileNotFound": "Leader profile not found",
+        "disclaimer": {
+            "title": "Community Voices Disclaimer",
+            "text": "The profiles featured here represent contributor opinions and community observations. This is not an official endorsement, ranking, or political affiliation platform."
+        },
+        "form": {
+            "title": "Submit Leader Profile",
+            "editTitle": "Edit Profile",
+            "back": "Back",
+            "beforeYouSubmit": "Before You Submit",
+            "beforeYouSubmitText": "You are documenting someone's perceived contribution to society. Please ensure information is factual and respectful, you have consent if submitting on behalf of someone, and content focuses on service, not political power or comparison.",
+            "name": "Name",
+            "district": "District",
+            "mandal": "Mandal/Area (Optional)",
+            "whySocietyNeeds": "Why Society Needs This Leader",
+            "whySocietyNeedsHelper": "Describe specific contributions, initiatives, or service activities.",
+            "areaOfService": "Area of Service (Select 1-5)",
+            "partyAssociation": "Party Association Details",
+            "yearsOfAssociation": "Years of Association",
+            "yearsPlaceholder": "e.g. 5",
+            "position": "Position (Optional)",
+            "positionPlaceholder": "e.g. District Secretary",
+            "nominatedPost": "Nominated Post (if any)",
+            "nominatedPostPlaceholder": "e.g. Board Member",
+            "socialMedia": "Social Media Presence (Optional)",
+            "socialMediaHelper": "Add social media profiles to showcase online presence",
+            "primaryPlatform": "Primary Platform",
+            "primaryPlatformHelper": "Select the main platform where this leader is most active",
+            "profileUrl": "Profile URL",
+            "validUrl": "Valid URL",
+            "invalidUrl": "Invalid URL",
+            "additionalPlatforms": "Additional Platforms (Optional)",
+            "additionalPlatformsHelper": "Add links to other social media platforms",
+            "platform": "Platform",
+            "addPlatform": "+ Add Another Platform",
+            "allPlatformsAdded": "All platforms have been added",
+            "valuesRepresented": "Values Represented (Select 1-4)",
+            "photo": "Photo (Optional, max 500KB)",
+            "uploadPhoto": "Upload Photo",
+            "gallery": "Gallery (Optional, max 10 images)",
+            "addGalleryImages": "Add Gallery Images",
+            "maxImagesReached": "Max Images Reached",
+            "submittedBy": "Submitted By",
+            "self": "Self (I am the person being recognized)",
+            "supporter": "Supporter (I am submitting on behalf of someone)",
+            "anonymous": "Anonymous (I prefer not to identify myself)",
+            "consent": "I confirm that: the information provided is truthful and respectful, I have obtained consent to submit this profile (if applicable), I understand this is for documentation purposes only.",
+            "submitProfile": "Submit Profile",
+            "submitting": "Submitting...",
+            "updateProfile": "Update Profile",
+            "updating": "Updating...",
+            "cancel": "Cancel",
+            "errors": {
+                "nameLength": "Name must be at least 3 characters",
+                "districtRequired": "District is required",
+                "mandalLength": "Mandal must be 50 characters or less",
+                "reasonLength": "Reason must be 100-2000 characters",
+                "serviceAreaCount": "Select 1-5 service areas",
+                "valuesCount": "Select 1-4 values",
+                "consentRequired": "You must acknowledge consent requirements",
+                "imageType": "Only image files are allowed",
+                "imageSize": "Image exceeds limit (500KB)",
+                "galleryLimit": "Maximum 10 images allowed",
+                "imageSizeSpecific": "Image \"{name}\" exceeds 500KB limit"
+            }
+        },
+        "serviceAreas": {
+            "Education & Literacy": "Education & Literacy",
+            "Healthcare & Wellness": "Healthcare & Wellness",
+            "Youth Development": "Youth Development",
+            "Women Empowerment": "Women Empowerment",
+            "Agriculture & Farmers": "Agriculture & Farmers",
+            "Community Development": "Community Development",
+            "Disaster Relief": "Disaster Relief",
+            "Environmental Protection": "Environmental Protection",
+            "Social Justice": "Social Justice",
+            "Infrastructure & Development": "Infrastructure & Development"
+        },
+        "values": {
+            "Service to Society": "Service to Society",
+            "Integrity & Honesty": "Integrity & Honesty",
+            "Transparency": "Transparency",
+            "Grassroots Connection": "Grassroots Connection",
+            "Accessibility to People": "Accessibility to People",
+            "Problem-Solving Approach": "Problem-Solving Approach",
+            "Inclusive Leadership": "Inclusive Leadership",
+            "Accountability": "Accountability"
+        }
+    },
+    "governance": {
+        "title": "Governance Highlights",
+        "create": "Create Highlight",
+        "noHighlights": "No highlights found",
+        "loadingHighlights": "Loading highlights...",
+        "backToHighlights": "Back to Governance Highlights",
+        "projectDetails": "Project Details",
+        "sourceInformation": "Source Information",
+        "viewSource": "View Source",
+        "gallery": "Gallery",
+        "documentAdded": "Document added on",
+        "lastUpdated": "Last updated on",
+        "form": {
+            "title": "Create Governance Highlight",
+            "subtitle": "Document a new governance action or initiative.",
+            "back": "Back to Highlights",
+            "success": "Highlight created successfully!",
+            "successDelete": "Highlight deleted successfully!",
+            "errorFields": "Please fill in all required fields",
+            "creating": "Creating...",
+            "create": "Create Highlight",
+            "cancel": "Cancel",
+            "fields": {
+                "title": "Title *",
+                "titleHelper": "Clear, descriptive title of the action",
+                "category": "Category *",
+                "description": "Description *",
+                "descriptionHelper": "Detailed explanation of the highlight",
+                "area": "Area *",
+                "areaPlaceholder": "e.g., Infrastructure, Healthcare",
+                "department": "Department",
+                "state": "State *",
+                "district": "District *",
+                "yearStarted": "Year Started",
+                "yearCompleted": "Year Completed *",
+                "status": "Status *",
+                "sourceType": "Source Type *",
+                "sourceUrl": "Source URL *",
+                "sourceUrlHelper": "Link to the source of information",
+                "sourceUrlPlaceholder": "Source URL",
+                "issueContext": "Issue Context (for Pending Issues)",
+                "issueContextHelper": "Context about why this issue was pending",
+                "profilePhoto": "Profile/Cover Photo",
+                "uploadPhoto": "Upload Photo",
+                "selected": "Selected",
+                "gallery": "Gallery Images (Optional)",
+                "uploadGallery": "Upload Gallery Images",
+                "imagesSelected": "images selected",
+                "adminNotes": "Admin Notes (internal)"
+            },
+            "categories": {
+                "INNOVATIVE_INITIATIVE": "Innovative Initiative",
+                "PENDING_ISSUE_ADDRESSED": "Pending Issue Addressed"
+            },
+            "sourceTypes": {
+                "GOVERNMENT_PORTAL": "Government Portal",
+                "PRESS_RELEASE": "Press Release",
+                "PUBLIC_RECORD": "Public Record",
+                "NEWS_REPORT": "News Report",
+                "FIELD_VERIFICATION": "Field Verification"
+            },
+            "statusValues": {
+                "ADDRESSED": "Completed",
+                "IN_PROGRESS": "In Progress",
+                "FOLLOW_UP_ONGOING": "Monitoring"
+            }
+        },
+        "labels": {
+            "area": "Area",
+            "department": "Department",
+            "yearCompleted": "Year Completed",
+            "status": "Status",
+            "category": "Category",
+            "focusArea": "Focus Area",
+            "context": "Context",
+            "sourceType": "Source Type",
+            "verificationLink": "Verification Link",
+            "description": "Description"
+        },
+        "statusValues": {
+            "ADDRESSED": "Completed",
+            "IN_PROGRESS": "In Progress",
+            "FOLLOW_UP_ONGOING": "Monitoring"
+        },
+        "categoryValues": {
+            "INNOVATIVE_INITIATIVE": "Innovative Initiative",
+            "PENDING_ISSUE_ADDRESSED": "Long-Pending Issue Addressed"
+        },
+        "sourceValues": {
+            "GOVERNMENT_PORTAL": "Government Portal",
+            "PRESS_RELEASE": "Official Press Release",
+            "PUBLIC_RECORD": "Public Record",
+            "NEWS_REPORT": "News Report",
+            "FIELD_VERIFICATION": "Field Documentation"
+        },
+        "subtitle": "Documenting governance actions for informed citizenship",
+        "checkBackSoon": "Check back soon for updates.",
+        "noImage": "No Image",
+        "editHighlight": "Edit Highlight",
+        "deleteHighlight": "Delete Highlight",
+        "deleteConfirmation": "Are you sure you want to delete this highlight?"
+    },
+    "atrocities": {
+        "title": "Atrocities Against Janasainiks",
+        "reportNew": "Report New Atrocity",
+        "subtitle": "Documenting incidents of violence, harassment, and injustice against our political workers",
+        "loadingAtrocities": "Loading atrocities...",
+        "noAtrocities": "No atrocities found",
+        "approving": "Approving...",
+        "approve": "Approve",
+        "notFound": "Atrocity not found",
+        "gallery": "Evidence Gallery",
+        "atrocityType": "Atrocity Type",
+        "toLeader": "To Leader",
+        "toParty": "To Janasena Party",
+        "leaderName": "Leader Name",
+        "leaderLocation": "<strong>{leaderName}</strong> from {state}, {district}, {constituency}, {mandal}, {village}.",
+        "atrocityBy": "Atrocity By",
+        "specifyParty": "Specify Party/Group *",
+        "selectState": "Select State",
+        "selectDistrict": "Select District",
+        "selectConstituency": "Select Constituency",
+        "selectMandal": "Mandal",
+        "village": "Village",
+        "position": "Position in Party",
+        "subjectOptional": "Subject (Optional)",
+        "description": "Description",
+        "others": "Others",
+        "attachImages": "Attach Images (Max 2, each max 500KB)",
+        "submitReport": "Submit Report",
+        "filters": {
+            "all": "All",
+            "pending": "Pending Verification"
+        },
+        "confirm": {
+            "approve": "Are you sure you want to approve this atrocity?",
+            "removeImage": "Are you sure you want to remove this image?"
+        },
+        "success": {
+            "approved": "Atrocity approved successfully!",
+            "imageRemoved": "Image removed successfully!"
+        },
+        "form": {
+            "others": "Others",
+            "attachImages": "Attach Images (Max 2, each max 500KB)",
+            "maxSize": "Max size 500KB"
+        }
+    },
+    "disciplinary": {
+        "title": "Disciplinary Cases",
+        "createCase": "Create Case",
+        "noCases": "No cases found",
+        "subtitle": "Official records of disciplinary actions and internal reviews",
+        "searchPlaceholder": "Search by Case ID or Leader Name",
+        "filters": {
+            "allStatuses": "All Statuses",
+            "allCategories": "All Categories",
+            "allVisibility": "All Visibility"
+        },
+        "loadingCases": "Loading cases...",
+        "backToCases": "Back to Cases",
+        "updateStatus": "Update Status",
+        "recordDecision": "Record Decision",
+        "changeVisibility": "Change Visibility",
+        "caseNumber": "Case Number",
+        "initiated": "Initiated",
+        "issueInformation": "Issue Information",
+        "timeline": "Timeline",
+        "initiatedBy": "Initiated by",
+        "decisionDate": "Decision Date",
+        "issueDescription": "Issue Description",
+        "evidenceGallery": "Evidence Gallery",
+        "sourceReferences": "Source References",
+        "disciplinaryActionTaken": "Disciplinary Action Taken",
+        "outcome": "Outcome",
+        "rationale": "Rationale",
+        "caseStatus": "Case Status",
+        "created": "Created",
+        "updated": "Updated",
+        "internalNotes": "Internal Notes",
+        "addNote": "Add Note",
+        "enterNotePlaceholder": "Enter confidential internal notes...",
+        "confirmDecision": "Confirm Decision",
+        "effectiveFrom": "Effective From",
+        "effectiveTo": "Effective To",
+        "labels": {
+            "category": "Category",
+            "source": "Source"
+        },
+        "form": {
+            "title": "Initiate Disciplinary Case",
+            "description": "Create a new official record for a disciplinary issue. This will be visible only to administrators initially.",
+            "section": {
+                "subjectDetails": "Subject Details",
+                "caseInformation": "Case Information",
+                "evidence": "Evidence"
+            },
+            "fields": {
+                "leaderName": "Leader Name",
+                "leaderNameHelper": "Enter the full name of the leader",
+                "position": "Position in Party",
+                "positionHelper": "e.g., MLA, MP, District President, etc.",
+                "constituency": "Constituency",
+                "district": "District",
+                "leaderPhoto": "Leader Profile Photo",
+                "uploadLeaderPhoto": "Upload Leader Photo (Optional)",
+                "issueCategory": "Issue Category",
+                "issueSource": "Issue Source",
+                "issueDescription": "Detailed Description",
+                "issueDescriptionHelper": "Provide a neutral, factual description of the incident or issue.",
+                "sourceLinks": "Source Links (Optional)",
+                "sourceUrlPlaceholder": "Source URL",
+                "sourceLinksHelper": "Add URLs to news articles, social media posts, or other references",
+                "addSourceLink": "Add Source Link",
+                "uploadPhotos": "Upload Photos",
+                "uploadDocuments": "Upload Documents (PDF/Doc)",
+                "photosSelected": "photo(s) selected",
+                "filesSelected": "file(s) selected"
+            },
+            "actions": {
+                "cancel": "Cancel",
+                "create": "Create Case",
+                "creating": "Creating..."
+            },
+            "errors": {
+                "requiredFields": "Please fill in leader name and position",
+                "createFailed": "Failed to create case"
+            },
+            "issueCategories": {
+                "MISCONDUCT": "Misconduct",
+                "POLICY_VIOLATION": "Policy Violation",
+                "ETHICAL_BREACH": "Ethical Breach",
+                "INSUBORDINATION": "Insubordination",
+                "FINANCIAL_IRREGULARITY": "Financial Irregularity",
+                "PUBLIC_STATEMENT_VIOLATION": "Public Statement Violation",
+                "OTHER": "Other"
+            },
+            "issueSources": {
+                "INTERNAL_COMPLAINT": "Internal Complaint",
+                "EXTERNAL_COMPLAINT": "External Complaint",
+                "MEDIA_REPORT": "Media Report",
+                "PARTY_OBSERVATION": "Party Observation",
+                "LEGAL_NOTICE": "Legal Notice"
+            }
+        },
+        "statuses": {
+            "pending": "Pending",
+            "underReview": "Under Review",
+            "resolved": "Resolved",
+            "dismissed": "Dismissed"
+        }
+    },
+    "dashboard": {
+        "title": "Dashboard",
+        "welcome": "Welcome",
+        "welcomeUser": "Welcome back, {name}!",
+        "happening": "Here's what's happening with your projects today.",
+        "totalProjects": "Total Projects",
+        "activeProjects": "Active Projects",
+        "completed": "Completed",
+        "recentProjects": "Recent Projects",
+        "latestProjects": "Your latest projects",
+        "noProjects": "No projects yet. Create your first project to get started!",
+        "noDescription": "No description"
+    },
+    "notFound": {
+        "title": "Page Not Found",
+        "description": "Could not find requested resource",
+        "returnHome": "Return Home"
+    },
+    "whyJoin": {
+        "title": "Why Join JanaSena",
+        "subtitle": "A Movement for People-First Politics",
+        "intro": "JanaSena is not just a political party—it is a commitment to the people, a promise to serve with integrity, and a vision for a just and equitable society.",
+        "ideology": {
+            "title": "Our Ideology",
+            "points": [
+                "JanaSena stands firmly on the principles of democratic socialism, where the welfare of every citizen is paramount. We believe in a society where opportunities are not privileges of the few, but rights of the many.",
+                "Our ideology is rooted in the belief that governance must be transparent, accountable, and people-centric. We envision a political system where leaders are servants of the people, not masters.",
+                "We champion the cause of social justice, economic empowerment, and environmental sustainability. Every policy, every decision, every action is guided by one question: Does this serve the people?"
+            ]
+        },
+        "values": {
+            "title": "Our Core Values",
+            "items": [
+                {
+                    "heading": "Transparency & Accountability",
+                    "text": "We believe in open governance where every decision is made in the light of public scrutiny. Leaders must be accountable to the people they serve."
+                },
+                {
+                    "heading": "Social Justice",
+                    "text": "Equality is not negotiable. We stand for the rights of marginalized communities, ensuring that every voice is heard and every person is treated with dignity."
+                },
+                {
+                    "heading": "Economic Empowerment",
+                    "text": "True freedom comes from economic independence. We work towards creating opportunities for employment, entrepreneurship, and sustainable livelihoods for all."
+                },
+                {
+                    "heading": "Environmental Responsibility",
+                    "text": "We recognize our duty to protect the environment for future generations. Sustainable development is not an option—it is a necessity."
+                }
+            ]
+        },
+        "leadership": {
+            "title": "Leadership with Purpose: Pawan Kalyan Garu",
+            "p1": "Pawan Kalyan garu's journey from the world of cinema to public service is a testament to his unwavering commitment to the people. He chose to step away from the comfort of stardom to address the real issues facing ordinary citizens.",
+            "p2": "His leadership is defined not by rhetoric, but by action. He has consistently stood with farmers, workers, and marginalized communities, fighting for their rights and dignity. His vision is clear: a society where governance is transparent, leaders are accountable, and every citizen has the opportunity to thrive.",
+            "p3": "What sets him apart is his authenticity. He speaks the language of the people, understands their struggles, and works tirelessly to bring about meaningful change. His dedication to public service is not driven by personal ambition, but by a genuine desire to serve.",
+            "p4": "Under his leadership, JanaSena has become a platform for honest politics, where integrity is valued over opportunism, and service is prioritized over self-interest. He embodies the values that JanaSena stands for—courage, compassion, and commitment to the people."
+        },
+        "relevance": {
+            "title": "Why JanaSena Matters Today",
+            "points": [
+                "In an era where politics is often reduced to power games and personal gains, JanaSena offers an alternative—a movement grounded in principles, driven by purpose, and focused on people.",
+                "We face challenges that require bold leadership and innovative solutions: economic inequality, environmental degradation, social injustice, and erosion of democratic values. JanaSena is committed to addressing these challenges head-on.",
+                "Our relevance lies in our refusal to compromise on our values. We will not engage in divisive politics. We will not make empty promises. We will work, every single day, to build a society that is just, equitable, and prosperous for all."
+            ]
+        },
+        "vision": {
+            "title": "Our Vision for the Future",
+            "points": [
+                "We envision a future where governance is participatory, where citizens are not mere spectators but active participants in shaping their destiny.",
+                "We dream of a society where education is accessible to all, healthcare is a right, and employment opportunities are abundant. Where farmers are respected, workers are valued, and entrepreneurs are supported.",
+                "We aspire to build a state—and eventually a nation—where corruption is a thing of the past, where leaders are chosen for their integrity, and where policies are designed to uplift the marginalized.",
+                "This is not a distant dream. This is the future we are working towards, one step at a time, one policy at a time, one community at a time."
+            ]
+        },
+        "closing": {
+            "title": "A Call to Reflection",
+            "text": "JanaSena is more than a political party. It is a movement of people who believe in the power of honest politics, who refuse to accept the status quo, and who are willing to work for a better tomorrow. We invite you to reflect on what kind of society you want to live in, and what kind of politics you want to support. The choice is yours, and the future is ours to build—together."
+        }
+    },
+    "home": {
+        "title": "The Future of Democratic Engagement: A Message to Pawan Kalyan",
+        "publishedDate": "Published on January 24, 2026",
+        "intro": "In the evolving landscape of Indian politics, the role of grassroots movements and direct citizen engagement has never been more critical. As we stand at the crossroads of traditional governance and modern democratic participation, it becomes imperative to examine how leaders can effectively bridge the gap between policy and people.",
+        "accountability": "The concept of political accountability has undergone a significant transformation in recent years. No longer are citizens content with passive participation limited to casting votes every five years. Instead, there is a growing demand for continuous dialogue, transparent decision-making, and responsive governance that adapts to the real-time needs of the population.",
+        "shift": "This shift in expectations has been particularly evident in the way political movements organize themselves. The traditional top-down approach, where directives flow from leadership to followers, is gradually giving way to more collaborative models. These new frameworks emphasize horizontal communication, where ideas and feedback flow freely between all levels of the organization.",
+        "technology": "Technology has played a pivotal role in enabling this transformation. Social media platforms, mobile applications, and digital communication tools have democratized access to information and created new channels for civic participation. Citizens can now voice their concerns, share their experiences, and contribute to policy discussions in ways that were unimaginable just a decade ago.",
+        "challenges": "However, with these opportunities come significant challenges. The digital divide remains a stark reality in many parts of the country, where access to technology and internet connectivity is limited. Ensuring that democratic participation remains inclusive and accessible to all segments of society, regardless of their technological literacy or economic status, is a challenge that must be addressed head-on.",
+        "janasainiks": "The role of political workers, often referred to as Janasainiks in certain movements, cannot be understated in this context. These dedicated individuals serve as the crucial link between leadership and the broader population. They are the ones who translate political vision into ground-level action, who listen to the concerns of ordinary citizens, and who mobilize communities around shared goals and aspirations.",
+        "grassroots": "Yet, the challenges faced by these grassroots workers are often overlooked in mainstream political discourse. From facing harassment and intimidation to dealing with resource constraints and organizational inefficiencies, the obstacles they encounter can be formidable. Creating support systems and protective mechanisms for these frontline workers is not just a matter of organizational efficiency—it is a moral imperative.",
+        "violence": "The question of political violence and atrocities against party workers is particularly troubling. In a healthy democracy, political competition should be robust but civil, passionate but peaceful. When political workers face physical threats, legal harassment, or systematic intimidation, it undermines the very foundations of democratic participation and creates a chilling effect that discourages civic engagement.",
+        "approach": "Addressing these issues requires a multi-faceted approach. Legal frameworks must be strengthened to protect political workers from harassment and violence. Law enforcement agencies must be trained to handle political disputes with impartiality and professionalism. And political leaders themselves must set the tone by condemning violence and intimidation, regardless of which party or ideology is responsible.",
+        "empowerment": "Beyond protection, there is also a need for empowerment. Political workers should have access to training programs that enhance their skills in community organizing, conflict resolution, and effective communication. They should be equipped with the tools and resources necessary to carry out their work efficiently and safely. And they should be given a meaningful voice in shaping the strategies and policies of the movements they serve.",
+        "relationship": "The relationship between political leadership and grassroots workers is fundamentally one of mutual dependence. Leaders depend on workers to implement their vision and connect with voters. Workers depend on leaders to provide direction, resources, and support. When this relationship is healthy and balanced, it creates a powerful force for positive change. When it becomes dysfunctional or exploitative, it leads to disillusionment and organizational decay.",
+        "transparency": "Transparency and accountability must flow in both directions. Just as citizens have the right to hold their elected representatives accountable, political workers should be able to hold their leadership accountable for promises made and resources committed. Creating formal mechanisms for feedback, grievance redressal, and participatory decision-making can help ensure that this accountability is real and meaningful.",
+        "future": "The future of democratic politics in India will be shaped by how well we address these fundamental questions of participation, protection, and empowerment. It will depend on our ability to create political movements that are not just effective at winning elections, but also at fostering genuine civic engagement and social transformation.",
+        "pathForward": "As we look ahead, the path forward requires courage, creativity, and commitment. It requires leaders who are willing to listen as much as they speak, who value the contributions of every worker and supporter, and who understand that true political power comes not from domination but from service. It requires workers who are informed, engaged, and empowered to be agents of change in their communities.",
+        "message": "The message to political leaders is clear: invest in your people, protect your workers, and create systems that enable genuine democratic participation. The message to political workers is equally important: stay committed to your values, demand the support and protection you deserve, and never lose sight of the larger purpose that brought you into public service. Together, through mutual respect and shared commitment, we can build a political culture that truly serves the people and strengthens our democracy for generations to come."
+    },
+    "messageToJanasainiks": {
+        "title": "Message to Janasainiks: Building a Stronger Movement Together",
+        "publishedDate": "Published on January 24, 2026",
+        "p1": "Dear Janasainiks, you are the backbone of our movement. Your dedication, sacrifice, and unwavering commitment to the cause of people's welfare form the foundation upon which we build our vision for a better society. This message is a recognition of your efforts and a call to strengthen our collective resolve in the face of challenges.",
+        "p2": "The role you play goes far beyond traditional political activism. You are community organizers, problem solvers, and bridges between leadership and the people. Every day, you work tirelessly to understand the concerns of ordinary citizens, to mobilize support for positive change, and to ensure that the voice of the common person is heard in the corridors of power.",
+        "p3": "In recent times, we have witnessed unprecedented challenges to grassroots democratic participation. The obstacles you face—whether they are logistical, political, or personal—are real and significant. Yet, your resilience in the face of these challenges is what gives our movement its strength and credibility. Your commitment inspires others to join the cause and reinforces the belief that positive change is possible.",
+        "p4": "As we move forward, it is essential that we strengthen our organizational structures and support systems. This means creating better channels of communication between different levels of our movement, ensuring that resources reach those who need them most, and establishing mechanisms for feedback and continuous improvement. Your input in shaping these systems is not just welcome—it is essential.",
+        "p5": "Training and capacity building must be a priority. We recognize that effective grassroots work requires a diverse set of skills—from community organizing and public speaking to conflict resolution and digital communication. We are committed to providing you with the training, tools, and resources necessary to excel in your role and to grow as leaders in your own right.",
+        "p6": "The safety and security of every Janasainik is of paramount importance. No one should have to face threats, harassment, or violence for their political beliefs or activities. We are working to establish stronger support networks, legal assistance programs, and rapid response mechanisms to ensure that you can carry out your work without fear. Your safety is not negotiable, and we will stand firmly against any attempts to intimidate or harm our workers.",
+        "p7": "Communication is the lifeblood of any successful movement. We need to ensure that information flows freely and accurately between all levels of our organization. This means not just top-down directives, but also bottom-up feedback. Your observations from the field, your understanding of local issues, and your insights into community dynamics are invaluable. We must create formal channels for this information to reach decision-makers and influence our strategies.",
+        "p8": "Unity in diversity is our strength. Our movement brings together people from different backgrounds, regions, and walks of life. This diversity is not a weakness to be managed but a strength to be celebrated. It gives us a broader perspective, helps us understand different viewpoints, and makes our movement more representative of the society we seek to serve. Let us embrace this diversity and learn from each other.",
+        "p9": "Transparency and accountability must guide all our actions. As representatives of a people's movement, we must hold ourselves to the highest standards of integrity and ethical conduct. This means being honest about our challenges, transparent about our resources, and accountable for our decisions. When we make mistakes—and we will—we must acknowledge them, learn from them, and do better.",
+        "p10": "The digital age presents both opportunities and challenges for grassroots organizing. Social media and digital tools can amplify our message and help us reach more people, but they also come with risks of misinformation and digital harassment. We need to develop digital literacy among our workers, establish guidelines for online conduct, and create support systems for those who face online abuse.",
+        "p11": "Remember that sustainable activism requires taking care of yourself. Burnout is real, and the emotional toll of political work can be significant. It is not selfish to prioritize your mental and physical health—it is necessary. Take breaks when you need them, seek support when you're struggling, and remember that this is a marathon, not a sprint. We need you to be in this for the long haul.",
+        "p12": "Your families and loved ones also make sacrifices for this movement. The time you spend in meetings, rallies, and community work is time away from them. We acknowledge this sacrifice and are grateful for their support. We must also ensure that our movement creates space for family life and personal commitments, recognizing that balanced, fulfilled individuals make the most effective activists.",
+        "p13": "As we look to the future, let us remember why we started this journey. It was not for personal gain or political power, but for the welfare of the people, for justice, and for a better society. These ideals must continue to guide us, even when the path is difficult and the obstacles seem insurmountable. Our commitment to these principles is what sets us apart and gives our movement its moral authority.",
+        "p14": "The road ahead will not be easy. We will face opposition, setbacks, and moments of doubt. But together, united in our purpose and committed to our values, there is no challenge we cannot overcome. Your courage, dedication, and hard work are the driving force of this movement. You are not just workers or volunteers—you are leaders, changemakers, and the hope for a better tomorrow.",
+        "p15": "To every Janasainik reading this: thank you. Thank you for your service, your sacrifice, and your unwavering belief in our shared vision. Together, we will build a movement that truly serves the people, that stands up for justice, and that creates lasting positive change in our society. The future we dream of is possible, and it will be built by people like you, one community at a time, one conversation at a time, one act of service at a time. Stay strong, stay united, and let us march forward together toward the future we deserve."
+    },
+    "projects": {
+        "title": "Projects",
+        "subtitle": "Manage your projects and track progress",
+        "newProject": "New Project",
+        "emptyTitle": "No projects yet",
+        "emptyDesc": "Get started by creating your first project",
+        "createFirst": "Create Project",
+        "noDescription": "No description",
+        "by": "by {name}",
+        "unknown": "Unknown",
+        "archive": "Archive",
+        "createDialogTitle": "Create New Project",
+        "projectName": "Project Name",
+        "description": "Description",
+        "deleteConfirmation": "Are you sure you want to delete this project?"
+    },
+    "memorial": {
+        "title": "Our Memorial",
+        "subtitle": "Remembering the fallen heroes of our movement",
+        "comingSoon": "Memorial section is coming soon...",
+        "leaders": {
+            "title": "Leaders Society Needs",
+            "subtitle": "Documenting grassroots voices on community service and social contribution",
+            "noLeaders": "No leader profiles found matching your criteria",
+            "back": "Back",
+            "disclaimer": {
+                "title": "Community Voices Disclaimer",
+                "text": "The profiles featured here represent contributor opinions and community observations. This is not an official endorsement, ranking, or political affiliation platform.",
+                "profileText": "This profile is based on contributor submissions and does not constitute official endorsement. Content is moderated for community guidelines."
+            },
+            "form": {
+                "title": "Submit a Leader",
+                "editTitle": "Edit Leader Profile",
+                "back": "Back",
+                "beforeYouSubmit": "Before You Submit",
+                "beforeYouSubmitText": "Please ensure you have verified the details. False information may lead to account suspension.",
+                "name": "Leader Name",
+                "district": "District",
+                "mandal": "Mandal",
+                "whySocietyNeeds": "Why Society Needs This Leader",
+                "whySocietyNeedsHelper": "Explain the impact and contribution.",
+                "areaOfService": "Area of Service",
+                "partyAssociation": "Party Association Details",
+                "yearsOfAssociation": "Years of Association",
+                "yearsPlaceholder": "e.g. 5",
+                "position": "Position",
+                "positionPlaceholder": "Current Position",
+                "nominatedPost": "Nominated Post",
+                "nominatedPostPlaceholder": "e.g. Committee Member",
+                "socialMedia": "Social Media Presence",
+                "socialMediaHelper": "Add links to public profiles.",
+                "primaryPlatform": "Primary Platform",
+                "primaryPlatformHelper": "Select the main platform used.",
+                "profileUrl": "Profile URL",
+                "otherPlatforms": "Other Platforms",
+                "addPlatform": "Add Platform",
+                "uploadPhoto": "Upload Photo",
+                "uploadGallery": "Upload Gallery Images"
+            },
+            "validation": {
+                "nameLength": "Name must be between 3 and 100 characters",
+                "districtRequired": "District is required",
+                "mandalLength": "Mandal name is too long",
+                "reasonLength": "Reason must be between 100 and 2000 characters",
+                "serviceAreaCount": "Select between 1 and 5 service areas",
+                "valuesCount": "Select between 1 and 4 values",
+                "consentRequired": "You must acknowledge the consent",
+                "imageSize": "Image exceeds 500KB limit",
+                "imageType": "Only image files are allowed",
+                "invalidUrl": "Invalid URL"
+            },
+            "profile": {
+                "notFound": "Leader profile not found",
+                "areaOfService": "Area of Service",
+                "values": "Values Represented",
+                "whySocietyNeeds": "Why Society Needs This Leader",
+                "association": "Association Details",
+                "years": "Years of Association",
+                "position": "Party Position",
+                "nominatedPost": "Nominated Post",
+                "socialMedia": "Social Media Presence",
+                "primaryPlatform": "Primary Platform",
+                "otherPlatforms": "Other Platforms",
+                "visitProfile": "Visit Profile",
+                "gallery": "Gallery",
+                "submitted": "Submitted",
+                "submittedBy": "Submitted by"
+            },
+            "serviceAreas": {
+                "Education & Literacy": "Education & Literacy",
+                "Healthcare & Wellness": "Healthcare & Wellness",
+                "Youth Development": "Youth Development",
+                "Women Empowerment": "Women Empowerment",
+                "Agriculture & Farmers": "Agriculture & Farmers",
+                "Community Development": "Community Development",
+                "Disaster Relief": "Disaster Relief",
+                "Environmental Protection": "Environmental Protection",
+                "Social Justice": "Social Justice",
+                "Infrastructure & Development": "Infrastructure & Development"
+            },
+            "values": {
+                "Service to Society": "Service to Society",
+                "Integrity & Honesty": "Integrity & Honesty",
+                "Transparency": "Transparency",
+                "Grassroots Connection": "Grassroots Connection",
+                "Accessibility to People": "Accessibility to People",
+                "Problem-Solving Approach": "Problem-Solving Approach",
+                "Inclusive Leadership": "Inclusive Leadership",
+                "Accountability": "Accountability"
+            }
+        }
+    },
+    "warriors": {
+        "title": "Social Media Warriors",
+        "subtitle": "Documenting digital activists contributing to political awareness and online engagement",
+        "noWarriors": "No warriors found matching your criteria",
+        "noPhoto": "No Photo",
+        "more": "more",
+        "back": "Back",
+        "form": {
+            "title": "Submit a Warrior",
+            "editTitle": "Edit Warrior Profile",
+            "back": "Back",
+            "beforeYouSubmit": "Before You Submit",
+            "beforeYouSubmitText": "Please ensure you have verified the details. False information may lead to account suspension.",
+            "name": "Name",
+            "district": "District",
+            "mandal": "Mandal",
+            "whyValuable": "Why This Digital Warrior Matters",
+            "whyValuableHelper": "Explain the impact and contribution.",
+            "digitalContributions": "Digital Contribution Areas",
+            "partyAssociation": "Party Association Details",
+            "yearsOfAssociation": "Years of Association",
+            "yearsPlaceholder": "e.g. 5",
+            "position": "Position",
+            "positionPlaceholder": "Current Position",
+            "nominatedPost": "Nominated Post",
+            "nominatedPostPlaceholder": "e.g. Committee Member",
+            "socialMedia": "Social Media Presence",
+            "socialMediaHelper": "Add links to public profiles.",
+            "primaryPlatform": "Primary Platform",
+            "primaryPlatformHelper": "Select the main platform used.",
+            "profileUrl": "Profile URL",
+            "engagementStyle": "Engagement Style",
+            "photo": "Photo (Optional, max 500KB)",
+            "uploadPhoto": "Upload Photo",
+            "gallery": "Gallery (Optional, max 10 images)",
+            "maxImagesReached": "Max Images Reached",
+            "addGalleryImages": "Add Gallery Images",
+            "submittedBy": "Submitted By",
+            "self": "Self (I am the person being recognized)",
+            "supporter": "Supporter (I am submitting on behalf of someone)",
+            "anonymous": "Anonymous (I prefer not to identify myself)",
+            "consent": "I confirm that: the information provided is truthful and respectful, I have obtained consent to submit this profile (if applicable), I understand this is for documentation purposes only.",
+            "cancel": "Cancel",
+            "updating": "Updating...",
+            "submitting": "Submitting...",
+            "updateProfile": "Update Profile",
+            "submitProfile": "Submit Profile"
+        },
+        "validation": {
+            "imageType": "Only image files are allowed",
+            "imageSize": "Image exceeds 500KB limit",
+            "galleryLimit": "Maximum 10 images allowed",
+            "imageSizeSpecific": "Image \"{name}\" exceeds 500KB limit",
+            "nameLength": "Name must be between 3 and 100 characters",
+            "districtRequired": "District is required",
+            "mandalLength": "Mandal name is too long",
+            "reasonLength": "Reason must be between 100 and 2000 characters",
+            "digitalContributionCount": "Select between 1 and 5 contribution areas",
+            "engagementStyleCount": "Select between 1 and 3 engagement styles",
+            "consentRequired": "You must acknowledge the consent",
+            "invalidUrl": "Invalid URL"
+        },
+        "profile": {
+            "approveWarrior": "Approve Warrior",
+            "hideProfile": "Hide Profile",
+            "editData": "Edit Data",
+            "primary": "Primary",
+            "notFound": "Warrior profile not found",
+            "servingSince": "Serving since:",
+            "position": "Position:",
+            "nominatedPost": "Nominated Post:",
+            "contributionAreas": "Contribution Areas",
+            "engagementStyle": "Engagement Style",
+            "whyMatters": "Why This Digital Warrior Matters",
+            "gallery": "Gallery",
+            "socialMedia": "Social Media Presence",
+            "status": "Profile Status",
+            "added": "Added:",
+            "updated": "Updated:"
+        },
+        "contributionAreas": {
+            "Ideology Explanation": "Ideology Explanation",
+            "Issue Clarification": "Issue Clarification",
+            "Awareness Campaigns": "Awareness Campaigns",
+            "Fact-Based Counter Narratives": "Fact-Based Counter Narratives",
+            "Policy Analysis": "Policy Analysis",
+            "Community Engagement": "Community Engagement",
+            "News Dissemination": "News Dissemination",
+            "Grassroots Mobilization": "Grassroots Mobilization",
+            "Data & Research Sharing": "Data & Research Sharing",
+            "Visual Content Creation": "Visual Content Creation"
+        },
+        "engagementStyles": {
+            "Fact-Oriented": "Fact-Oriented",
+            "Informative & Educational": "Informative & Educational",
+            "Calm & Non-Abusive": "Calm & Non-Abusive",
+            "Data-Driven": "Data-Driven",
+            "Analytical": "Analytical",
+            "Conversational": "Conversational",
+            "Respectful Debate": "Respectful Debate"
+        }
+    },
+    "userManagement": {
+        "title": "User Management",
+        "description": "Manage users, roles, and permissions.",
+        "totalUsers": "Total Users",
+        "superAdmins": "Super Admins",
+        "admins": "Admins",
+        "regularUsers": "Regular Users",
+        "successRoleUpdate": "User role updated successfully!",
+        "errorRoleUpdate": "Failed to update user role",
+        "table": {
+            "name": "Name",
+            "mobile": "Mobile",
+            "email": "Email",
+            "role": "Role",
+            "verified": "Verified",
+            "notVerified": "Not Verified",
+            "joined": "Joined",
+            "actions": "Actions",
+            "noUsers": "No users found"
+        },
+        "dialog": {
+            "title": "Confirm Role Change",
+            "aboutToChange": "You are about to change the role for:",
+            "currentRole": "Current Role",
+            "newRole": "New Role",
+            "superAdminWarning": "Warning: You are modifying SUPER_ADMIN privileges. This action should be performed with caution.",
+            "warningDetail": "This action will immediately change the user's access level and permissions.",
+            "cancel": "Cancel",
+            "confirm": "Confirm Change",
+            "updating": "Updating..."
+        }
+    }
+}

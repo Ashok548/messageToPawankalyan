@@ -8,6 +8,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations, useLocale } from 'next-intl';
+import { LanguageSwitcher } from '../LanguageSwitcher';
 import { useAuth } from '../../hooks/use-auth';
 
 /**
@@ -21,6 +23,8 @@ import { useAuth } from '../../hooks/use-auth';
  * - Typography sized to fit within height constraint
  */
 export default function Header() {
+    const t = useTranslations('header');
+    const locale = useLocale();
     const router = useRouter();
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -55,17 +59,17 @@ export default function Header() {
         router.push('/');
     };
 
-    // Define all menu items
+    // Define all menu items with translations
     const allMenuItems = [
-        { label: 'Why Join JanaSena', href: '/why-join-janasena', showForAll: true },
-        { label: 'Message to Janasainiks', href: '/message-to-janasainiks', showForAll: false },
-        { label: 'Atrocities to Janasainiks', href: '/atrocities-to-janasainiks', showForAll: false },
-        { label: 'Leaders Society Needs', href: '/leaders-society-needs', showForAll: true },
-        { label: 'Social Media Warriors', href: '/social-media-warriors', showForAll: false },
-        { label: 'Governance Highlights', href: '/governance-highlights', showForAll: true },
-        { label: 'Disciplinary Register', href: '/disciplinary-cases', showForAll: true },
-        { label: 'Voices', href: '/voices', showForAll: true },
-        ...(isSuperAdmin ? [{ label: 'User Management', href: '/user-management', showForAll: true }] : []),
+        { label: t('navigation.whyJoin'), href: `/${locale}/why-join-janasena`, showForAll: true },
+        { label: t('navigation.messageToJanasainiks'), href: `/${locale}/message-to-janasainiks`, showForAll: false },
+        { label: t('navigation.atrocities'), href: `/${locale}/atrocities-to-janasainiks`, showForAll: false },
+        { label: t('navigation.leaders'), href: `/${locale}/leaders-society-needs`, showForAll: true },
+        { label: t('navigation.warriors'), href: `/${locale}/social-media-warriors`, showForAll: false },
+        { label: t('navigation.governance'), href: `/${locale}/governance-highlights`, showForAll: true },
+        { label: t('navigation.disciplinary'), href: `/${locale}/disciplinary-cases`, showForAll: true },
+        { label: t('navigation.voices'), href: `/${locale}/voices`, showForAll: true },
+        ...(isSuperAdmin ? [{ label: t('navigation.userManagement'), href: `/${locale}/user-management`, showForAll: true }] : []),
     ];
 
     // Filter menu items based on user's supporter status
@@ -133,7 +137,7 @@ export default function Header() {
                             }}
                         >
                             {/* "MESSAGE" - Black start of gradient */}
-                            <Box
+                            {/* <Box
                                 component="span"
                                 sx={{
                                     background: 'linear-gradient(90deg, #000 0%, #333 100%)',
@@ -142,8 +146,8 @@ export default function Header() {
                                     backgroundClip: 'text',
                                 }}
                             >
-                                MESSAGE
-                            </Box>
+                                Mana
+                            </Box> */}
 
                             {/* "2" - Transition gradient */}
                             <Box
@@ -155,11 +159,11 @@ export default function Header() {
                                     backgroundClip: 'text',
                                 }}
                             >
-                                2
+                                Mana JSP
                             </Box>
 
                             {/* "PAWAN KALYAN" - Red end of gradient */}
-                            <Box
+                            {/* <Box
                                 component="span"
                                 sx={{
                                     background: 'linear-gradient(90deg, #d32f2f 0%, #b71c1c 100%)',
@@ -170,7 +174,7 @@ export default function Header() {
                                 }}
                             >
                                 PAWAN KALYAN
-                            </Box>
+                            </Box> */}
                         </Box>
                     </Box>
 
@@ -180,10 +184,11 @@ export default function Header() {
                         spacing={{ xs: 1, sm: 2 }}
                         alignItems="center"
                     >
-
+                        {/* Language Switcher */}
+                        <LanguageSwitcher />
 
                         {/* Conditional: Login Link or Profile Icon */}
-                        {isAuthenticated ? (
+                        {isAuthenticated && (
                             <IconButton
                                 onClick={handleProfileMenuOpen}
                                 sx={{
@@ -196,29 +201,6 @@ export default function Header() {
                             >
                                 <AccountCircleIcon />
                             </IconButton>
-                        ) : (
-                            <MuiLink
-                                component={Link}
-                                href="/login"
-                                underline="none"
-                                sx={{
-                                    fontSize: { xs: 14, sm: 15 },
-                                    fontWeight: 500,
-                                    color: 'primary.main',
-                                    px: 1.5,
-                                    py: 0.5,
-                                    borderRadius: 0.5,
-                                    transition: 'all 0.15s ease',
-                                    lineHeight: 1,
-                                    whiteSpace: 'nowrap',
-                                    '&:hover': {
-                                        backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                                        color: 'primary.dark',
-                                    },
-                                }}
-                            >
-                                Login
-                            </MuiLink>
                         )}
                     </Stack>
                 </Container>
@@ -237,7 +219,7 @@ export default function Header() {
             >
                 <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                        Menu
+                        {locale === 'te' ? 'మెను' : 'Menu'}
                     </Typography>
                     <IconButton onClick={toggleDrawer(false)} size="small">
                         <CloseIcon />
@@ -279,7 +261,7 @@ export default function Header() {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                <MenuItem onClick={handleLogout}>{t('navigation.logout') || (locale === 'te' ? 'లాగ్అవుట్' : 'Logout')}</MenuItem>
             </Menu>
         </>
     );

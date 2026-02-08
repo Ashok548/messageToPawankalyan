@@ -1,0 +1,936 @@
+{
+    "common": {
+        "home": "హోమ్",
+        "about": "గురించి",
+        "login": "లాగిన్",
+        "logout": "లాగ్అవుట్",
+        "register": "రిజిస్టర్",
+        "submit": "సబ్మిట్",
+        "cancel": "రద్దు",
+        "save": "సేవ్",
+        "delete": "తొలగించు",
+        "edit": "సవరించు",
+        "search": "వెతుకు",
+        "loading": "లోడ్ అవుతోంది...",
+        "error": "లోపం",
+        "success": "విజయం",
+        "approve": "ఆమోదించు",
+        "reject": "తిరస్కరించు",
+        "upload": "అప్‌లోడ్",
+        "download": "డౌన్‌లోడ్",
+        "view": "చూడండి",
+        "close": "మూసివేయి",
+        "back": "వెనుకకు",
+        "next": "తదుపరి",
+        "previous": "మునుపటి",
+        "filter": "ఫిల్టర్",
+        "clear": "క్లియర్",
+        "reset": "రీసెట్",
+        "resend": "మళ్లీ పంపించు",
+        "approving": "ఆమోదిస్తోంది...",
+        "creating": "సృష్టిస్తోంది...",
+        "updating": "నవీకరిస్తోంది...",
+        "update": "నవీకరించు",
+        "beforeYouSubmit": "మీరు సబ్మిట్ చేసే ముందు",
+        "editProfile": "ప్రొఫైల్ సవరించు",
+        "gallery": "గ్యాలరీ",
+        "optional": "ఐచ్ఛికం",
+        "notFound": "కనుగొనబడలేదు",
+        "copied": "కాపీ చేయబడింది",
+        "noPhoto": "ఫోటో లేదు",
+        "more": "మరిన్ని"
+    },
+    "header": {
+        "title": "పవన్ కళ్యాణ్ గారికి సందేశం",
+        "navigation": {
+            "home": "హోమ్",
+            "leaders": "సమాజానికి కావాల్సిన నాయకులు",
+            "governance": "పాలనా విశేషాలు",
+            "atrocities": "జనసైనికుల పై అణిచివేతలు",
+            "warriors": "సోషల్ మీడియా యోధులు",
+            "whyJoin": "జనసేనలో ఎందుకు చేరాలి",
+            "disciplinary": "క్రమశిక్షణా చర్యలు",
+            "logout": "లాగ్అవుట్",
+            "voices": "ప్రజల గొంతుక",
+            "userManagement": "యూజర్ మేనేజ్మెంట్",
+            "reports": "రిపోర్ట్స్",
+            "settings": "సెట్టింగ్స్",
+            "messageToJanasainiks": "జనసైనికులకు సందేశం"
+        }
+    },
+    "validation": {
+        "required": "ఈ ఫీల్డ్ తప్పనిసరి",
+        "mobileInvalid": "మొబైల్ నంబర్ 10 అంకెలు ఉండాలి",
+        "emailInvalid": "దయచేసి చెల్లుబాటు అయ్యే ఇమెయిల్ చిరునామా నమోదు చేయండి",
+        "ageRange": "వయస్సు 18 మరియు 100 మధ్య ఉండాలి",
+        "passwordLength": "పాస్‌వర్డ్ 5 మరియు 10 అక్షరాల మధ్య ఉండాలి",
+        "passwordFormat": "పాస్‌వర్డ్‌లో కనీసం ఒక పెద్ద అక్షరం మరియు ఒక సంఖ్య ఉండాలి",
+        "passwordMismatch": "పాస్‌వర్డ్‌లు సరిపోలలేదు",
+        "fillAllFields": "దయచేసి అన్ని తప్పనిసరి ఫీల్డ్‌లను పూరించండి",
+        "invalidCredentials": "చెల్లని మొబైల్ లేదా పాస్‌వర్డ్",
+        "alreadyRegistered": "ఈ మొబైల్ నంబర్ ఇప్పటికే నమోదు చేయబడింది. లాగిన్ చేయడానికి ప్రయత్నించండి",
+        "emailFormat": "చెల్లుబాటు అయ్యే ఇమెయిల్ ఫార్మాట్ అవసరం",
+        "leaderNameRequired": "నాయకుడి పేరు తప్పనిసరి",
+        "leaderNameLength": "నాయకుడి పేరు 100 అక్షరాల కంటే తక్కువ ఉండాలి",
+        "atrocityByRequired": "దయచేసి అణిచివేత చేసిన వారిని ఎంచుకోండి",
+        "atrocityByOtherRequired": "దయచేసి పార్టీ/సమూహాన్ని పేర్కొనండి",
+        "stateRequired": "రాష్ట్రం తప్పనిసరి",
+        "districtRequired": "జిల్లా తప్పనిసరి",
+        "constituencyRequired": "నియోజకవర్గం తప్పనిసరి",
+        "mandalRequired": "మండలం తప్పనిసరి",
+        "positionRequired": "పదవి తప్పనిసరి",
+        "positionLength": "పదవి 100 అక్షరాల కంటే తక్కువ ఉండాలి",
+        "subjectLength": "విషయం 200 అక్షరాల కంటే తక్కువ ఉండాలి",
+        "descriptionRequired": "వివరణ తప్పనిసరి",
+        "descriptionLength": "వివరణ 2000 అక్షరాల కంటే తక్కువ ఉండాలి"
+    },
+    "messages": {
+        "success": {
+            "saved": "విజయవంతంగా సేవ్ చేయబడింది",
+            "updated": "విజయవంతంగా అప్‌డేట్ చేయబడింది",
+            "deleted": "విజయవంతంగా తొలగించబడింది",
+            "submitted": "విజయవంతంగా సబ్మిట్ చేయబడింది",
+            "verified": "ధృవీకరణ విజయవంతం!",
+            "approved": "విజయవంతంగా ఆమోదించబడింది",
+            "verificationSuccess": "ధృవీకరణ విజయవంతం! దయచేసి లాగిన్ చేయండి"
+        },
+        "error": {
+            "generic": "లోపం సంభవించింది",
+            "network": "నెట్‌వర్క్ లోపం. దయచేసి మళ్లీ ప్రయత్నించండి",
+            "unauthorized": "మీకు అధికారం లేదు",
+            "notFound": "కనుగొనబడలేదు",
+            "serverError": "సర్వర్ లోపం. దయచేసి తర్వాత మళ్లీ ప్రయత్నించండి",
+            "registrationFailed": "రిజిస్ట్రేషన్ విఫలమైంది",
+            "loginFailed": "లాగిన్ విఫలమైంది - టోకెన్ అందుకోలేదు"
+        },
+        "loading": {
+            "generic": "లోడ్ అవుతోంది...",
+            "submitting": "సబ్మిట్ చేస్తోంది...",
+            "saving": "సేవ్ చేస్తోంది...",
+            "uploading": "అప్‌లోడ్ చేస్తోంది...",
+            "signingIn": "సైన్ ఇన్ చేస్తోంది...",
+            "registering": "రిజిస్టర్ చేస్తోంది..."
+        }
+    },
+    "auth": {
+        "login": {
+            "title": "సైన్ ఇన్",
+            "welcomeBack": "తిరిగి స్వాగతం",
+            "signInToAccount": "మీ ఖాతాకు సైన్ ఇన్ చేయండి",
+            "mobile": "మొబైల్ నంబర్",
+            "password": "పాస్‌వర్డ్",
+            "forgotPassword": "పాస్‌వర్డ్ మర్చిపోయారా?",
+            "noAccount": "ఖాతా లేదా? ఒకటి సృష్టించండి",
+            "submit": "సైన్ ఇన్",
+            "signIn": "సైన్ ఇన్"
+        },
+        "register": {
+            "title": "ఖాతా సృష్టించండి",
+            "createAccount": "ఖాతా సృష్టించండి",
+            "name": "పూర్తి పేరు",
+            "mobile": "మొబైల్ నంబర్",
+            "email": "ఇమెయిల్ చిరునామా (ఐచ్ఛికం)",
+            "age": "వయస్సు",
+            "password": "పాస్‌వర్డ్",
+            "confirmPassword": "పాస్‌వర్డ్ నిర్ధారించండి",
+            "passwordHint": "5-10 అక్షరాలు, 1 పెద్ద అక్షరం, 1 సంఖ్య",
+            "alreadyHaveAccount": "ఇప్పటికే ఖాతా ఉందా? సైన్ ఇన్",
+            "submit": "రిజిస్టర్",
+            "register": "రిజిస్టర్"
+        },
+        "verify": {
+            "title": "OTP ధృవీకరించండి",
+            "verifyOtp": "OTP ధృవీకరించండి",
+            "instruction": "మీ మొబైల్ నంబర్‌కు పంపిన OTP నమోదు చేయండి",
+            "otp": "OTP",
+            "otpLabel": "6-అంకెల OTP నమోదు చేయండి",
+            "resend": "OTP మళ్లీ పంపించు",
+            "submit": "ధృవీకరించు",
+            "verify": "ధృవీకరించు",
+            "expired": "OTP గడువు ముగిసింది. దయచేసి కొత్తది అభ్యర్థించండి.",
+            "invalid": "చెల్లని OTP. దయచేసి తనిఖీ చేసి మళ్ళీ ప్రయత్నించండి."
+        },
+        "forgotPassword": {
+            "title": "పాస్‌వర్డ్ మర్చిపోయారా",
+            "instruction": "మీ మొబైల్ నంబర్ నమోదు చేయండి",
+            "mobile": "మొబైల్ నంబర్",
+            "submit": "OTP పంపించు",
+            "sendOtp": "OTP పంపించు",
+            "backToLogin": "లాగిన్‌కు తిరిగి వెళ్లు"
+        },
+        "resetPassword": {
+            "title": "పాస్‌వర్డ్ రీసెట్ చేయండి",
+            "otp": "OTP",
+            "newPassword": "కొత్త పాస్‌వర్డ్",
+            "confirmPassword": "పాస్‌వర్డ్ నిర్ధారించండి",
+            "submit": "పాస్‌వర్డ్ రీసెట్ చేయండి",
+            "resetPassword": "పాస్‌వర్డ్ రీసెట్ చేయండి",
+            "success": "పాస్‌వర్డ్ రీసెట్ విజయవంతమైంది! లాగిన్ పేజీకి మళ్లిస్తున్నాము...",
+            "missingMobile": "మొబైల్ నంబర్ లేదు. దయచేసి ప్రక్రియను పునఃప్రారంభించండి.",
+            "invalidOtp": "దయచేసి సరైన 6-అంకెల OTPని నమోదు చేయండి"
+        }
+    },
+    "footer": {
+        "copyright": "© 2026 జనసేన పార్టీ. అన్ని హక్కులు రిజర్వ్ చేయబడ్డాయి.",
+        "disclaimer": "నిరాకరణ: ఇది స్వచ్ఛంద సేవకుల చొరవ, అధికారిక JSP వెబ్‌సైట్ కాదు",
+        "visitors": "సందర్శకులు",
+        "links": {
+            "privacy": "గోప్యతా విధానం",
+            "terms": "నిబంధనలు & షరతులు",
+            "contact": "సంప్రదించండి"
+        }
+    },
+    "welcomeModal": {
+        "question": "మీరు జనసేన పార్టీ మద్దతుదారులేనా?",
+        "yes": "అవును",
+        "no": "కాదు"
+    },
+    "atrocityCard": {
+        "noPhoto": "ఫోటో లేదు",
+        "more": "మరిన్ని"
+    },
+    "ui": {
+        "loading": "లోడ్ అవుతోంది...",
+        "error": "లోపం",
+        "status": {
+            "active": "యాక్టివ్",
+            "archived": "ఆర్కైవ్ చేయబడింది",
+            "completed": "పూర్తయింది",
+            "onHold": "నిలిపివేయబడింది"
+        }
+    },
+    "caseStatus": {
+        "status": {
+            "UNDER_REVIEW": "సమీక్షలో ఉంది",
+            "CLARIFICATION_REQUIRED": "వివరణ అవసరం",
+            "REVIEW_COMPLETED": "సమీక్ష పూర్తయింది",
+            "ACTION_TAKEN": "చర్య తీసుకోబడింది",
+            "CLOSED": "మూసివేయబడింది",
+            "ARCHIVED": "ఆర్కైవ్ చేయబడింది"
+        },
+        "action": {
+            "NO_ACTION": "ఎటువంటి చర్య తీసుకోలేదు",
+            "WARNING": "హెచ్చరిక జారీ చేయబడింది",
+            "TEMPORARY_SUSPENSION": "తాత్కాలిక సస్పెన్షన్",
+            "PERMANENT_SUSPENSION": "శాశ్వత సస్పెన్షన్",
+            "POSITION_REVOKED": "పదవి రద్దు చేయబడింది",
+            "MEMBERSHIP_REVOKED": "సభ్యత్వం రద్దు చేయబడింది"
+        },
+        "visibility": {
+            "INTERNAL_ONLY": "అంతర్గత మాత్రమే",
+            "PUBLIC": "బహిరంగ",
+            "RESTRICTED": "నియంత్రిత"
+        }
+    },
+    "leaders": {
+        "title": "సమాజానికి కావాల్సిన నాయకులు",
+        "subtitle": "కమ్యూనిటీ సేవ మరియు సామాజిక రచనపై క్షేత్ర స్థాయి స్వరాలను రికార్డ్ చేయడం",
+        "submitLeader": "నాయకుడిని సబ్మిట్ చేయండి",
+        "noLeaders": "నాయకులు కనుగొనబడలేదు",
+        "loadingLeaders": "నాయకులు లోడ్ అవుతున్నారు...",
+        "profileNotFound": "నాయకుడి ప్రొఫైల్ కనుగొనబడలేదు",
+        "disclaimer": {
+            "title": "కమ్యూనిటీ వాయిస్ నిరాకరణ",
+            "text": "ఇక్కడ ప్రదర్శించబడిన ప్రొఫైల్స్ సహకారుల అభిప్రాయాలు మరియు కమ్యూనిటీ పరిశీలనలను సూచిస్తాయి. ఇది అధికారిక ఆమోదం, ర్యాంకింగ్ లేదా రాజకీయ అనుబంధ ప్లాట్‌ఫారమ్ కాదు."
+        },
+        "form": {
+            "title": "నాయకుడిని సబ్మిట్ చేయండి",
+            "editTitle": "ప్రొఫైల్‌ను సవరించండి",
+            "back": "వెనుకకు",
+            "beforeYouSubmit": "సబ్మిట్ చేసే ముందు",
+            "beforeYouSubmitText": "మీరు సమాజానికి ఒక వ్యక్తి చేసిన సేవలను నమోదు చేస్తున్నారు. దయచేసి సమాచారం వాస్తవంగా మరియు గౌరవప్రదంగా ఉందని, మీరు ఎవరి తరపునైనా సబ్మిట్ చేస్తుంటే వారి అనుమతి ఉందనీ, మరియు కంటెంట్ సేవపై దృష్టి పెట్టిందని (రాజకీయ అధికారం లేదా పోలికపై కాదు) నిర్ధారించుకోండి.",
+            "name": "పేరు",
+            "district": "జిల్లా",
+            "mandal": "మండలం/ప్రాంతం (ఐచ్ఛికం)",
+            "whySocietyNeeds": "ఈ నాయకుడి అవసరం సమాజానికి ఎందుకు ఉంది",
+            "whySocietyNeedsHelper": "నిర్దిష్ట సేవలు, కార్యక్రమాలు లేదా సేవా కార్యకలాపాలను వివరించండి.",
+            "areaOfService": "సేవా రం (1-5 ఎంచుకోండి)",
+            "partyAssociation": "పార్టీ అనుబంధ వివరాలు",
+            "yearsOfAssociation": "అనుబంధ సంవత్సరాలు",
+            "yearsPlaceholder": "ఉదా. 5",
+            "position": "పదవి (ఐచ్ఛికం)",
+            "positionPlaceholder": "ఉదా. జిల్లా కార్యదర్శి",
+            "nominatedPost": "నామినేటెడ్ పదవి (ఏదైనా ఉంటే)",
+            "nominatedPostPlaceholder": "ఉదా. బోర్డు సభ్యుడు",
+            "socialMedia": "సోషల్ మీడియా ఉనికి (ఐచ్ఛికం)",
+            "socialMediaHelper": "ఆన్‌లైన్ ఉనికిని ప్రదర్శించడానికి సోషల్ మీడియా ప్రొఫైల్‌లను జోడించండి",
+            "primaryPlatform": "ప్రాథమిక ప్లాట్‌ఫారమ్",
+            "primaryPlatformHelper": "ఈ నాయకుడు ఎక్కువగా యాక్టివ్ గా ఉండే ప్రధాన ప్లాట్‌ఫారమ్‌ను ఎంచుకోండి",
+            "profileUrl": "ప్రొఫైల్ URL",
+            "validUrl": "సరైన URL",
+            "invalidUrl": "చెల్లని URL",
+            "additionalPlatforms": "అదనపు ప్లాట్‌ఫారమ్‌లు (ఐచ్ఛికం)",
+            "additionalPlatformsHelper": "ఇతర సోషల్ మీడియా ప్లాట్‌ఫారమ్‌లకు లింక్‌లను జోడించండి",
+            "platform": "ప్లాట్‌ఫారమ్",
+            "addPlatform": "+ మరొక ప్లాట్‌ఫారమ్‌ను జోడించండి",
+            "allPlatformsAdded": "అన్ని ప్లాట్‌ఫారమ్‌లు జోడించబడ్డాయి",
+            "valuesRepresented": "ప్రాతినిధ్యం వహించే విలువలు (1-4 ఎంచుకోండి)",
+            "photo": "ఫోటో (ఐచ్ఛికం, గరిష్టంగా 500KB)",
+            "uploadPhoto": "ఫోటో అప్‌లోడ్ చేయండి",
+            "gallery": "గ్యాలరీ (ఐచ్ఛికం, గరిష్టంగా 10 చిత్రాలు)",
+            "addGalleryImages": "గ్యాలరీ చిత్రాలను జోడించండి",
+            "maxImagesReached": "గరిష్ట చిత్రాల పరిమితి దాటింది",
+            "submittedBy": "సబ్మిట్ చేస్తున్నది",
+            "self": "స్వయం (నేను గుర్తించబడుతున్న వ్యక్తిని)",
+            "supporter": "మద్దతుదారు (నేను ఎవరైనా తరపున సబ్మిట్ చేస్తున్నాను)",
+            "anonymous": "అనామక (నేను నన్ను గుర్తించకూడదనుకుంటున్నాను)",
+            "consent": "నేను ధృవీకరిస్తున్నాను: అందించిన సమాచారం సత్యం మరియు గౌరవప్రదమైనది, నేను ఈ ప్రొఫైల్‌ను సబ్మిట్ చేయడానికి అనుమతి పొందాను (వర్తిస్తే), ఇది డాక్యుమెంటేషన్ ప్రయోజనాల కోసం మాత్రమే అని అర్థం చేసుకున్నాను.",
+            "submitProfile": "ప్రొఫైల్ సబ్మిట్ చేయండి",
+            "submitting": "సబ్మిట్ చేస్తున్నారు...",
+            "updateProfile": "ప్రొఫైల్ నవీకరించండి",
+            "updating": "నవీకరిస్తున్నారు...",
+            "cancel": "రద్దు చేయండి",
+            "errors": {
+                "nameLength": "పేరు 3 నుండి 100 అక్షరాల మధ్య ఉండాలి",
+                "districtRequired": "జిల్లా అవసరం",
+                "mandalLength": "మండలం 50 అక్షరాల కంటే తక్కువ ఉండాలి",
+                "reasonLength": "కారణం 100 నుండి 2000 అక్షరాల మధ్య ఉండాలి",
+                "serviceAreaCount": "1 నుండి 5 సేవా రంగాలను ఎంచుకోండి",
+                "valuesCount": "1 నుండి 4 విలువలను ఎంచుకోండి",
+                "consentRequired": "మీరు తప్పనిసరిగా సమ్మతి అవసరాలను అంగీకరించాలి",
+                "imageType": "కేవలం చిత్ర ఫైళ్లు మాత్రమే అనుమతించబడతాయి",
+                "imageSize": "చిత్రం పరిమితిని దాటింది (500KB)",
+                "galleryLimit": "గరిష్టంగా 10 చిత్రాలు అనుమతించబడతాయి",
+                "imageSizeSpecific": "చిత్రం \"{name}\" 500KB పరిమితిని మించిపోయింది"
+            }
+        },
+        "serviceAreas": {
+            "Education & Literacy": "విద్య & అక్షరాస్యత",
+            "Healthcare & Wellness": "ఆరోగ్యం & సంక్షేమం",
+            "Youth Development": "యువజన అభివృద్ధి",
+            "Women Empowerment": "మహిళా సాధికారత",
+            "Agriculture & Farmers": "వ్యవసాయం & రైతులు",
+            "Community Development": "సామాజిక అభివృద్ధి",
+            "Disaster Relief": "విపత్తు సహాయం",
+            "Environmental Protection": "పర్యావరణ పరిరక్షణ",
+            "Social Justice": "సామాజిక న్యాయం",
+            "Infrastructure & Development": "మౌలిక సదుపాయాలు & అభివృద్ధి"
+        },
+        "values": {
+            "Service to Society": "సమాజ సేవ",
+            "Integrity & Honesty": "నిజాయితీ & చిత్తశుద్ధి",
+            "Transparency": "పారదర్శకత",
+            "Grassroots Connection": "క్షేత్రస్థాయి సంబంధం",
+            "Accessibility to People": "ప్రజలకు అందుబాటులో ఉండటం",
+            "Problem-Solving Approach": "సమస్య పరిష్కార దృక్పథం",
+            "Inclusive Leadership": "కలుపుగోలు నాయకత్వం",
+            "Accountability": "జవాబుదారీతనం"
+        }
+    },
+    "governance": {
+        "title": "పాలనా విశేషాలు",
+        "create": "విశేషాన్ని సృష్టించండి",
+        "noHighlights": "విశేషాలు కనుగొనబడలేదు",
+        "loadingHighlights": "విశేషాలు లోడ్ అవుతున్నాయి...",
+        "backToHighlights": "పాలన విశేషాలకు తిరిగి వెళ్ళు",
+        "projectDetails": "ప్రాజెక్ట్ వివరాలు",
+        "sourceInformation": "మూల సమాచారం",
+        "viewSource": "మూలాన్ని చూడండి",
+        "gallery": "గ్యాలరీ",
+        "documentAdded": "డాక్యుమెంట్ జోడించబడింది",
+        "lastUpdated": "చివరిగా నవీకరించబడింది",
+        "form": {
+            "title": "పాలనా విశేషాన్ని సృష్టించండి",
+            "subtitle": "కొత్త పాలనా చర్య లేదా కార్యక్రమాన్ని నమోదు చేయండి.",
+            "back": "విశేషాలకు తిరిగి వెళ్ళు",
+            "success": "విశేషం విజయవంతంగా సృష్టించబడింది!",
+            "successDelete": "విశేషం విజయవంతంగా తొలగించబడింది!",
+            "errorFields": "దయచేసి అవసరమైన అన్ని వివరాలను పూరించండి",
+            "creating": "సృష్టిస్తున్నారు...",
+            "create": "విశేషాన్ని సృష్టించండి",
+            "cancel": "రద్దు",
+            "fields": {
+                "title": "శీర్షిక *",
+                "titleHelper": "చర్య యొక్క స్పష్టమైన, వివరణాత్మక శీర్షిక",
+                "category": "వర్గం *",
+                "description": "వివరణ *",
+                "descriptionHelper": "విశేషం యొక్క వివరణాత్మక వివరణ",
+                "area": "ప్రాంతం/రంగం *",
+                "areaPlaceholder": "ఉదా. మౌలిక సదుపాయాలు, ఆరోగ్యం",
+                "department": "శాఖ",
+                "state": "రాష్ట్రం *",
+                "district": "జిల్లా *",
+                "yearStarted": "ప్రారంభించిన సంవత్సరం",
+                "yearCompleted": "పూర్తయిన సంవత్సరం *",
+                "status": "స్థితి *",
+                "sourceType": "మూల రకం *",
+                "sourceUrl": "మూల URL *",
+                "sourceUrlHelper": "సమాచార మూలానికి లింక్",
+                "sourceUrlPlaceholder": "మూల URL",
+                "issueContext": "సమస్య సందర్భం (పెండింగ్ సమస్యల కోసం)",
+                "issueContextHelper": "ఈ సమస్య ఎందుకు పెండింగ్‌లో ఉందో సందర్భం",
+                "profilePhoto": "ప్రొఫైల్/కవర్ ఫోటో",
+                "uploadPhoto": "ఫోటో అప్‌లోడ్ చేయండి",
+                "selected": "ఎంచుకున్నది",
+                "gallery": "గ్యాలరీ చిత్రాలు (ఐచ్ఛికం)",
+                "uploadGallery": "గ్యాలరీ చిత్రాలను అప్‌లోడ్ చేయండి",
+                "imagesSelected": "చిత్రాలు ఎంచుకోబడ్డాయి",
+                "adminNotes": "అడ్మిన్ గమనికలు (అంతర్గత)"
+            },
+            "categories": {
+                "INNOVATIVE_INITIATIVE": "నూతన కార్యక్రమం",
+                "PENDING_ISSUE_ADDRESSED": "పెండింగ్ సమస్య పరిష్కారం"
+            },
+            "sourceTypes": {
+                "GOVERNMENT_PORTAL": "ప్రభుత్వ పోర్టల్",
+                "PRESS_RELEASE": "పత్రికా ప్రకటన",
+                "PUBLIC_RECORD": "ప్రజా రికార్డు",
+                "NEWS_REPORT": "వార్తా నివేదిక",
+                "FIELD_VERIFICATION": "క్షేత్ర పరిశీలన"
+            },
+            "statusValues": {
+                "ADDRESSED": "పూర్తయింది",
+                "IN_PROGRESS": "పురోగతిలో ఉంది",
+                "FOLLOW_UP_ONGOING": "పర్యవేక్షణలో ఉంది"
+            }
+        },
+        "labels": {
+            "area": "ప్రాంతం",
+            "department": "శాఖ",
+            "yearCompleted": "పూర్తయిన సంవత్సరం",
+            "status": "స్థితి",
+            "category": "వర్గం",
+            "focusArea": "దృష్టి సారించిన అంశం",
+            "context": "సందర్భం",
+            "sourceType": "మూల రకం",
+            "verificationLink": "ధృవీకరణ లింక్",
+            "description": "వివరణ"
+        },
+        "statusValues": {
+            "ADDRESSED": "పూర్తయింది",
+            "IN_PROGRESS": "పురోగతిలో ఉంది",
+            "FOLLOW_UP_ONGOING": "పర్యవేక్షణలో ఉంది"
+        },
+        "categoryValues": {
+            "INNOVATIVE_INITIATIVE": "వినూత్న చొరవ",
+            "PENDING_ISSUE_ADDRESSED": "దీర్ఘకాలిక సమస్య పరిష్కారం"
+        },
+        "sourceValues": {
+            "GOVERNMENT_PORTAL": "ప్రభుత్వ పోర్టల్",
+            "PRESS_RELEASE": "అధికారిక పత్రికా ప్రకటన",
+            "PUBLIC_RECORD": "పబ్లిక్ రికార్డ్",
+            "NEWS_REPORT": "వార్తా నివేదిక",
+            "FIELD_VERIFICATION": "క్షేత్ర స్థాయి పరిశీలన"
+        },
+        "subtitle": "పౌర సమాజానికి సమాచారాన్ని అందించడానికి పాలనా చర్యల నమోదు",
+        "checkBackSoon": "నవీకరణల కోసం త్వరలో మళ్లీ తనిఖీ చేయండి.",
+        "noImage": "చిత్రం లేదు",
+        "editHighlight": "విశేషాన్ని సవరించండి",
+        "deleteHighlight": "విశేషాన్ని తొలగించండి",
+        "deleteConfirmation": "మీరు నిజంగా ఈ విశేషాన్ని తొలగించాలనుకుంటున్నారా?"
+    },
+    "atrocities": {
+        "title": "జనసైనికులపై అణిచివేతలు",
+        "reportNew": "కొత్త అణిచివేతని నివేదించండి",
+        "subtitle": "మా రాజకీయ కార్యకర్తలపై జరిగిన హింస, వేధింపులు మరియు అన్యాయాల ఘటనలను రికార్డ్ చేయడం",
+        "loadingAtrocities": "దాడుల వివరాలు లోడ్ అవుతున్నాయి...",
+        "noAtrocities": "అణిచివేతలు కనుగొనబడలేదు",
+        "approving": "ఆమోదిస్తోంది...",
+        "approve": "ఆమోదించండి",
+        "notFound": "అణిచివేత కనుగొనబడలేదు",
+        "gallery": "సాక్ష్యం గ్యాలరీ",
+        "atrocityType": "అణిచివేత రకం",
+        "toLeader": "నాయకుడికి",
+        "toParty": "జనసేన పార్టీకి",
+        "leaderName": "నాయకుడి పేరు",
+        "leaderLocation": "<strong>{leaderName}</strong>, {state}, {district}, {constituency}, {mandal}, {village} నుండి.",
+        "atrocityBy": "అణిచివేత చేసినవారు",
+        "specifyParty": "పార్టీ/సమూహాన్ని పేర్కొనండి *",
+        "selectState": "రాష్ట్రాన్ని ఎంచుకోండి",
+        "selectDistrict": "జిల్లాను ఎంచుకోండి",
+        "selectConstituency": "నియోజకవర్గాన్ని ఎంచుకోండి",
+        "selectMandal": "మండలం",
+        "village": "గ్రామం",
+        "position": "పార్టీలో పదవి",
+        "subjectOptional": "విషయం (ఐచ్ఛికం)",
+        "description": "వివరణ",
+        "others": "ఇతరులు",
+        "attachImages": "చిత్రాలను జత చేయండి (గరిష్టంగా 2, ఒక్కొక్కటి 500KB)",
+        "submitReport": "నివేదికను సమర్పించండి",
+        "filters": {
+            "all": "అన్నీ",
+            "pending": "ధృవీకరణ పెండింగ్‌లో ఉంది"
+        },
+        "confirm": {
+            "approve": "మీరు ఖచ్చితంగా ఈ అణిచివేతని ఆమోదించాలనుకుంటున్నారా?",
+            "removeImage": "మీరు ఖచ్చితంగా ఈ చిత్రాన్ని తీసివేయాలనుకుంటున్నారా?"
+        },
+        "success": {
+            "approved": "అణిచివేత విజయవంతంగా ఆమోదించబడింది!",
+            "imageRemoved": "చిత్రం విజయవంతంగా తీసివేయబడింది!"
+        },
+        "form": {
+            "others": "ఇతరులు",
+            "attachImages": "చిత్రాలను జత చేయండి (గరిష్టంగా 2, ఒక్కొక్కటి 500KB)",
+            "maxSize": "గరిష్ట పరిమాణం 500KB"
+        }
+    },
+    "disciplinary": {
+        "title": "క్రమశిక్షణా కేసులు",
+        "createCase": "కేసును సృష్టించండి",
+        "noCases": "కేసులు కనుగొనబడలేదు",
+        "subtitle": "క్రమశిక్షణా చర్యలు మరియు అంతర్గత సమీక్షల అధికారిక రికార్డులు",
+        "searchPlaceholder": "కేసు ID లేదా నాయకుడి పేరు ద్వారా వెతకండి",
+        "filters": {
+            "allStatuses": "అన్ని స్థితులు",
+            "allCategories": "అన్ని వర్గాలు",
+            "allVisibility": "అన్ని రకాలు"
+        },
+        "loadingCases": "కేసులు లోడ్ అవుతున్నాయి...",
+        "backToCases": "కేసులకు తిరిగి వెళ్ళు",
+        "updateStatus": "స్థితిని నవీకరించండి",
+        "recordDecision": "నిర్ణయాన్ని నమోదు చేయండి",
+        "changeVisibility": "వ్యాప్తిని మార్చండి",
+        "caseNumber": "కేసు సంఖ్య",
+        "initiated": "ప్రారంభించబడింది",
+        "issueInformation": "సమస్య సమాచారం",
+        "timeline": "కాలక్రమం",
+        "initiatedBy": "ద్వారా ప్రారంభించబడింది",
+        "decisionDate": "నిర్ణయం తేదీ",
+        "issueDescription": "సమస్య వివరణ",
+        "evidenceGallery": "సాక్ష్యం గ్యాలరీ",
+        "sourceReferences": "మూల ప్రస్తావనలు",
+        "disciplinaryActionTaken": "తీసుకున్న క్రమశిక్షణా చర్య",
+        "outcome": "ఫలితం",
+        "rationale": "హేతువు",
+        "caseStatus": "కేసు స్థితి",
+        "created": "సృష్టించబడింది",
+        "updated": "నవీకరించబడింది",
+        "internalNotes": "అంతర్గత గమనికలు",
+        "addNote": "గమనికను జోడించండి",
+        "enterNotePlaceholder": "రహస్య అంతర్గత గమనికలను నమోదు చేయండి...",
+        "confirmDecision": "నిర్ణయాన్ని నిర్ధారించండి",
+        "effectiveFrom": "నుండి అమలు",
+        "effectiveTo": "వరకు అమలు",
+        "labels": {
+            "category": "వర్గం",
+            "source": "మూలం"
+        },
+        "form": {
+            "title": "క్రమశిక్షణా కేసును ప్రారంభించండి",
+            "description": "క్రమశిక్షణా సమస్య కోసం కొత్త అధికారిక రికార్డును సృష్టించండి. ఇది ప్రారంభంలో నిర్వాహకులకు మాత్రమే కనిపిస్తుంది.",
+            "section": {
+                "subjectDetails": "వ్యక్తి వివరాలు",
+                "caseInformation": "కేసు సమాచారం",
+                "evidence": "సాక్ష్యం"
+            },
+            "fields": {
+                "leaderName": "నాయకుడి పేరు",
+                "leaderNameHelper": "నాయకుడి పూర్తి పేరును నమోదు చేయండి",
+                "position": "పార్టీలో పదవి",
+                "positionHelper": "ఉదా. ఎమ్మెల్యే, ఎంపీ, జిల్లా అధ్యక్షుడు, మొదలైనవి.",
+                "constituency": "నియోజకవర్గం (ఐచ్ఛికం)",
+                "district": "జిల్లా (ఐచ్ఛికం)",
+                "leaderPhoto": "నాయకుడి ప్రొఫైల్ ఫోటో",
+                "uploadLeaderPhoto": "నాయకుడి ఫోటో అప్‌లోడ్ చేయండి (ఐచ్ఛికం)",
+                "issueCategory": "సమస్య వర్గం",
+                "issueSource": "సమస్య మూలం",
+                "issueDescription": "వివరణాత్మక వివరణ",
+                "issueDescriptionHelper": "సంఘటన లేదా సమస్య యొక్క తటస్థ, వాస్తవ వివరణను అందించండి.",
+                "sourceLinks": "మూల లింకులు (ఐచ్ఛికం)",
+                "sourceUrlPlaceholder": "మూల URL",
+                "sourceLinksHelper": "వార్తా కథనాలు, సోషల్ మీడియా పోస్ట్‌లు లేదా ఇతర సూచనలకు URLలను జోడించండి",
+                "addSourceLink": "సోర్స్ లింక్‌ను జోడించండి",
+                "uploadPhotos": "ఫోటోలను అప్‌లోడ్ చేయండి",
+                "uploadDocuments": "పత్రాలను అప్‌లోడ్ చేయండి (PDF/Doc)",
+                "photosSelected": "ఫోటో(లు) ఎంచుకోబడ్డాయి",
+                "filesSelected": "ఫైల్(లు) ఎంచుకోబడ్డాయి"
+            },
+            "actions": {
+                "cancel": "రద్దు చేయండి",
+                "create": "కేసును సృష్టించండి",
+                "creating": "సృష్టిస్తున్నారు..."
+            },
+            "errors": {
+                "requiredFields": "దయచేసి నాయకుడి పేరు మరియు పదవిని పూరించండి",
+                "createFailed": "కేసును సృష్టించడం విఫలమైంది"
+            },
+            "issueCategories": {
+                "MISCONDUCT": "దుష్ప్రవర్తన",
+                "POLICY_VIOLATION": "విధాన ఉల్లంఘన",
+                "ETHICAL_BREACH": "నైతిక ఉల్లంఘన",
+                "INSUBORDINATION": "అవిధేయత",
+                "FINANCIAL_IRREGULARITY": "ఆర్థిక అవకతవకలు",
+                "PUBLIC_STATEMENT_VIOLATION": "బహిరంగ ప్రకటన ఉల్లంఘన",
+                "OTHER": "ఇతర"
+            },
+            "issueSources": {
+                "INTERNAL_COMPLAINT": "అంతర్గత ఫిర్యాదు",
+                "EXTERNAL_COMPLAINT": "బాహ్య ఫిర్యాదు",
+                "MEDIA_REPORT": "మీడియా నివేదిక",
+                "PARTY_OBSERVATION": "పార్టీ పరిశీలన",
+                "LEGAL_NOTICE": "చట్టపరమైన నోటీసు"
+            }
+        },
+        "statuses": {
+            "pending": "పెండింగ్",
+            "underReview": "సమీక్షలో",
+            "resolved": "పరిష్కరించబడింది",
+            "dismissed": "తిరస్కరించబడింది"
+        }
+    },
+    "dashboard": {
+        "title": "డాష్‌బోర్డ్",
+        "welcome": "స్వాగతం",
+        "welcomeUser": "తిరిగి స్వాగతం, {name}!",
+        "happening": "ఈ రోజు మీ ప్రాజెక్ట్‌లతో ఏం జరుగుతుందో ఇక్కడ ఉంది.",
+        "totalProjects": "మొత్తం ప్రాజెక్టులు",
+        "activeProjects": "యాక్టివ్ ప్రాజెక్టులు",
+        "completed": "పూర్తయినవి",
+        "recentProjects": "ఇటీవలి ప్రాజెక్టులు",
+        "latestProjects": "మీ తాజా ప్రాజెక్టులు",
+        "noProjects": "ఇంకా ప్రాజెక్టులు లేవు. ప్రారంభించడానికి మీ మొదటి ప్రాజెక్ట్‌ని సృష్టించండి!",
+        "noDescription": "వివరణ లేదు"
+    },
+    "notFound": {
+        "title": "పేజీ కనుగొనబడలేదు",
+        "description": "అభ్యర్థించిన వనరు కనుగొనబడలేదు",
+        "returnHome": "హోమ్‌కు వెళ్ళు"
+    },
+    "messageToJanasainiks": {
+        "title": "జనసైనికులకు సందేశం: బలమైన ఉద్యమాన్ని నిర్మించడం",
+        "publishedDate": "ప్రచురించబడింది: జనవరి 24, 2026",
+        "p1": "Dear Janasainiks, you are the backbone of our movement. Your dedication, sacrifice, and unwavering commitment to the cause of people's welfare form the foundation upon which we build our vision for a better society. This message is a recognition of your efforts and a call to strengthen our collective resolve in the face of challenges.",
+        "p2": "The role you play goes far beyond traditional political activism. You are community organizers, problem solvers, and bridges between leadership and the people. Every day, you work tirelessly to understand the concerns of ordinary citizens, to mobilize support for positive change, and to ensure that the voice of the common person is heard in the corridors of power.",
+        "p3": "In recent times, we have witnessed unprecedented challenges to grassroots democratic participation. The obstacles you face—whether they are logistical, political, or personal—are real and significant. Yet, your resilience in the face of these challenges is what gives our movement its strength and credibility. Your commitment inspires others to join the cause and reinforces the belief that positive change is possible.",
+        "p4": "As we move forward, it is essential that we strengthen our organizational structures and support systems. This means creating better channels of communication between different levels of our movement, ensuring that resources reach those who need them most, and establishing mechanisms for feedback and continuous improvement. Your input in shaping these systems is not just welcome—it is essential.",
+        "p5": "Training and capacity building must be a priority. We recognize that effective grassroots work requires a diverse set of skills—from community organizing and public speaking to conflict resolution and digital communication. We are committed to providing you with the training, tools, and resources necessary to excel in your role and to grow as leaders in your own right.",
+        "p6": "The safety and security of every Janasainik is of paramount importance. No one should have to face threats, harassment, or violence for their political beliefs or activities. We are working to establish stronger support networks, legal assistance programs, and rapid response mechanisms to ensure that you can carry out your work without fear. Your safety is not negotiable, and we will stand firmly against any attempts to intimidate or harm our workers.",
+        "p7": "Communication is the lifeblood of any successful movement. We need to ensure that information flows freely and accurately between all levels of our organization. This means not just top-down directives, but also bottom-up feedback. Your observations from the field, your understanding of local issues, and your insights into community dynamics are invaluable. We must create formal channels for this information to reach decision-makers and influence our strategies.",
+        "p8": "Unity in diversity is our strength. Our movement brings together people from different backgrounds, regions, and walks of life. This diversity is not a weakness to be managed but a strength to be celebrated. It gives us a broader perspective, helps us understand different viewpoints, and makes our movement more representative of the society we seek to serve. Let us embrace this diversity and learn from each other.",
+        "p9": "Transparency and accountability must guide all our actions. As representatives of a people's movement, we must hold ourselves to the highest standards of integrity and ethical conduct. This means being honest about our challenges, transparent about our resources, and accountable for our decisions. When we make mistakes—and we will—we must acknowledge them, learn from them, and do better.",
+        "p10": "The digital age presents both opportunities and challenges for grassroots organizing. Social media and digital tools can amplify our message and help us reach more people, but they also come with risks of misinformation and digital harassment. We need to develop digital literacy among our workers, establish guidelines for online conduct, and create support systems for those who face online abuse.",
+        "p11": "Remember that sustainable activism requires taking care of yourself. Burnout is real, and the emotional toll of political work can be significant. It is not selfish to prioritize your mental and physical health—it is necessary. Take breaks when you need them, seek support when you're struggling, and remember that this is a marathon, not a sprint. We need you to be in this for the long haul.",
+        "p12": "Your families and loved ones also make sacrifices for this movement. The time you spend in meetings, rallies, and community work is time away from them. We acknowledge this sacrifice and are grateful for their support. We must also ensure that our movement creates space for family life and personal commitments, recognizing that balanced, fulfilled individuals make the most effective activists.",
+        "p13": "As we look to the future, let us remember why we started this journey. It was not for personal gain or political power, but for the welfare of the people, for justice, and for a better society. These ideals must continue to guide us, even when the path is difficult and the obstacles seem insurmountable. Our commitment to these principles is what sets us apart and gives our movement its moral authority.",
+        "p14": "The road ahead will not be easy. We will face opposition, setbacks, and moments of doubt. But together, united in our purpose and committed to our values, there is no challenge we cannot overcome. Your courage, dedication, and hard work are the driving force of this movement. You are not just workers or volunteers—you are leaders, changemakers, and the hope for a better tomorrow.",
+        "p15": "To every Janasainik reading this: thank you. Thank you for your service, your sacrifice, and your unwavering belief in our shared vision. Together, we will build a movement that truly serves the people, that stands up for justice, and that creates lasting positive change in our society. The future we dream of is possible, and it will be built by people like you, one community at a time, one conversation at a time, one act of service at a time. Stay strong, stay united, and let us march forward together toward the future we deserve."
+    },
+    "projects": {
+        "title": "ప్రాజెక్టులు",
+        "subtitle": "మీ ప్రాజెక్ట్‌లను నిర్వహించండి మరియు పురోగతిని ట్రాక్ చేయండి",
+        "newProject": "కొత్త ప్రాజెక్ట్",
+        "emptyTitle": "ఇంకా ప్రాజెక్టులు లేవు",
+        "emptyDesc": "మీ మొదటి ప్రాజెక్ట్‌ని సృష్టించడం ద్వారా ప్రారంభించండి",
+        "createFirst": "ప్రాజెక్ట్‌ని సృష్టించండి",
+        "noDescription": "వివరణ లేదు",
+        "by": "{name} ద్వారా",
+        "unknown": "తెలియదు",
+        "archive": "ఆర్కైవ్",
+        "createDialogTitle": "కొత్త ప్రాజెక్ట్‌ని సృష్టించండి",
+        "projectName": "ప్రాజెక్ట్ పేరు",
+        "description": "వివరణ",
+        "deleteConfirmation": "మీరు ఖచ్చితంగా ఈ ప్రాజెక్ట్‌ని తొలగించాలనుకుంటున్నారా?"
+    },
+    "whyJoin": {
+        "title": "జనసేనలో ఎందుకు చేరాలి",
+        "subtitle": "ప్రజల ప్రథమ రాజకీయాల కోసం ఒక ఉద్యమం",
+        "intro": "JanaSena is not just a political party—it is a commitment to the people, a promise to serve with integrity, and a vision for a just and equitable society.",
+        "ideology": {
+            "title": "మా సిద్ధాంతం",
+            "points": [
+                "JanaSena stands firmly on the principles of democratic socialism, where the welfare of every citizen is paramount. We believe in a society where opportunities are not privileges of the few, but rights of the many.",
+                "Our ideology is rooted in the belief that governance must be transparent, accountable, and people-centric. We envision a political system where leaders are servants of the people, not masters.",
+                "We champion the cause of social justice, economic empowerment, and environmental sustainability. Every policy, every decision, every action is guided by one question: Does this serve the people?"
+            ]
+        },
+        "values": {
+            "title": "మా ప్రధాన విలువలు",
+            "items": [
+                {
+                    "heading": "Transparency & Accountability",
+                    "text": "We believe in open governance where every decision is made in the light of public scrutiny. Leaders must be accountable to the people they serve."
+                },
+                {
+                    "heading": "Social Justice",
+                    "text": "Equality is not negotiable. We stand for the rights of marginalized communities, ensuring that every voice is heard and every person is treated with dignity."
+                },
+                {
+                    "heading": "Economic Empowerment",
+                    "text": "True freedom comes from economic independence. We work towards creating opportunities for employment, entrepreneurship, and sustainable livelihoods for all."
+                },
+                {
+                    "heading": "Environmental Responsibility",
+                    "text": "We recognize our duty to protect the environment for future generations. Sustainable development is not an option—it is a necessity."
+                }
+            ]
+        },
+        "leadership": {
+            "title": "లక్ష్యంతో కూడిన నాయకత్వం: పవన్ కళ్యాణ్ గారు",
+            "p1": "Pawan Kalyan garu's journey from the world of cinema to public service is a testament to his unwavering commitment to the people. He chose to step away from the comfort of stardom to address the real issues facing ordinary citizens.",
+            "p2": "His leadership is defined not by rhetoric, but by action. He has consistently stood with farmers, workers, and marginalized communities, fighting for their rights and dignity. His vision is clear: a society where governance is transparent, leaders are accountable, and every citizen has the opportunity to thrive.",
+            "p3": "What sets him apart is his authenticity. He speaks the language of the people, understands their struggles, and works tirelessly to bring about meaningful change. His dedication to public service is not driven by personal ambition, but by a genuine desire to serve.",
+            "p4": "Under his leadership, JanaSena has become a platform for honest politics, where integrity is valued over opportunism, and service is prioritized over self-interest. He embodies the values that JanaSena stands for—courage, compassion, and commitment to the people."
+        },
+        "relevance": {
+            "title": "జనసేన ఈ రోజు ఎందుకు ముఖ్యం",
+            "points": [
+                "In an era where politics is often reduced to power games and personal gains, JanaSena offers an alternative—a movement grounded in principles, driven by purpose, and focused on people.",
+                "We face challenges that require bold leadership and innovative solutions: economic inequality, environmental degradation, social injustice, and erosion of democratic values. JanaSena is committed to addressing these challenges head-on.",
+                "Our relevance lies in our refusal to compromise on our values. We will not engage in divisive politics. We will not make empty promises. We will work, every single day, to build a society that is just, equitable, and prosperous for all."
+            ]
+        },
+        "vision": {
+            "title": "భవిష్యత్తు కోసం మా దృష్టి",
+            "points": [
+                "We envision a future where governance is participatory, where citizens are not mere spectators but active participants in shaping their destiny.",
+                "We dream of a society where education is accessible to all, healthcare is a right, and employment opportunities are abundant. Where farmers are respected, workers are valued, and entrepreneurs are supported.",
+                "We aspire to build a state—and eventually a nation—where corruption is a thing of the past, where leaders are chosen for their integrity, and where policies are designed to uplift the marginalized.",
+                "This is not a distant dream. This is the future we are working towards, one step at a time, one policy at a time, one community at a time."
+            ]
+        },
+        "closing": {
+            "title": "ఆత్మపరిశీలనకు పిలుపు",
+            "text": "JanaSena is more than a political party. It is a movement of people who believe in the power of honest politics, who refuse to accept the status quo, and who are willing to work for a better tomorrow. We invite you to reflect on what kind of society you want to live in, and what kind of politics you want to support. The choice is yours, and the future is ours to build—together."
+        }
+    },
+    "home": {
+        "title": "ప్రజాస్వామ్య నిశ్చితార్థం యొక్క భవిష్యత్తు: పవన్ కళ్యాణ్‌కు సందేశం",
+        "publishedDate": "జనవరి 24, 2026న ప్రచురించబడింది",
+        "intro": "In the evolving landscape of Indian politics, the role of grassroots movements and direct citizen engagement has never been more critical. As we stand at the crossroads of traditional governance and modern democratic participation, it becomes imperative to examine how leaders can effectively bridge the gap between policy and people.",
+        "accountability": "The concept of political accountability has undergone a significant transformation in recent years. No longer are citizens content with passive participation limited to casting votes every five years. Instead, there is a growing demand for continuous dialogue, transparent decision-making, and responsive governance that adapts to the real-time needs of the population.",
+        "shift": "This shift in expectations has been particularly evident in the way political movements organize themselves. The traditional top-down approach, where directives flow from leadership to followers, is gradually giving way to more collaborative models. These new frameworks emphasize horizontal communication, where ideas and feedback flow freely between all levels of the organization.",
+        "technology": "Technology has played a pivotal role in enabling this transformation. Social media platforms, mobile applications, and digital communication tools have democratized access to information and created new channels for civic participation. Citizens can now voice their concerns, share their experiences, and contribute to policy discussions in ways that were unimaginable just a decade ago.",
+        "challenges": "However, with these opportunities come significant challenges. The digital divide remains a stark reality in many parts of the country, where access to technology and internet connectivity is limited. Ensuring that democratic participation remains inclusive and accessible to all segments of society, regardless of their technological literacy or economic status, is a challenge that must be addressed head-on.",
+        "janasainiks": "The role of political workers, often referred to as Janasainiks in certain movements, cannot be understated in this context. These dedicated individuals serve as the crucial link between leadership and the broader population. They are the ones who translate political vision into ground-level action, who listen to the concerns of ordinary citizens, and who mobilize communities around shared goals and aspirations.",
+        "grassroots": "Yet, the challenges faced by these grassroots workers are often overlooked in mainstream political discourse. From facing harassment and intimidation to dealing with resource constraints and organizational inefficiencies, the obstacles they encounter can be formidable. Creating support systems and protective mechanisms for these frontline workers is not just a matter of organizational efficiency—it is a moral imperative.",
+        "violence": "The question of political violence and atrocities against party workers is particularly troubling. In a healthy democracy, political competition should be robust but civil, passionate but peaceful. When political workers face physical threats, legal harassment, or systematic intimidation, it undermines the very foundations of democratic participation and creates a chilling effect that discourages civic engagement.",
+        "approach": "Addressing these issues requires a multi-faceted approach. Legal frameworks must be strengthened to protect political workers from harassment and violence. Law enforcement agencies must be trained to handle political disputes with impartiality and professionalism. And political leaders themselves must set the tone by condemning violence and intimidation, regardless of which party or ideology is responsible.",
+        "empowerment": "Beyond protection, there is also a need for empowerment. Political workers should have access to training programs that enhance their skills in community organizing, conflict resolution, and effective communication. They should be equipped with the tools and resources necessary to carry out their work efficiently and safely. And they should be given a meaningful voice in shaping the strategies and policies of the movements they serve.",
+        "relationship": "The relationship between political leadership and grassroots workers is fundamentally one of mutual dependence. Leaders depend on workers to implement their vision and connect with voters. Workers depend on leaders to provide direction, resources, and support. When this relationship is healthy and balanced, it creates a powerful force for positive change. When it becomes dysfunctional or exploitative, it leads to disillusionment and organizational decay.",
+        "transparency": "Transparency and accountability must flow in both directions. Just as citizens have the right to hold their elected representatives accountable, political workers should be able to hold their leadership accountable for promises made and resources committed. Creating formal mechanisms for feedback, grievance redressal, and participatory decision-making can help ensure that this accountability is real and meaningful.",
+        "future": "The future of democratic politics in India will be shaped by how well we address these fundamental questions of participation, protection, and empowerment. It will depend on our ability to create political movements that are not just effective at winning elections, but also at fostering genuine civic engagement and social transformation.",
+        "pathForward": "As we look ahead, the path forward requires courage, creativity, and commitment. It requires leaders who are willing to listen as much as they speak, who value the contributions of every worker and supporter, and who understand that true political power comes not from domination but from service. It requires workers who are informed, engaged, and empowered to be agents of change in their communities.",
+        "message": "The message to political leaders is clear: invest in your people, protect your workers, and create systems that enable genuine democratic participation. The message to political workers is equally important: stay committed to your values, demand the support and protection you deserve, and never lose sight of the larger purpose that brought you into public service. Together, through mutual respect and shared commitment, we can build a political culture that truly serves the people and strengthens our democracy for generations to come."
+    },
+    "memorial": {
+        "title": "మా స్మారక చిహ్నం",
+        "subtitle": "మా ఉద్యమం యొక్క అమరవీరులను స్మరిస్తూ",
+        "comingSoon": "స్మారక విభాగం త్వరలో వస్తోంది...",
+        "leaders": {
+            "title": "సమాజానికి అవసరమైన నాయకులు",
+            "subtitle": "కమ్యూనిటీ సేవ మరియు సామాజిక రాకపై క్షేత్ర స్థాయి స్వరాలను (grassroots voices) రికార్డ్ చేయడం",
+            "noLeaders": "మీ ప్రమాణాలకు సరిపోలే నాయక ప్రొఫైల్స్ కనుగొనబడలేదు",
+            "back": "వెనుకకు",
+            "disclaimer": {
+                "title": "కమ్యూనిటీ వాయిస్ నిరాకరణ (Disclaimer)",
+                "text": "ఇక్కడ ప్రదర్శించబడిన ప్రొఫైల్స్ సహకారుల అభిప్రాయాలు మరియు కమ్యూనిటీ పరిశీలనలను సూచిస్తాయి. ఇది అధికారిక ఆమోదం (endorsement), ర్యాంకింగ్ లేదా రాజకీయ అనుబంధ ప్లాట్‌ఫారమ్ కాదు.",
+                "profileText": "ఈ ప్రొఫైల్ సహకారుల సమర్పణలపై ఆధారపడి ఉంటుంది మరియు అధికారిక ఆమోదాన్ని సూచించదు. కమ్యూనిటీ మార్గదర్శకాల కోసం కంటెంట్ మోడరేట్ చేయబడుతుంది."
+            },
+            "form": {
+                "title": "నాయకుడిని సమర్పించండి",
+                "editTitle": "నాయకుడి ప్రొఫైల్‌ను సవరించండి",
+                "back": "వెనుకకు",
+                "beforeYouSubmit": "మీరు సమర్పించే ముందు",
+                "beforeYouSubmitText": "దయచేసి మీరు వివరాలను ధృవీకరించారని నిర్ధారించుకోండి. తప్పుడు సమాచారం ఖాతా సస్పెన్షన్‌కు దారి తీయవచ్చు.",
+                "name": "నాయకుడి పేరు",
+                "district": "జిల్లా",
+                "mandal": "మండలం",
+                "whySocietyNeeds": "సమాజానికి ఈ నాయకుడు ఎందుకు అవసరం",
+                "whySocietyNeedsHelper": "ప్రభావం మరియు సహకారాన్ని వివరించండి.",
+                "areaOfService": "సేవా ప్రాంతం",
+                "partyAssociation": "పార్టీ అనుబంధ వివరాలు",
+                "yearsOfAssociation": "అనుబంధ సంవత్సరాలు",
+                "yearsPlaceholder": "ఉదా. 5",
+                "position": "పదవి",
+                "positionPlaceholder": "ప్రస్తుత పదవి",
+                "nominatedPost": "నామినేటెడ్ పోస్ట్",
+                "nominatedPostPlaceholder": "ఉదా. కమిటీ సభ్యుడు",
+                "socialMedia": "సోషల్ మీడియా ఉనికి",
+                "socialMediaHelper": "పబ్లిక్ ప్రొఫైల్స్ లింక్‌లను జోడించండి.",
+                "primaryPlatform": "ప్రధాన ప్లాట్‌ఫారమ్",
+                "primaryPlatformHelper": "ఉపయోగించే ప్రధాన ప్లాట్‌ఫారమ్‌ను ఎంచుకోండి.",
+                "profileUrl": "ప్రొఫైల్ URL",
+                "otherPlatforms": "ఇతర ప్లాట్‌ఫారమ్‌లు",
+                "addPlatform": "ప్లాట్‌ఫారమ్‌ను జోడించండి",
+                "uploadPhoto": "ఫోటో అప్‌లోడ్ చేయండి",
+                "uploadGallery": "గ్యాలరీ చిత్రాలను అప్‌లోడ్ చేయండి"
+            },
+            "validation": {
+                "nameLength": "పేరు 3 నుండి 100 అక్షరాల మధ్య ఉండాలి",
+                "districtRequired": "జిల్లా అవసరం",
+                "mandalLength": "మండలం పేరు చాలా పెద్దదిగా ఉంది",
+                "reasonLength": "కారణం 100 నుండి 2000 అక్షరాల మధ్య ఉండాలి",
+                "serviceAreaCount": "1 మరియు 5 సేవా ప్రాంతాల మధ్య ఎంచుకోండి",
+                "valuesCount": "1 మరియు 4 విలువల మధ్య ఎంచుకోండి",
+                "consentRequired": "మీరు సమ్మతిని అంగీకరించాలి",
+                "imageSize": "చిత్రం 500KB పరిమితిని మించిపోయింది",
+                "imageType": "కేవలం చిత్ర ఫైళ్లు మాత్రమే అనుమతించబడతాయి",
+                "invalidUrl": "చెల్లని URL"
+            },
+            "profile": {
+                "notFound": "నాయకుడి ప్రొఫైల్ కనుగొనబడలేదు",
+                "areaOfService": "సేవా ప్రాంతం",
+                "values": "ప్రాతినిధ్యం వహించే విలువలు",
+                "whySocietyNeeds": "సమాజానికి ఈ నాయకుడు ఎందుకు అవసరం",
+                "association": "అనుబంధ వివరాలు",
+                "years": "అనుబంధ సంవత్సరాలు",
+                "position": "పార్టీ పదవి",
+                "nominatedPost": "నామినేటెడ్ పోస్ట్",
+                "socialMedia": "సోషల్ మీడియా ఉనికి",
+                "primaryPlatform": "ప్రధాన ప్లాట్‌ఫారమ్",
+                "otherPlatforms": "ఇతర ప్లాట్‌ఫారమ్‌లు",
+                "visitProfile": "ప్రొఫైల్ సందర్శించండి",
+                "gallery": "గ్యాలరీ",
+                "submitted": "సమర్పించబడింది",
+                "submittedBy": "సమర్పించినవారు"
+            },
+            "serviceAreas": {
+                "Education & Literacy": "విద్య & అక్షరాస్యత",
+                "Healthcare & Wellness": "ఆరోగ్యం & సంక్షేమం",
+                "Youth Development": "యువజన అభివృద్ధి",
+                "Women Empowerment": "మహిళా సాధికారత",
+                "Agriculture & Farmers": "వ్యవసాయం & రైతులు",
+                "Community Development": "సంఘాభివృద్ధి",
+                "Disaster Relief": "విపత్తు సహాయం",
+                "Environmental Protection": "పర్యావరణ పరిరక్షణ",
+                "Social Justice": "సామాజిక న్యాయం",
+                "Infrastructure & Development": "మౌలిక సదుపాయాలు & అభివృద్ధి"
+            },
+            "values": {
+                "Service to Society": "సమాజ సేవ",
+                "Integrity & Honesty": "నిజాయితీ & సమగ్రత",
+                "Transparency": "పారదర్శకత",
+                "Grassroots Connection": "క్షేత్ర స్థాయి అనుబంధం (Grassroots Connection)",
+                "Accessibility to People": "ప్రజలకు అందుబాటులో ఉండటం",
+                "Problem-Solving Approach": "సమస్య పరిష్కార విధానం",
+                "Inclusive Leadership": "కలుపుగోలు నాయకత్వం",
+                "Accountability": "జవాబుదారీతనం"
+            }
+        }
+    },
+    "warriors": {
+        "title": "సోషల్ మీడియా సైనికులు",
+        "subtitle": "రాజకీయ అవగాహన మరియు ఆన్‌లైన్ ఎంగేజ్‌మెంట్‌కు సహకరిస్తున్న డిజిటల్ కార్యకర్తలను రికార్డ్ చేయడం",
+        "noWarriors": "మీ ప్రమాణాలకు సరిపోలే సైనికులు కనుగొనబడలేదు",
+        "noPhoto": "ఫోటో లేదు",
+        "more": "మరిన్ని",
+        "back": "వెనుకకు",
+        "form": {
+            "title": "సైనికుడిని సమర్పించండి",
+            "editTitle": "సైనికుడి ప్రొఫైల్‌ను సవరించండి",
+            "back": "వెనుకకు",
+            "beforeYouSubmit": "మీరు సమర్పించే ముందు",
+            "beforeYouSubmitText": "దయచేసి మీరు వివరాలను ధృవీకరించారని నిర్ధారించుకోండి. తప్పుడు సమాచారం ఖాతా సస్పెన్షన్‌కు దారి తీయవచ్చు.",
+            "name": "పేరు",
+            "district": "జిల్లా",
+            "mandal": "మండలం",
+            "whyValuable": "ఈ డిజిటల్ సైనికుడు ఎందుకు ముఖ్యమైనవారు",
+            "whyValuableHelper": "ప్రభావం మరియు సహకారాన్ని వివరించండి.",
+            "digitalContributions": "డిజిటల్ సహకార రంగాలు",
+            "partyAssociation": "పార్టీ అనుబంధ వివరాలు",
+            "yearsOfAssociation": "అనుబంధ సంవత్సరాలు",
+            "yearsPlaceholder": "ఉదా. 5",
+            "position": "పదవి",
+            "positionPlaceholder": "ప్రస్తుత పదవి",
+            "nominatedPost": "నామినేటెడ్ పోస్ట్",
+            "nominatedPostPlaceholder": "ఉదా. కమిటీ సభ్యుడు",
+            "socialMedia": "సోషల్ మీడియా ఉనికి",
+            "socialMediaHelper": "పబ్లిక్ ప్రొఫైల్స్ లింక్‌లను జోడించండి.",
+            "primaryPlatform": "ప్రధాన ప్లాట్‌ఫారమ్",
+            "primaryPlatformHelper": "ఉపయోగించే ప్రధాన ప్లాట్‌ఫారమ్‌ను ఎంచుకోండి.",
+            "profileUrl": "ప్రొఫైల్ URL",
+            "engagementStyle": "ఎంగేజ్‌మెంట్ శైలి",
+            "photo": "ఫోటో (ఐచ్ఛికం, గరిష్టంగా 500KB)",
+            "uploadPhoto": "ఫోటో అప్‌లోడ్ చేయండి",
+            "gallery": "గ్యాలరీ (ఐచ్ఛికం, గరిష్టంగా 10 చిత్రాలు)",
+            "maxImagesReached": "గరిష్ట చిత్రాలు చేరాయి",
+            "addGalleryImages": "గ్యాలరీ చిత్రాలను జోడించండి",
+            "submittedBy": "ద్వారా సమర్పించబడింది",
+            "self": "స్వయంగా (నేనే ఆ వ్యక్తిని)",
+            "supporter": "సహాయకుడు (నేను ఒకరి తరపున సమర్పిస్తున్నాను)",
+            "anonymous": "అనామకుడు (నా వివరాలు వెల్లడించకూడదనుకుంటున్నాను)",
+            "consent": "నేను ధృవీకరిస్తున్నాను: సమాచారం సత్యమైనది మరియు గౌరవప్రదమైనది, అవసరమైతే నేను సమ్మతి తీసుకున్నాను, ఇది డాక్యుమెంటేషన్ ప్రయోజనాల కోసం మాత్రమే అని అర్థం చేసుకున్నాను.",
+            "cancel": "రద్దు",
+            "updating": "నవీకరిస్తోంది...",
+            "submitting": "సమర్పిస్తోంది...",
+            "updateProfile": "ప్రొఫైల్ నవీకరించండి",
+            "submitProfile": "ప్రొఫైల్ సమర్పించండి"
+        },
+        "validation": {
+            "imageType": "కేవలం చిత్ర ఫైళ్లు మాత్రమే అనుమతించబడతాయి",
+            "imageSize": "చిత్రం 500KB పరిమితిని మించిపోయింది",
+            "galleryLimit": "గరిష్టంగా 10 చిత్రాలు అనుమతించబడతాయి",
+            "imageSizeSpecific": "చిత్రం \"{name}\" 500KB పరిమితిని మించిపోయింది",
+            "nameLength": "పేరు 3 నుండి 100 అక్షరాల మధ్య ఉండాలి",
+            "districtRequired": "జిల్లా అవసరం",
+            "mandalLength": "మండలం పేరు చాలా పెద్దదిగా ఉంది",
+            "reasonLength": "కారణం 100 నుండి 2000 అక్షరాల మధ్య ఉండాలి",
+            "digitalContributionCount": "1 మరియు 5 సహకార రంగాల మధ్య ఎంచుకోండి",
+            "engagementStyleCount": "1 మరియు 3 ఎంగేజ్‌మెంట్ శైలుల మధ్య ఎంచుకోండి",
+            "consentRequired": "మీరు సమ్మతిని అంగీకరించాలి",
+            "invalidUrl": "చెల్లని URL"
+        },
+        "profile": {
+            "approveWarrior": "యోధులును ఆమోదించండి",
+            "hideProfile": "ప్రొఫైల్ దాచండి",
+            "editData": "డేటాను సవరించండి",
+            "primary": "ప్రాథమిక",
+            "notFound": "సైనికుడి ప్రొఫైల్ కనుగొనబడలేదు",
+            "servingSince": "సేవ చేసిన సమయం:",
+            "position": "పదవి:",
+            "nominatedPost": "నామినేటెడ్ పోస్ట్:",
+            "contributionAreas": "సహకార రంగాలు",
+            "engagementStyle": "ఎంగేజ్‌మెంట్ శైలి",
+            "whyMatters": "ఈ డిజిటల్ సైనికుడు ఎందుకు ముఖ్యమైనవారు",
+            "gallery": "గ్యాలరీ",
+            "socialMedia": "సోషల్ మీడియా ఉనికి",
+            "status": "ప్రొఫైల్ స్థితి",
+            "added": "జోడించబడింది:",
+            "updated": "నవీకరించబడింది:"
+        },
+        "contributionAreas": {
+            "Ideology Explanation": "సిద్ధాంత వివరణ",
+            "Issue Clarification": "సమస్య స్పష్టీకరణ",
+            "Awareness Campaigns": "అవగాహన ప్రచారాలు",
+            "Fact-Based Counter Narratives": "వాస్తవ ఆధారిత కౌంటర్ నెరేటివ్స్",
+            "Policy Analysis": "విధాన విశ్లేషణ",
+            "Community Engagement": "కమ్యూనిటీ ఎంగేజ్‌మెంట్",
+            "News Dissemination": "వార్తల వ్యాప్తి",
+            "Grassroots Mobilization": "క్షేత్ర స్థాయి సమీకరణ",
+            "Data & Research Sharing": "డేటా & పరిశోధన భాగస్వామ్యం",
+            "Visual Content Creation": "విజువల్ కంటెంట్ సృష్టి"
+        },
+        "engagementStyles": {
+            "Fact-Oriented": "వాస్తవ ఆధారిత",
+            "Informative & Educational": "సమాచార & విద్యాపరమైన",
+            "Calm & Non-Abusive": "శాంతమైన & దుర్బాషలాడని",
+            "Data-Driven": "డేటా ఆధారిత",
+            "Analytical": "విశ్లేషణాత్మక",
+            "Conversational": "సంభాషణాత్మక",
+            "Respectful Debate": "గౌరవప్రదమైన చర్చ"
+        }
+    },
+    "userManagement": {
+        "title": "వినియోగదారు నిర్వహణ",
+        "description": "వినియోగదారులు, పాత్రలు మరియు అనుమతులను నిర్వహించండి.",
+        "totalUsers": "మొత్తం వినియోగదారులు",
+        "superAdmins": "సూపర్ అడ్మిన్లు",
+        "admins": "అడ్మిన్లు",
+        "regularUsers": "సాధారణ వినియోగదారులు",
+        "successRoleUpdate": "వినియోగదారు పాత్ర విజయవంతంగా నవీకరించబడింది!",
+        "errorRoleUpdate": "వినియోగదారు పాత్రను నవీకరించడంలో విఫలమైంది",
+        "table": {
+            "name": "పేరు",
+            "mobile": "మొబైల్",
+            "email": "ఇమెయిల్",
+            "role": "పాత్ర",
+            "verified": "ధృవీకరించబడింది",
+            "notVerified": "ధృవీకరించబడలేదు",
+            "joined": "చేరారు",
+            "actions": "చర్యలు",
+            "noUsers": "వినియోగదారులు కనుగొనబడలేదు"
+        },
+        "dialog": {
+            "title": "పాత్ర మార్పును నిర్ధారించండి",
+            "aboutToChange": "మీరు వీరి కోసం పాత్రను మార్చబోతున్నారు:",
+            "currentRole": "ప్రస్తుత పాత్ర",
+            "newRole": "కొత్త పాత్ర",
+            "superAdminWarning": "హెచ్చరిక: మీరు SUPER_ADMIN అధికారాలను సవరిస్తున్నారు. ఈ చర్యను జాగ్రత్తగా చేయాలి.",
+            "warningDetail": "ఈ చర్య వినియోగదారు యాక్సెస్ స్థాయి మరియు అనుమతులను వెంటనే మారుస్తుంది.",
+            "cancel": "రద్దు",
+            "confirm": "మార్పును నిర్ధారించండి",
+            "updating": "నవీకరిస్తోంది..."
+        }
+    }
+}

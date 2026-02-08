@@ -3,9 +3,11 @@
 import { Box, Typography } from '@mui/material';
 import { useQuery } from '@apollo/client';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import { useTranslations } from 'next-intl';
 import { GET_VISITOR_STATS } from '@/graphql/visitor-stats';
 
 export function Footer() {
+    const t = useTranslations('footer');
     const { data } = useQuery(GET_VISITOR_STATS, {
         pollInterval: 30000, // Refresh every 30 seconds
     });
@@ -60,7 +62,7 @@ export function Footer() {
                             letterSpacing: '0.5px',
                         }}
                     >
-                        Visitors: <Box component="span" sx={{ color: '#E31E24', fontWeight: 700 }}>
+                        {t('visitors')}: <Box component="span" sx={{ color: '#E31E24', fontWeight: 700 }}>
                             {visitorCount.toLocaleString()}
                         </Box>
                     </Typography>
@@ -85,7 +87,7 @@ export function Footer() {
                         textAlign: 'center',
                     }}
                 >
-                    Disclaimer: This is a volunteer initiative, not an official JSP website.
+                    {t('disclaimer')}
                 </Typography>
             </Box>
         </Box>

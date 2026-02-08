@@ -7,9 +7,11 @@ import { useMutation } from '@apollo/client';
 import { MagnetButton } from './ui/magnet-button';
 import ElectricBorder from './ElectricBorder';
 import DecryptedText from './DecryptedText';
+import { useTranslations } from 'next-intl';
 import { INCREMENT_VISITOR_COUNT } from '@/graphql/visitor-stats';
 
 export function JspWelcomeModal() {
+    const t = useTranslations('welcomeModal');
     const [open, setOpen] = useState(false);
     const [incrementVisitorCount] = useMutation(INCREMENT_VISITOR_COUNT);
 
@@ -139,7 +141,7 @@ export function JspWelcomeModal() {
                                                     }}
                                                 >
                                                     <DecryptedText
-                                                        text="Are you a Janasena Party supporter?"
+                                                        text={t('question')}
                                                         speed={100}
                                                         animateOn="view"
                                                         maxIterations={5}
@@ -172,13 +174,13 @@ export function JspWelcomeModal() {
                                                         variant="primary"
                                                         onClick={() => handleClose('yes')}
                                                     >
-                                                        Yes
+                                                        {t('yes')}
                                                     </MagnetButton>
                                                     <MagnetButton
                                                         variant="secondary"
                                                         onClick={() => handleClose('no')}
                                                     >
-                                                        No
+                                                        {t('no')}
                                                     </MagnetButton>
                                                 </Stack>
                                             </motion.div>

@@ -1,13 +1,16 @@
 'use client';
 
 import { Box, CircularProgress, Typography } from '@mui/material';
+import { useTranslations } from 'next-intl';
 
 interface LoadingProps {
     message?: string;
     fullScreen?: boolean;
 }
 
-export function Loading({ message = 'Loading...', fullScreen = false }: LoadingProps) {
+export function Loading({ message, fullScreen = false }: LoadingProps) {
+    const t = useTranslations('ui');
+    const displayMessage = message || t('loading');
     return (
         <Box
             sx={{
@@ -25,9 +28,9 @@ export function Loading({ message = 'Loading...', fullScreen = false }: LoadingP
             }}
         >
             <CircularProgress />
-            {message && (
+            {displayMessage && (
                 <Typography variant="body2" color="text.secondary">
-                    {message}
+                    {displayMessage}
                 </Typography>
             )}
         </Box>

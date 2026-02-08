@@ -1,4 +1,7 @@
+'use client';
+
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { Chip, Tooltip } from '@mui/material';
 import {
     Gavel,
@@ -61,51 +64,51 @@ export enum CaseVisibility {
 const getStatusConfig = (status: string) => {
     switch (status) {
         case CaseStatus.UNDER_REVIEW:
-            return { color: 'warning', label: 'Under Review', icon: <AccessTime fontSize="small" /> };
+            return { color: 'warning', labelKey: 'status.UNDER_REVIEW', icon: <AccessTime fontSize="small" /> };
         case CaseStatus.CLARIFICATION_REQUIRED:
-            return { color: 'info', label: 'Clarification Needed', icon: <Help fontSize="small" /> };
+            return { color: 'info', labelKey: 'status.CLARIFICATION_REQUIRED', icon: <Help fontSize="small" /> };
         case CaseStatus.REVIEW_COMPLETED:
-            return { color: 'primary', label: 'Review Completed', icon: <CheckCircle fontSize="small" /> };
+            return { color: 'primary', labelKey: 'status.REVIEW_COMPLETED', icon: <CheckCircle fontSize="small" /> };
         case CaseStatus.ACTION_TAKEN:
-            return { color: 'error', label: 'Action Taken', icon: <Gavel fontSize="small" /> };
+            return { color: 'error', labelKey: 'status.ACTION_TAKEN', icon: <Gavel fontSize="small" /> };
         case CaseStatus.CLOSED:
-            return { color: 'success', label: 'Closed', icon: <CheckCircle fontSize="small" /> };
+            return { color: 'success', labelKey: 'status.CLOSED', icon: <CheckCircle fontSize="small" /> };
         case CaseStatus.ARCHIVED:
-            return { color: 'default', label: 'Archived', icon: <Inventory fontSize="small" /> };
+            return { color: 'default', labelKey: 'status.ARCHIVED', icon: <Inventory fontSize="small" /> };
         default:
-            return { color: 'default', label: status, icon: undefined };
+            return { color: 'default', labelKey: status, icon: undefined };
     }
 };
 
 const getActionConfig = (action: string) => {
     switch (action) {
         case ActionOutcome.NO_ACTION:
-            return { color: 'success', label: 'No Action Taken', icon: <CheckCircle fontSize="small" /> };
+            return { color: 'success', labelKey: 'action.NO_ACTION', icon: <CheckCircle fontSize="small" /> };
         case ActionOutcome.WARNING:
-            return { color: 'warning', label: 'Warning Issued', icon: <Warning fontSize="small" /> };
+            return { color: 'warning', labelKey: 'action.WARNING', icon: <Warning fontSize="small" /> };
         case ActionOutcome.TEMPORARY_SUSPENSION:
-            return { color: 'error', label: 'Temporary Suspension', icon: <Block fontSize="small" /> };
+            return { color: 'error', labelKey: 'action.TEMPORARY_SUSPENSION', icon: <Block fontSize="small" /> };
         case ActionOutcome.PERMANENT_SUSPENSION:
-            return { color: 'error', label: 'Permanent Suspension', icon: <Block fontSize="small" /> };
+            return { color: 'error', labelKey: 'action.PERMANENT_SUSPENSION', icon: <Block fontSize="small" /> };
         case ActionOutcome.POSITION_REVOKED:
-            return { color: 'error', label: 'Position Revoked', icon: <RemoveCircle fontSize="small" /> };
+            return { color: 'error', labelKey: 'action.POSITION_REVOKED', icon: <RemoveCircle fontSize="small" /> };
         case ActionOutcome.MEMBERSHIP_REVOKED:
-            return { color: 'error', label: 'Membership Revoked', icon: <Cancel fontSize="small" /> };
+            return { color: 'error', labelKey: 'action.MEMBERSHIP_REVOKED', icon: <Cancel fontSize="small" /> };
         default:
-            return { color: 'default', label: action, icon: undefined };
+            return { color: 'default', labelKey: action, icon: undefined };
     }
 };
 
 const getVisibilityConfig = (visibility: string) => {
     switch (visibility) {
         case CaseVisibility.INTERNAL_ONLY:
-            return { color: 'error', label: 'Internal Only', icon: <VisibilityOff fontSize="small" /> };
+            return { color: 'error', labelKey: 'visibility.INTERNAL_ONLY', icon: <VisibilityOff fontSize="small" /> };
         case CaseVisibility.PUBLIC:
-            return { color: 'success', label: 'Public', icon: <Visibility fontSize="small" /> };
+            return { color: 'success', labelKey: 'visibility.PUBLIC', icon: <Visibility fontSize="small" /> };
         case CaseVisibility.RESTRICTED:
-            return { color: 'warning', label: 'Restricted', icon: <Lock fontSize="small" /> };
+            return { color: 'warning', labelKey: 'visibility.RESTRICTED', icon: <Lock fontSize="small" /> };
         default:
-            return { color: 'default', label: visibility, icon: undefined };
+            return { color: 'default', labelKey: visibility, icon: undefined };
     }
 };
 
@@ -124,11 +127,14 @@ export const CaseStatusBadge: React.FC<CaseStatusBadgeProps> = ({
     size = 'small',
     variant = 'filled'
 }) => {
+    const t = useTranslations('caseStatus');
+
     if (visibility) {
         const config = getVisibilityConfig(visibility);
+        const label = config.labelKey.includes('.') ? t(config.labelKey) : config.labelKey;
         return (
             <Chip
-                label={config.label}
+                label={label}
                 // @ts-ignore
                 color={config.color}
                 icon={config.icon}
@@ -141,9 +147,10 @@ export const CaseStatusBadge: React.FC<CaseStatusBadgeProps> = ({
 
     if (action) {
         const config = getActionConfig(action);
+        const label = config.labelKey.includes('.') ? t(config.labelKey) : config.labelKey;
         return (
             <Chip
-                label={config.label}
+                label={label}
                 // @ts-ignore
                 color={config.color}
                 icon={config.icon}
@@ -156,9 +163,10 @@ export const CaseStatusBadge: React.FC<CaseStatusBadgeProps> = ({
 
     if (status) {
         const config = getStatusConfig(status);
+        const label = config.labelKey.includes('.') ? t(config.labelKey) : config.labelKey;
         return (
             <Chip
-                label={config.label}
+                label={label}
                 // @ts-ignore
                 color={config.color}
                 icon={config.icon}

@@ -19,7 +19,7 @@ class LoadingManager {
      */
     startLoading(): void {
         this.activeRequests++;
-
+        console.log("Active requests: ", this.activeRequests);
         // Clear any pending debounce timer
         if (this.debounceTimer) {
             clearTimeout(this.debounceTimer);
@@ -28,7 +28,8 @@ class LoadingManager {
 
         // Notify subscribers immediately if this is the first request
         if (this.activeRequests === 1) {
-            this.notifySubscribers(true);
+            // Defer notification to avoid "Cannot update a component while rendering a different component" error
+            setTimeout(() => this.notifySubscribers(true), 0);
         }
     }
 

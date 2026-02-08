@@ -6,7 +6,6 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { join } from 'path';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './modules/users/users.module';
-import { ProjectsModule } from './modules/projects/projects.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AtrocitiesModule } from './modules/atrocities/atrocities.module';
 import { LeadersModule } from './modules/leaders/leaders.module';
@@ -37,7 +36,6 @@ import { VisitorStatsModule } from './modules/visitor-stats/visitor-stats.module
         ImageKitModule,
         AuthModule,
         UsersModule,
-        ProjectsModule,
         AtrocitiesModule,
         LeadersModule,
         SocialMediaWarriorsModule,

@@ -1,5 +1,4 @@
 import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
-import { Project } from '../../projects/entities/project.entity';
 
 export enum UserRole {
     USER = 'USER',
@@ -38,8 +37,6 @@ export class User {
     @Field()
     updatedAt: Date;
 
-    @Field(() => [Project], { nullable: true })
-    projects?: Project[];
 
     @Field({ nullable: true })
     otp?: string;

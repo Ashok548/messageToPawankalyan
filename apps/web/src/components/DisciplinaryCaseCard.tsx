@@ -4,6 +4,7 @@ import { CalendarToday, Visibility, Edit } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
 import { CaseStatusBadge } from './ui/case-status-badge';
+import { useTranslations } from 'next-intl';
 
 interface DisciplinaryCase {
     id: string;
@@ -28,6 +29,7 @@ interface DisciplinaryCaseCardProps {
 
 export const DisciplinaryCaseCard: React.FC<DisciplinaryCaseCardProps> = ({ data, isAdmin = false }) => {
     const router = useRouter();
+    const t = useTranslations('disciplinary.form.issueCategories');
 
     const handleViewDetails = () => {
         router.push(`/disciplinary-cases/${data.id}`);
@@ -114,7 +116,7 @@ export const DisciplinaryCaseCard: React.FC<DisciplinaryCaseCardProps> = ({ data
 
                         {/* Issue Category */}
                         <Typography variant="subtitle2" color="primary" sx={{ mb: 1, fontWeight: 600 }}>
-                            {data.issueCategory.replace(/_/g, ' ')}
+                            {t(data.issueCategory)}
                         </Typography>
 
                         {/* Issue Description */}

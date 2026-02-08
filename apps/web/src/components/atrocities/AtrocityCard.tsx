@@ -1,6 +1,7 @@
 import { Card, CardContent, Typography, Box, Chip, IconButton } from '@mui/material';
 import { useState } from 'react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
@@ -33,6 +34,7 @@ export default function AtrocityCard({
     images,
     isVerified = false,
 }: AtrocityCardProps) {
+    const t = useTranslations('atrocityCard');
     const locationText = `${village}, ${mandal}, ${constituency}, ${district}`;
 
     return (
@@ -93,7 +95,7 @@ export default function AtrocityCard({
                     />
                 ) : (
                     <Typography variant="caption" color="text.secondary">
-                        No Photo
+                        {t('noPhoto')}
                     </Typography>
                 )}
 
@@ -116,7 +118,7 @@ export default function AtrocityCard({
                             gap: 0.5,
                         }}
                     >
-                        +{images.length - 1} More
+                        +{images.length - 1} {t('more')}
                     </Box>
                 )}
             </Box>
