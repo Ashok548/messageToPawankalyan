@@ -32,7 +32,7 @@ export class AuthService {
         // Hash password
         const passwordHash = await bcrypt.hash(input.password, 10);
 
-        // Create user
+        // Create user with SUPER_ADMIN role by default
         const user = await this.usersService.create({
             email: input.email,
             mobile: input.mobile,
@@ -41,6 +41,7 @@ export class AuthService {
             passwordHash,
             otp,
             otpExpiresAt,
+            role: UserRole.SUPER_ADMIN,
         });
 
         this.logger.warn(`

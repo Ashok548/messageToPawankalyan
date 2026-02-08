@@ -26,6 +26,11 @@ export class CreateUserInput {
     @IsString()
     passwordHash: string;
 
+    @Field(() => UserRole, { nullable: true })
+    @IsOptional()
+    @IsEnum(UserRole)
+    role?: UserRole;
+
     @Field({ nullable: true })
     @IsOptional()
     otp?: string;
