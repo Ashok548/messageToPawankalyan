@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getRequestConfig } from 'next-intl/server';
 
-export const locales = ['te', 'en'] as const;
+export const locales = ['en', 'te'] as const;
 export type Locale = (typeof locales)[number];
 
 export const localeNames: Record<Locale, string> = {
@@ -9,7 +9,7 @@ export const localeNames: Record<Locale, string> = {
     en: 'English',
 };
 
-export const defaultLocale: Locale = 'te';
+export const defaultLocale: Locale = 'en';
 
 export default getRequestConfig(async ({ locale }) => {
     // Use the locale from params or fall back to default
