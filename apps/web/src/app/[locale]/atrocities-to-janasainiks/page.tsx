@@ -4,7 +4,7 @@ import { Box, Container, Typography, CircularProgress, Alert, Button, ToggleButt
 import { useQuery } from '@apollo/client';
 import { GET_ATROCITIES, GET_UNVERIFIED_ATROCITIES } from '@/graphql/queries/atrocities';
 import AtrocityCard from '@/components/atrocities/AtrocityCard';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from '@/hooks/use-navigate';
 import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import AddIcon from '@mui/icons-material/Add';
@@ -29,7 +29,7 @@ export default function AttrocitiesToJanasainiksPage() {
     const t = useTranslations('atrocities');
     const tCommon = useTranslations('common');
     const locale = useLocale();
-    const router = useRouter();
+    const { navigate } = useNavigate();
     const [isSuperAdmin, setIsSuperAdmin] = useState(false);
     const [filter, setFilter] = useState<'all' | 'unverified'>('all');
 
@@ -106,7 +106,7 @@ export default function AttrocitiesToJanasainiksPage() {
                             variant="contained"
                             size="large"
                             startIcon={<AddIcon />}
-                            onClick={() => router.push(`/${locale}/report-atrocity`)}
+                            onClick={() => navigate(`/${locale}/report-atrocity`)}
                             sx={{
                                 px: 3,
                                 py: 1.2,
@@ -206,7 +206,7 @@ export default function AttrocitiesToJanasainiksPage() {
                         <Button
                             variant="outlined"
                             size="small"
-                            onClick={() => router.push(`/${locale}/report-atrocity`)}
+                            onClick={() => navigate(`/${locale}/report-atrocity`)}
                             sx={{ mt: 1, textTransform: 'none' }}
                         >
                             {t('reportNew')}

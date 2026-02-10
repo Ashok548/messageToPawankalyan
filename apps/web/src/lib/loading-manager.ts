@@ -13,6 +13,7 @@ class LoadingManager {
     private subscribers: Set<LoadingCallback> = new Set();
     private debounceTimer: NodeJS.Timeout | null = null;
     private readonly DEBOUNCE_DELAY = 200; // ms
+    private _navigationLoading = false;
 
     /**
      * Start a new loading operation
@@ -86,6 +87,31 @@ class LoadingManager {
             this.debounceTimer = null;
         }
         this.notifySubscribers(false);
+    }
+
+    /**
+     * Mark that a navigation-triggered loading is active
+     */
+    startNavigation(): void {
+        this._navigationLoading = true;
+        this.startLoading();
+    }
+
+    /**
+     * Check if a navigation-triggered loading is active
+     */
+    get navigationLoading(): boolean {
+        return this._navigationLoading;
+    }
+
+    /**
+     * Stop navigation loading and decrement counter
+     */
+    stopNavigation(): void {
+        if (this._navigationLoading) {
+            this._navigationLoading = false;
+            this.stopLoading();
+        }
     }
 }
 

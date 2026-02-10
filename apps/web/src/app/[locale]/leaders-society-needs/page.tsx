@@ -2,7 +2,7 @@
 
 import { useQuery, gql } from '@apollo/client';
 import { Box, Container, Typography, Button, Grid, Alert, CircularProgress, Card, CardContent } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from '@/hooks/use-navigate';
 import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import AddIcon from '@mui/icons-material/Add';
@@ -47,7 +47,7 @@ export default function LeadersSocietyNeedsPage() {
     const t = useTranslations('leaders');
     const tCommon = useTranslations('common');
     const locale = useLocale();
-    const router = useRouter();
+    const { navigate } = useNavigate();
     const { data, loading, error } = useQuery(GET_LEADERS);
     const [isSuperAdmin, setIsSuperAdmin] = useState(false);
 
@@ -114,7 +114,7 @@ export default function LeadersSocietyNeedsPage() {
                     {isSuperAdmin && (
                         <Button
                             variant="contained"
-                            onClick={() => router.push(`/${locale}/submit-leader`)}
+                            onClick={() => navigate(`/${locale}/submit-leader`)}
                             sx={{ whiteSpace: 'nowrap', minWidth: { xs: 'auto', sm: 64 } }}
                         >
                             <AddIcon />
@@ -137,7 +137,7 @@ export default function LeadersSocietyNeedsPage() {
                         {leaders.map((leader) => (
                             <Card
                                 key={leader.id}
-                                onClick={() => router.push(`/${locale}/leader-profile/${leader.id}`)}
+                                onClick={() => navigate(`/${locale}/leader-profile/${leader.id}`)}
                                 sx={{
                                     display: 'flex',
                                     flexDirection: { xs: 'column', sm: 'row' },
@@ -248,7 +248,7 @@ export default function LeadersSocietyNeedsPage() {
                                                     color="primary"
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        router.push(`/${locale}/submit-leader?id=${leader.id}`);
+                                                        navigate(`/${locale}/submit-leader?id=${leader.id}`);
                                                     }}
                                                     sx={{ fontSize: '0.75rem', py: 0.5 }}
                                                 >

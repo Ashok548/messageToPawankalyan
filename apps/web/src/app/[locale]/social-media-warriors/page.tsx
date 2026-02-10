@@ -2,7 +2,7 @@
 
 import { useQuery, gql } from '@apollo/client';
 import { Box, Container, Typography, Card, CardContent, CircularProgress, Alert, Button, IconButton } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from '@/hooks/use-navigate';
 import { useTranslations, useLocale } from 'next-intl';
 import AddIcon from '@mui/icons-material/Add';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -41,7 +41,7 @@ export default function SocialMediaWarriorsPage() {
     const t = useTranslations('warriors');
     const tCommon = useTranslations('common');
     const locale = useLocale();
-    const router = useRouter();
+    const { navigate } = useNavigate();
     const [isAdmin, setIsAdmin] = useState(false);
     const { data, loading, error } = useQuery(GET_WARRIORS);
 
@@ -93,7 +93,7 @@ export default function SocialMediaWarriorsPage() {
                     {isAdmin && (
                         <Button
                             variant="contained"
-                            onClick={() => router.push(`/${locale}/submit-social-warrior`)}
+                            onClick={() => navigate(`/${locale}/submit-social-warrior`)}
                             sx={{ whiteSpace: 'nowrap', minWidth: { xs: 'auto', sm: 64 } }}
                         >
                             <AddIcon />
@@ -116,7 +116,7 @@ export default function SocialMediaWarriorsPage() {
                         {warriors.map((warrior) => (
                             <Card
                                 key={warrior.id}
-                                onClick={() => router.push(`/${locale}/social-warrior-profile/${warrior.id}`)}
+                                onClick={() => navigate(`/${locale}/social-warrior-profile/${warrior.id}`)}
                                 sx={{
                                     display: 'flex',
                                     flexDirection: { xs: 'column', sm: 'row' },
@@ -230,7 +230,7 @@ export default function SocialMediaWarriorsPage() {
                                                     size="small"
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        router.push(`/${locale}/submit-social-warrior?id=${warrior.id}`);
+                                                        navigate(`/${locale}/submit-social-warrior?id=${warrior.id}`);
                                                     }}
                                                     aria-label="Edit Warrior"
                                                 >
@@ -243,7 +243,7 @@ export default function SocialMediaWarriorsPage() {
                                                 color="primary"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    router.push(`/${locale}/social-warrior-profile/${warrior.id}`);
+                                                    navigate(`/${locale}/social-warrior-profile/${warrior.id}`);
                                                 }}
                                                 aria-label="View Profile"
                                                 sx={{

@@ -12,8 +12,8 @@ export class SocialMediaWarriorsService {
         private readonly imagekitService: ImageKitService,
     ) { }
 
-    async findAll(): Promise<SocialMediaWarrior[]> {
-        return this.repository.findAll();
+    async findAll(isSuperAdmin: boolean = false): Promise<SocialMediaWarrior[]> {
+        return this.repository.findAll(isSuperAdmin);
     }
 
     async findById(id: string): Promise<SocialMediaWarrior | null> {

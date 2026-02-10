@@ -1,7 +1,8 @@
 'use client';
 
 import { useQuery, useMutation, gql } from '@apollo/client';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
+import { useNavigate } from '@/hooks/use-navigate';
 import {
     Box,
     Container,
@@ -75,7 +76,7 @@ export default function SocialWarriorProfilePage() {
     const tCommon = useTranslations('common');
     const locale = useLocale();
     const params = useParams();
-    const router = useRouter();
+    const { navigate } = useNavigate();
     const id = params.id as string;
     const [isAdmin, setIsAdmin] = useState(false);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -130,7 +131,7 @@ export default function SocialWarriorProfilePage() {
                 {/* Back Navigation */}
                 <Button
                     startIcon={<ArrowBackIcon />}
-                    onClick={() => router.back()}
+                    onClick={() => navigate(`/${locale}/social-media-warriors`)}
                     sx={{ mb: 3, color: 'text.secondary', '&:hover': { background: 'transparent', color: 'text.primary' } }}
                 >
                     {tCommon('back')}
@@ -172,7 +173,7 @@ export default function SocialWarriorProfilePage() {
                             <Tooltip title={t('profile.editData')}>
                                 <IconButton
                                     color="primary"
-                                    onClick={() => router.push(`/submit-social-warrior?id=${id}`)}
+                                    onClick={() => navigate(`/submit-social-warrior?id=${id}`)}
                                     sx={{
                                         bgcolor: 'primary.50',
                                         '&:hover': { bgcolor: 'primary.100' }

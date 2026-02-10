@@ -17,13 +17,14 @@ import {
     IconButton
 } from '@mui/material';
 import { CloudUpload, Save, ArrowBack, Add, Delete } from '@mui/icons-material';
-import { useRouter, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
+import { useNavigate } from '@/hooks/use-navigate';
 import { useTranslations } from 'next-intl';
 import { UPDATE_DISCIPLINARY_CASE, GET_DISCIPLINARY_CASE_DETAILS } from '@/graphql/disciplinary-cases';
 import { IssueCategory, IssueSource } from '@/components/ui/case-status-badge';
 
 export default function EditDisciplinaryCasePage() {
-    const router = useRouter();
+    const { navigate } = useNavigate();
     const params = useParams();
     const caseId = params.id as string;
     const t = useTranslations('disciplinary.form');
@@ -168,7 +169,7 @@ export default function EditDisciplinaryCasePage() {
                 }
             });
 
-            router.push(`/disciplinary-cases/${caseId}`);
+            navigate(`/disciplinary-cases/${caseId}`);
         } catch (err: any) {
             setError(err.message || t('errors.updateFailed') || 'Failed to update case');
         }
@@ -188,7 +189,7 @@ export default function EditDisciplinaryCasePage() {
                 <Alert severity="error">
                     {fetchError?.message || 'Case not found or you do not have permission to edit it'}
                 </Alert>
-                <Button startIcon={<ArrowBack />} onClick={() => router.back()} sx={{ mt: 2 }}>
+                <Button startIcon={<ArrowBack />} onClick={() => navigate(`/disciplinary-cases/${caseId}`)} sx={{ mt: 2 }}>
                     Go Back
                 </Button>
             </Container>
@@ -199,7 +200,7 @@ export default function EditDisciplinaryCasePage() {
         <Container maxWidth={false} sx={{ py: 4, px: { xs: 2, sm: 3 }, maxWidth: '900px', mx: 'auto' }}>
             <Button
                 startIcon={<ArrowBack />}
-                onClick={() => router.push(`/disciplinary-cases/${caseId}`)}
+                onClick={() => navigate(`/disciplinary-cases/${caseId}`)}
                 sx={{ mb: 2 }}
             >
                 {t('actions.cancel')}
@@ -456,7 +457,7 @@ export default function EditDisciplinaryCasePage() {
 
                         <Grid item xs={12}>
                             <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ mt: 2 }}>
-                                <Button variant="outlined" onClick={() => router.push(`/disciplinary-cases/${caseId}`)}>
+                                <Button variant="outlined" onClick={() => navigate(`/disciplinary-cases/${caseId}`)}>
                                     {t('actions.cancel')}
                                 </Button>
                                 <Button

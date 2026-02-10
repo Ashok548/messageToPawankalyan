@@ -1,16 +1,16 @@
 'use client';
 
 import { Box, Container, Link as MuiLink, Stack, Typography, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText, Divider, Avatar, Menu, MenuItem } from '@mui/material';
-import Link from 'next/link';
 import Image from 'next/image';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import { LanguageSwitcher } from '../LanguageSwitcher';
 import { useAuth } from '../../hooks/use-auth';
+import { useNavigate } from '../../hooks/use-navigate';
 
 /**
  * Compact Header Component with Hamburger Menu
@@ -25,13 +25,19 @@ import { useAuth } from '../../hooks/use-auth';
 export default function Header() {
     const t = useTranslations('header');
     const locale = useLocale();
-    const router = useRouter();
+    const { navigate, router } = useNavigate();
+    const pathname = usePathname();
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [isJanaSenaSupporter, setIsJanaSenaSupporter] = useState<boolean>(true); // Default to true
     const { user, isAuthenticated, logout } = useAuth();
     const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
     const isSuperAdmin = user?.role === 'SUPER_ADMIN';
+
+    const handleNavigation = (href: string) => {
+        setDrawerOpen(false);
+        navigate(href);
+    };
 
     // Check localStorage for user's choice
     useEffect(() => {
@@ -230,13 +236,20 @@ export default function Header() {
                     {menuItems.map((item) => (
                         <ListItem key={item.href} disablePadding>
                             <ListItemButton
-                                component={Link}
-                                href={item.href}
-                                onClick={toggleDrawer(false)}
+                                onClick={() => handleNavigation(item.href)}
+                                selected={pathname === item.href}
                                 sx={{
                                     py: 1.5,
                                     '&:hover': {
                                         backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                                    },
+                                    '&.Mui-selected': {
+                                        backgroundColor: 'rgba(211, 47, 47, 0.08)',
+                                        borderRight: '3px solid #d32f2f',
+                                        borderLeft: '3px solid #d32f2f',
+                                        '&:hover': {
+                                            backgroundColor: 'rgba(211, 47, 47, 0.12)',
+                                        },
                                     },
                                 }}
                             >
@@ -244,7 +257,8 @@ export default function Header() {
                                     primary={item.label}
                                     primaryTypographyProps={{
                                         fontSize: 15,
-                                        fontWeight: 500,
+                                        fontWeight: pathname === item.href ? 700 : 500,
+                                        color: pathname === item.href ? '#d32f2f' : 'inherit',
                                     }}
                                 />
                             </ListItemButton>

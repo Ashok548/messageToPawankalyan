@@ -7,7 +7,7 @@ import { Box, Container, Typography, ToggleButtonGroup, ToggleButton, Grid, Circ
 import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from '@/hooks/use-navigate';
 import Image from 'next/image';
 import LinkIcon from '@mui/icons-material/Link';
 import AddIcon from '@mui/icons-material/Add';
@@ -54,7 +54,7 @@ export default function GovernanceHighlightsPage() {
     const t = useTranslations('governance');
     const tCommon = useTranslations('common');
     const locale = useLocale();
-    const router = useRouter();
+    const { navigate } = useNavigate();
     const [category, setCategory] = useState<HighlightCategory | null>(HighlightCategory.PENDING_ISSUE_ADDRESSED);
     const [isSuperAdmin, setIsSuperAdmin] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -455,7 +455,7 @@ export default function GovernanceHighlightsPage() {
                                 {highlights.map((highlight) => (
                                     <Card
                                         key={highlight.id}
-                                        onClick={() => router.push(`/${locale}/governance-highlights/${highlight.id}`)}
+                                        onClick={() => navigate(`/${locale}/governance-highlights/${highlight.id}`)}
                                         sx={{
                                             display: 'flex',
                                             flexDirection: { xs: 'column', sm: 'row' },

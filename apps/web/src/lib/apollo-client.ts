@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache, HttpLink, from, ApolloLink, Observable } from '@apollo/client';
+import { ApolloClient, InMemoryCache, HttpLink, from, ApolloLink, Observable, WatchQueryFetchPolicy } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { loadingManager } from './loading-manager';
 
@@ -136,11 +136,12 @@ function createApolloClient() {
         }),
         defaultOptions: {
             watchQuery: {
-                fetchPolicy: 'cache-and-network', // Always fetch fresh data but show cached first
+                fetchPolicy: 'cache-first', // Use cache if available, avoids spinner on back navigation
                 errorPolicy: 'all',
+                nextFetchPolicy: 'cache-first',
             },
             query: {
-                fetchPolicy: 'cache-first', // Use cache when available
+                fetchPolicy: 'cache-first', // Use cache if available
                 errorPolicy: 'all',
             },
             mutate: {

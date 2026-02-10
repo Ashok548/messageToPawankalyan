@@ -1,18 +1,23 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { SocialMediaWarriorsService } from './social-media-warriors.service';
 import { SocialMediaWarrior, WarriorStatus } from './entities/social-media-warrior.entity';
 import { CreateSocialMediaWarriorInput, UpdateSocialMediaWarriorInput } from './dto/social-media-warrior.input';
 import { GqlAuthGuard } from '../../common/guards/gql-auth.guard';
+import { OptionalGqlAuthGuard } from '../../common/guards/optional-gql-auth.guard';
 import { AdminGuard } from '../../common/guards/admin.guard';
 
 @Resolver(() => SocialMediaWarrior)
 export class SocialMediaWarriorsResolver {
     constructor(private readonly service: SocialMediaWarriorsService) { }
 
-    @Query(() => [SocialMediaWarrior], { name: 'socialMediaWarriors', description: 'Get all approved social media warriors' })
-    async findAll(): Promise<SocialMediaWarrior[]> {
-        return this.service.findAll();
+    @Query(() => [SocialMediaWarrior], { name: 'socialMediaWarriors', description: 'Get social media warriors (all for super admin, approved only for others)' })
+    @UseGuards(OptionalGqlAuthGuard)
+    async findAll(@Context() context: any): Promise<SocialMediaWarrior[]> {
+        const user = context.req?.user;
+        console.log(user)
+        const isSuperAdmin = user?.role === 'SUPER_ADMIN';
+        return this.service.findAll(isSuperAdmin);
     }
 
     @Query(() => SocialMediaWarrior, { name: 'socialMediaWarrior', nullable: true })

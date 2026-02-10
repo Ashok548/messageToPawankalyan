@@ -14,7 +14,7 @@ import {
     Alert
 } from '@mui/material';
 import { Search, Add } from '@mui/icons-material';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from '@/hooks/use-navigate';
 import { useTranslations, useLocale } from 'next-intl';
 import { DisciplinaryCaseCard } from '@/components/DisciplinaryCaseCard';
 import { GET_DISCIPLINARY_CASES } from '@/graphql/disciplinary-cases';
@@ -57,7 +57,7 @@ export default function DisciplinaryCasesPage() {
     };
 
     const handleCreateCase = () => {
-        router.push(`/${locale}/disciplinary-cases/create`);
+        navigate(`/${locale}/disciplinary-cases/create`);
     };
 
     return (

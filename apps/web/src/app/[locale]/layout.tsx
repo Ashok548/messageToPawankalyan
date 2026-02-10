@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Header } from '@/components/layout';
 import { Footer } from '@/components/layout/Footer';
 import { JspWelcomeModal } from '@/components/jsp-welcome-modal';
+import { NavigationLoadingWatcher } from '@/components/NavigationLoadingWatcher';
 import { locales } from '@/i18n';
 import '../globals.css';
 
@@ -36,6 +37,7 @@ export default async function LocaleLayout({
                     <ThemeProvider>
                         <ApolloProvider>
                             <JspWelcomeModal />
+                            <NavigationLoadingWatcher />
                             <Header />
                             {children}
                             <Footer />

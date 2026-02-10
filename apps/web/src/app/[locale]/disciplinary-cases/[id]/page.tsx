@@ -41,7 +41,8 @@ import {
     Link,
     OpenInNew
 } from '@mui/icons-material';
-import { useRouter, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
+import { useNavigate } from '@/hooks/use-navigate';
 import { CaseStatusBadge, CaseStatus, ActionOutcome, CaseVisibility } from '@/components/ui/case-status-badge';
 import {
     GET_DISCIPLINARY_CASE_DETAILS,
@@ -54,7 +55,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { useTranslations } from 'next-intl';
 
 export default function DisciplinaryCaseDetailPage() {
-    const router = useRouter();
+    const { navigate } = useNavigate();
     const params = useParams();
     const { user } = useAuth();
     const t = useTranslations('disciplinary');
@@ -185,7 +186,7 @@ export default function DisciplinaryCaseDetailPage() {
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
                     <Button
                         startIcon={<ArrowBack />}
-                        onClick={() => router.push('/disciplinary-cases')}
+                        onClick={() => navigate('/disciplinary-cases')}
                         sx={{ color: 'text.secondary', '&:hover': { background: 'transparent', color: 'text.primary' } }}
                     >
                         {t('backToCases')}
@@ -225,7 +226,7 @@ export default function DisciplinaryCaseDetailPage() {
                                     <Tooltip title="Edit Case Details">
                                         <IconButton
                                             color="warning"
-                                            onClick={() => router.push(`/disciplinary-cases/${caseData.id}/edit`)}
+                                            onClick={() => navigate(`/disciplinary-cases/${caseData.id}/edit`)}
                                             sx={{
                                                 bgcolor: 'warning.50',
                                                 '&:hover': { bgcolor: 'warning.100' }

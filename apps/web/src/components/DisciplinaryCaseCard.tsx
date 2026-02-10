@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Card, CardContent, Typography, IconButton, Chip } from '@mui/material';
 import { CalendarToday, Visibility, Edit } from '@mui/icons-material';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from '@/hooks/use-navigate';
 import { format } from 'date-fns';
 import { CaseStatusBadge } from './ui/case-status-badge';
 import { useTranslations } from 'next-intl';
@@ -28,16 +28,16 @@ interface DisciplinaryCaseCardProps {
 }
 
 export const DisciplinaryCaseCard: React.FC<DisciplinaryCaseCardProps> = ({ data, isAdmin = false }) => {
-    const router = useRouter();
+    const { navigate } = useNavigate();
     const t = useTranslations('disciplinary.form.issueCategories');
 
     const handleViewDetails = () => {
-        router.push(`/disciplinary-cases/${data.id}`);
+        navigate(`/disciplinary-cases/${data.id}`);
     };
 
     const handleEdit = (e: React.MouseEvent) => {
         e.stopPropagation();
-        router.push(`/disciplinary-cases/${data.id}/edit`);
+        navigate(`/disciplinary-cases/${data.id}/edit`);
     };
 
     return (

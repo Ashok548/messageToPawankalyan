@@ -425,7 +425,9 @@ type Query {
   me: User
   socialMediaWarrior(id: String!): SocialMediaWarrior
 
-  """Get all approved social media warriors"""
+  """
+  Get social media warriors (all for super admin, approved only for others)
+  """
   socialMediaWarriors: [SocialMediaWarrior!]!
 
   """Admin only: Get warriors by status"""

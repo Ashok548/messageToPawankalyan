@@ -847,7 +847,13 @@
             "updating": "నవీకరిస్తోంది...",
             "submitting": "సమర్పిస్తోంది...",
             "updateProfile": "ప్రొఫైల్ నవీకరించండి",
-            "submitProfile": "ప్రొఫైల్ సమర్పించండి"
+            "submitProfile": "ప్రొఫైల్ సమర్పించండి",
+            "additionalPlatforms": "అదనపు ప్లాట్‌ఫారమ్‌లు",
+            "additionalPlatformsHelper": "ఇతర సోషల్ మీడియా ప్రొఫైల్స్‌ను జోడించండి.",
+            "platform": "ప్లాట్‌ఫారమ్",
+            "addPlatform": "మరో ప్లాట్‌ఫారమ్‌ను జోడించండి",
+            "allPlatformsAdded": "అందుబాటులో ఉన్న అన్ని ప్లాట్‌ఫారమ్‌లు జోడించబడ్డాయి",
+            "validUrl": "సరైన URL"
         },
         "validation": {
             "imageType": "కేవలం చిత్ర ఫైళ్లు మాత్రమే అనుమతించబడతాయి",

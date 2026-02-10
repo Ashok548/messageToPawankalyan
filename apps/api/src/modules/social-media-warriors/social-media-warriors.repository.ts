@@ -15,9 +15,9 @@ export class SocialMediaWarriorsRepository {
         };
     }
 
-    async findAll(): Promise<SocialMediaWarrior[]> {
+    async findAll(isSuperAdmin: boolean = false): Promise<SocialMediaWarrior[]> {
         const warriors = await this.prisma.socialMediaWarrior.findMany({
-            where: { status: WarriorStatus.APPROVED },
+            where: isSuperAdmin ? {} : { status: WarriorStatus.APPROVED },
             orderBy: { createdAt: 'desc' },
         });
         return warriors.map(this.mapToEntity);

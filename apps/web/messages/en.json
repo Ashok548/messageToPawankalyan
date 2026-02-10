@@ -847,7 +847,13 @@
             "updating": "Updating...",
             "submitting": "Submitting...",
             "updateProfile": "Update Profile",
-            "submitProfile": "Submit Profile"
+            "submitProfile": "Submit Profile",
+            "additionalPlatforms": "Additional Platforms",
+            "additionalPlatformsHelper": "Add other social media profiles.",
+            "platform": "Platform",
+            "addPlatform": "Add Another Platform",
+            "allPlatformsAdded": "All available platforms added",
+            "validUrl": "Valid URL"
         },
         "validation": {
             "imageType": "Only image files are allowed",
