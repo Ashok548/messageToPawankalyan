@@ -361,6 +361,9 @@ type Mutation {
   """Update visibility setting of a case"""
   updateCaseVisibility(id: ID!, visibility: CaseVisibility!): DisciplinaryCase!
 
+  """Update an existing disciplinary case (Super Admin only)"""
+  updateDisciplinaryCase(id: ID!, input: UpdateDisciplinaryCaseInput!): DisciplinaryCase!
+
   """SUPER_ADMIN only: Update governance highlight"""
   updateGovernanceHighlight(id: String!, input: UpdateGovernanceHighlightInput!): GovernanceHighlight!
 
@@ -519,6 +522,21 @@ input UpdateCaseStatusInput {
   reviewAuthority: String
   reviewStartDate: String
   status: CaseStatus!
+}
+
+input UpdateDisciplinaryCaseInput {
+  constituency: String
+  district: String
+  evidenceUrls: [String!]
+  imageUrls: [String!]
+  initiationDate: String
+  issueCategory: IssueCategory
+  issueDescription: String
+  issueSource: IssueSource
+  leaderName: String
+  leaderPhotoUrl: String
+  position: String
+  sourceLinks: [String!]
 }
 
 input UpdateGovernanceHighlightInput {

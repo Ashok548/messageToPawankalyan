@@ -103,6 +103,72 @@ export class RecordDecisionInput {
 }
 
 @InputType()
+export class UpdateDisciplinaryCaseInput {
+    @Field({ nullable: true })
+    @IsString()
+    @IsOptional()
+    leaderName?: string;
+
+    @Field({ nullable: true })
+    @IsString()
+    @IsOptional()
+    position?: string;
+
+    @Field({ nullable: true })
+    @IsString()
+    @IsOptional()
+    constituency?: string;
+
+    @Field({ nullable: true })
+    @IsString()
+    @IsOptional()
+    district?: string;
+
+    @Field({ nullable: true })
+    @IsString()
+    @IsOptional()
+    leaderPhotoUrl?: string;
+
+    @Field(() => IssueCategory, { nullable: true })
+    @IsEnum(IssueCategory)
+    @IsOptional()
+    issueCategory?: IssueCategory;
+
+    @Field({ nullable: true })
+    @IsString()
+    @IsOptional()
+    issueDescription?: string;
+
+    @Field(() => IssueSource, { nullable: true })
+    @IsEnum(IssueSource)
+    @IsOptional()
+    issueSource?: IssueSource;
+
+    @Field({ nullable: true })
+    @IsDateString()
+    @IsOptional()
+    initiationDate?: string;
+
+    @Field(() => [String], { nullable: true })
+    @IsArray()
+    @IsString({ each: true })
+    @IsOptional()
+    evidenceUrls?: string[];
+
+    @Field(() => [String], { nullable: true })
+    @IsArray()
+    @IsString({ each: true })
+    @IsOptional()
+    imageUrls?: string[];
+
+    @Field(() => [String], { nullable: true })
+    @IsArray()
+    @IsString({ each: true })
+    @IsOptional()
+    sourceLinks?: string[];
+}
+
+@InputType()
 export class DisciplinaryCaseFilterInput {
     @Field({ nullable: true })
     @IsEnum(CaseStatus)

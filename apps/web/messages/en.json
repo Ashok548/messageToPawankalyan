@@ -199,29 +199,6 @@
             "onHold": "On Hold"
         }
     },
-    "caseStatus": {
-        "status": {
-            "UNDER_REVIEW": "Under Review",
-            "CLARIFICATION_REQUIRED": "Clarification Needed",
-            "REVIEW_COMPLETED": "Review Completed",
-            "ACTION_TAKEN": "Action Taken",
-            "CLOSED": "Closed",
-            "ARCHIVED": "Archived"
-        },
-        "action": {
-            "NO_ACTION": "No Action Taken",
-            "WARNING": "Warning Issued",
-            "TEMPORARY_SUSPENSION": "Temporary Suspension",
-            "PERMANENT_SUSPENSION": "Permanent Suspension",
-            "POSITION_REVOKED": "Position Revoked",
-            "MEMBERSHIP_REVOKED": "Membership Revoked"
-        },
-        "visibility": {
-            "INTERNAL_ONLY": "Internal Only",
-            "PUBLIC": "Public",
-            "RESTRICTED": "Restricted"
-        }
-    },
     "leaders": {
         "title": "Leaders Society Needs",
         "subtitle": "Documenting grassroots voices on community service and social contribution",
@@ -465,6 +442,29 @@
             "maxSize": "Max size 500KB"
         }
     },
+    "caseStatus": {
+        "status": {
+            "UNDER_REVIEW": "Under Review",
+            "CLARIFICATION_REQUIRED": "Clarification Required",
+            "REVIEW_COMPLETED": "Review Completed",
+            "ACTION_TAKEN": "Action Taken",
+            "CLOSED": "Closed",
+            "ARCHIVED": "Archived"
+        },
+        "action": {
+            "NO_ACTION": "No Action",
+            "WARNING": "Warning",
+            "TEMPORARY_SUSPENSION": "Temporary Suspension",
+            "PERMANENT_SUSPENSION": "Permanent Suspension",
+            "POSITION_REVOKED": "Position Revoked",
+            "MEMBERSHIP_REVOKED": "Membership Revoked"
+        },
+        "visibility": {
+            "INTERNAL_ONLY": "Internal Only",
+            "PUBLIC": "Public",
+            "RESTRICTED": "Restricted"
+        }
+    },
     "disciplinary": {
         "title": "Disciplinary Cases",
         "createCase": "Create Case",
@@ -504,8 +504,10 @@
         "effectiveTo": "Effective To",
         "labels": {
             "category": "Category",
-            "source": "Source"
+            "source": "Source",
+            "status": "Status"
         },
+        "newStatus": "New Status",
         "form": {
             "title": "Initiate Disciplinary Case",
             "description": "Create a new official record for a disciplinary issue. This will be visible only to administrators initially.",

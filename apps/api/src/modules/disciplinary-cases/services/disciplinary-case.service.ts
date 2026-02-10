@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException, NotFoundException, ForbiddenException, Logger } from '@nestjs/common';
 import { DisciplinaryCasesRepository } from '../repositories/disciplinary-cases.repository';
-import { CreateDisciplinaryCaseInput, DisciplinaryCaseFilterInput, UpdateCaseStatusInput, RecordDecisionInput } from '../dto/disciplinary-case.input';
+import { CreateDisciplinaryCaseInput, DisciplinaryCaseFilterInput, UpdateCaseStatusInput, RecordDecisionInput, UpdateDisciplinaryCaseInput } from '../dto/disciplinary-case.input';
 import { DisciplinaryCase, CaseStatus, ActionOutcome, CaseVisibility } from '../entities/disciplinary-case.entity';
 import { ImageKitService } from '../../../common/imagekit/imagekit.service';
 import { type Uploadable } from '@imagekit/nodejs';
@@ -119,6 +119,92 @@ export class DisciplinaryCaseService {
         };
 
         return this.repository.create(caseInput, initiatedBy, caseNumber);
+    }
+
+    async update(id: string, input: UpdateDisciplinaryCaseInput, userId: string, userRole: UserRole): Promise<DisciplinaryCase> {
+        // Verify super admin
+        if (userRole !== UserRole.SUPER_ADMIN) {
+            throw new ForbiddenException('Only super admins can edit cases');
+        }
+
+        // Find existing case
+        const existingCase = await this.repository.findById(id);
+        if (!existingCase) {
+            throw new NotFoundException(`Case with ID ${id} not found`);
+        }
+
+        // Handle file uploads if provided
+        const updateData: any = { ...input };
+
+        // Handle leader photo upload
+        if (input.leaderPhotoUrl && !input.leaderPhotoUrl.startsWith('http')) {
+            try {
+                this.imagekitService.validateImageSize(input.leaderPhotoUrl);
+                const fileName = `leader_photo_${existingCase.caseNumber}_updated_${Date.now()}.jpg`;
+                const uploadedUrls = await this.imagekitService.uploadMultipleImages(
+                    [input.leaderPhotoUrl] as unknown as Uploadable[],
+                    [fileName],
+                    'disciplinary-cases/leader-photos'
+                );
+                updateData.leaderPhotoUrl = uploadedUrls[0];
+            } catch (error) {
+                this.logger.error(`Failed to upload leader photo: ${error instanceof Error ? error.message : 'Unknown error'}`);
+                throw new BadRequestException(`Failed to upload leader photo: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            }
+        }
+
+        // Handle image uploads - append to existing
+        if (input.imageUrls && input.imageUrls.length > 0) {
+            try {
+                const newImages = input.imageUrls.filter(img => !img.startsWith('http'));
+
+                if (newImages.length > 0) {
+                    newImages.forEach(img => this.imagekitService.validateImageSize(img));
+                    const fileNames = newImages.map((_, i) => `disciplinary_case_${existingCase.caseNumber}_updated_${Date.now()}_${i}.jpg`);
+                    const uploadedUrls = await this.imagekitService.uploadMultipleImages(
+                        newImages as unknown as Uploadable[],
+                        fileNames,
+                        'disciplinary-cases'
+                    );
+                    updateData.imageUrls = [...(existingCase.imageUrls || []), ...uploadedUrls];
+                } else {
+                    delete updateData.imageUrls; // Don't update if no new images
+                }
+            } catch (error) {
+                this.logger.error(`Failed to upload case images: ${error instanceof Error ? error.message : 'Unknown error'}`);
+                throw new BadRequestException(`Failed to upload case images: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            }
+        } else {
+            delete updateData.imageUrls;
+        }
+
+        // Handle evidence uploads - append to existing
+        if (input.evidenceUrls && input.evidenceUrls.length > 0) {
+            try {
+                const newDocs = input.evidenceUrls.filter(doc => !doc.startsWith('http'));
+
+                if (newDocs.length > 0) {
+                    newDocs.forEach(doc => this.imagekitService.validateFileSize(doc, 5120));
+                    const fileNames = newDocs.map((_, i) => `disciplinary_case_doc_${existingCase.caseNumber}_updated_${Date.now()}_${i}`);
+                    const uploadedDocUrls = await this.imagekitService.uploadMultipleImages(
+                        newDocs as unknown as Uploadable[],
+                        fileNames,
+                        'disciplinary-cases-docs'
+                    );
+                    updateData.evidenceUrls = [...(existingCase.evidenceUrls || []), ...uploadedDocUrls];
+                } else {
+                    delete updateData.evidenceUrls;
+                }
+            } catch (error) {
+                this.logger.error(`Failed to upload case documents: ${error instanceof Error ? error.message : 'Unknown error'}`);
+                throw new BadRequestException(`Failed to upload case documents: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            }
+        } else {
+            delete updateData.evidenceUrls;
+        }
+
+        // Update the case
+        return this.repository.update(id, updateData);
     }
 
     async findAll(filter?: DisciplinaryCaseFilterInput, userRole?: string): Promise<DisciplinaryCase[]> {

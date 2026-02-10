@@ -58,6 +58,7 @@ export default function DisciplinaryCaseDetailPage() {
     const params = useParams();
     const { user } = useAuth();
     const t = useTranslations('disciplinary');
+    const tCaseStatus = useTranslations('caseStatus');
     const tCommon = useTranslations('common');
     const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
     const isSuperAdmin = user?.role === 'SUPER_ADMIN';
@@ -220,18 +221,32 @@ export default function DisciplinaryCaseDetailPage() {
                                 </Tooltip>
                             )}
                             {isSuperAdmin && (
-                                <Tooltip title={t('changeVisibility')}>
-                                    <IconButton
-                                        color="success"
-                                        onClick={() => setVisibilityModalOpen(true)}
-                                        sx={{
-                                            bgcolor: 'success.50',
-                                            '&:hover': { bgcolor: 'success.100' }
-                                        }}
-                                    >
-                                        <Visibility />
-                                    </IconButton>
-                                </Tooltip>
+                                <>
+                                    <Tooltip title="Edit Case Details">
+                                        <IconButton
+                                            color="warning"
+                                            onClick={() => router.push(`/disciplinary-cases/${caseData.id}/edit`)}
+                                            sx={{
+                                                bgcolor: 'warning.50',
+                                                '&:hover': { bgcolor: 'warning.100' }
+                                            }}
+                                        >
+                                            <Edit />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title={t('changeVisibility')}>
+                                        <IconButton
+                                            color="success"
+                                            onClick={() => setVisibilityModalOpen(true)}
+                                            sx={{
+                                                bgcolor: 'success.50',
+                                                '&:hover': { bgcolor: 'success.100' }
+                                            }}
+                                        >
+                                            <Visibility />
+                                        </IconButton>
+                                    </Tooltip>
+                                </>
                             )}
                         </Box>
                     )}
@@ -324,13 +339,14 @@ export default function DisciplinaryCaseDetailPage() {
 
                     <Divider sx={{ my: 5 }} />
 
+
                     {/* 2. Case Details Metadata */}
-                    <Grid container spacing={6}>
-                        <Grid item xs={12} md={6}>
-                            <Typography variant="subtitle2" sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'text.secondary', mb: 2 }}>
-                                {t('issueInformation')}
-                            </Typography>
-                            <Stack spacing={1.5}>
+                    <Box>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'text.secondary', mb: 2 }}>
+                            {t('issueInformation')}
+                        </Typography>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12} sm={6}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                                     <Category fontSize="small" color="action" />
                                     <Typography variant="body2">
@@ -340,6 +356,8 @@ export default function DisciplinaryCaseDetailPage() {
                                         {t(`form.issueCategories.${caseData.issueCategory}`)}
                                     </Typography>
                                 </Box>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                                     <Source fontSize="small" color="action" />
                                     <Typography variant="body2">
@@ -349,36 +367,9 @@ export default function DisciplinaryCaseDetailPage() {
                                         {t(`form.issueSources.${caseData.issueSource}`)}
                                     </Typography>
                                 </Box>
-                            </Stack>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12} md={6}>
-                            <Typography variant="subtitle2" sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'text.secondary', mb: 2 }}>
-                                {t('timeline')}
-                            </Typography>
-                            <Stack spacing={1.5}>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                                    <Person fontSize="small" color="action" />
-                                    <Typography variant="body2">
-                                        <Typography component="span" variant="body2" color="text.secondary" sx={{ mr: 0.5 }}>
-                                            {t('initiatedBy')}:
-                                        </Typography>
-                                        {caseData.initiatedByUser?.name || 'N/A'}
-                                    </Typography>
-                                </Box>
-                                {caseData.decisionDate && (
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                                        <CalendarToday fontSize="small" color="action" />
-                                        <Typography variant="body2">
-                                            <Typography component="span" variant="body2" color="text.secondary" sx={{ mr: 0.5 }}>
-                                                {t('decisionDate')}:
-                                            </Typography>
-                                            {new Date(caseData.decisionDate).toLocaleDateString()}
-                                        </Typography>
-                                    </Box>
-                                )}
-                            </Stack>
-                        </Grid>
-                    </Grid>
+                    </Box>
 
                     <Divider sx={{ my: 5 }} />
 
@@ -545,7 +536,7 @@ export default function DisciplinaryCaseDetailPage() {
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6} md={4}>
                                 <Chip
-                                    label={t(`caseStatus.status.${caseData.status}`)}
+                                    label={tCaseStatus(`status.${caseData.status}`)}
                                     color={caseData.status === 'CLOSED' ? 'success' : 'default'}
                                     variant="outlined"
                                     sx={{ width: '100%', justifyContent: 'flex-start', pl: 1, fontWeight: 600 }}
@@ -605,7 +596,7 @@ export default function DisciplinaryCaseDetailPage() {
                             sx={{ mt: 1 }}
                         >
                             {Object.keys(CaseStatus).map((status) => (
-                                <MenuItem key={status} value={status}>{t(`caseStatus.status.${status}`)}</MenuItem>
+                                <MenuItem key={status} value={status}>{tCaseStatus(`status.${status}`)}</MenuItem>
                             ))}
                         </TextField>
                     </DialogContent>
@@ -628,7 +619,7 @@ export default function DisciplinaryCaseDetailPage() {
                                 onChange={(e) => setDecisionData({ ...decisionData, outcome: e.target.value })}
                             >
                                 {Object.keys(ActionOutcome).map((outcome) => (
-                                    <MenuItem key={outcome} value={outcome}>{t(`caseStatus.action.${outcome}`)}</MenuItem>
+                                    <MenuItem key={outcome} value={outcome}>{tCaseStatus(`action.${outcome}`)}</MenuItem>
                                 ))}
                             </TextField>
 
@@ -642,7 +633,7 @@ export default function DisciplinaryCaseDetailPage() {
                             />
 
                             <Grid container spacing={2}>
-                                <Grid item xs={6}>
+                                <Grid item xs={decisionData.outcome === 'TEMPORARY_SUSPENSION' ? 6 : 12}>
                                     <TextField
                                         fullWidth
                                         type="date"
@@ -652,16 +643,18 @@ export default function DisciplinaryCaseDetailPage() {
                                         onChange={(e) => setDecisionData({ ...decisionData, effectiveFrom: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        fullWidth
-                                        type="date"
-                                        label={t('effectiveTo')}
-                                        InputLabelProps={{ shrink: true }}
-                                        value={decisionData.effectiveTo}
-                                        onChange={(e) => setDecisionData({ ...decisionData, effectiveTo: e.target.value })}
-                                    />
-                                </Grid>
+                                {decisionData.outcome === 'TEMPORARY_SUSPENSION' && (
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            fullWidth
+                                            type="date"
+                                            label={t('effectiveTo')}
+                                            InputLabelProps={{ shrink: true }}
+                                            value={decisionData.effectiveTo}
+                                            onChange={(e) => setDecisionData({ ...decisionData, effectiveTo: e.target.value })}
+                                        />
+                                    </Grid>
+                                )}
                             </Grid>
                         </Stack>
                     </DialogContent>
@@ -686,7 +679,7 @@ export default function DisciplinaryCaseDetailPage() {
                             sx={{ mt: 1 }}
                         >
                             {Object.keys(CaseVisibility).map((v) => (
-                                <MenuItem key={v} value={v}>{t(`caseStatus.visibility.${v}`)}</MenuItem>
+                                <MenuItem key={v} value={v}>{tCaseStatus(`visibility.${v}`)}</MenuItem>
                             ))}
                         </TextField>
                     </DialogContent>

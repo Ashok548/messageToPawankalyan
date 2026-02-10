@@ -162,4 +162,22 @@ export class DisciplinaryCasesRepository {
             },
         });
     }
+
+    async update(id: string, data: Partial<DisciplinaryCase>): Promise<DisciplinaryCase> {
+        // Convert date strings to Date objects if present
+        const updateData: any = { ...data };
+        if (updateData.initiationDate && typeof updateData.initiationDate === 'string') {
+            updateData.initiationDate = new Date(updateData.initiationDate);
+        }
+
+        return this.prisma.disciplinaryCase.update({
+            where: { id },
+            data: updateData,
+            include: {
+                initiatedByUser: true,
+                reviewAuthorityUser: true,
+                decisionAuthorityUser: true,
+            },
+        });
+    }
 }

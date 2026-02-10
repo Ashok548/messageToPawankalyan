@@ -81,6 +81,26 @@ export const CREATE_DISCIPLINARY_CASE = gql`
   }
 `;
 
+export const UPDATE_DISCIPLINARY_CASE = gql`
+  mutation UpdateDisciplinaryCase($id: ID!, $input: UpdateDisciplinaryCaseInput!) {
+    updateDisciplinaryCase(id: $id, input: $input) {
+      id
+      caseNumber
+      leaderName
+      leaderPhotoUrl
+      position
+      constituency
+      district
+      issueCategory
+      issueDescription
+      issueSource
+      initiationDate
+      status
+      updatedAt
+    }
+  }
+`;
+
 export const UPDATE_CASE_STATUS = gql`
   mutation UpdateCaseStatus($id: ID!, $input: UpdateCaseStatusInput!) {
     updateCaseStatus(id: $id, input: $input) {
@@ -93,7 +113,7 @@ export const UPDATE_CASE_STATUS = gql`
 
 export const RECORD_CASE_DECISION = gql`
   mutation RecordCaseDecision($id: ID!, $input: RecordDecisionInput!) {
-    recordDecision(id: $id, input: $input) {
+    recordCaseDecision(id: $id, input: $input) {
       id
       status
       actionOutcome

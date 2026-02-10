@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import {
     Box,
@@ -14,19 +14,21 @@ import {
     Stack,
     Alert,
     CircularProgress,
-    Autocomplete,
     IconButton
 } from '@mui/material';
 import { CloudUpload, Save, ArrowBack, Add, Delete } from '@mui/icons-material';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { CREATE_DISCIPLINARY_CASE } from '@/graphql/disciplinary-cases';
+import { UPDATE_DISCIPLINARY_CASE, GET_DISCIPLINARY_CASE_DETAILS } from '@/graphql/disciplinary-cases';
 import { IssueCategory, IssueSource } from '@/components/ui/case-status-badge';
 
-export default function CreateDisciplinaryCasePage() {
+export default function EditDisciplinaryCasePage() {
     const router = useRouter();
+    const params = useParams();
+    const caseId = params.id as string;
     const t = useTranslations('disciplinary.form');
     const tCommon = useTranslations('common');
+
     const [formData, setFormData] = useState({
         leaderName: '',
         position: '',
@@ -45,7 +47,30 @@ export default function CreateDisciplinaryCasePage() {
     const [leaderPhotoFile, setLeaderPhotoFile] = useState<File | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    const [createCase, { loading: creating }] = useMutation(CREATE_DISCIPLINARY_CASE);
+    // Fetch existing case data
+    const { data, loading: fetching, error: fetchError } = useQuery(GET_DISCIPLINARY_CASE_DETAILS, {
+        variables: { id: caseId },
+    });
+
+    const [updateCase, { loading: updating }] = useMutation(UPDATE_DISCIPLINARY_CASE);
+
+    // Pre-fill form when data is loaded
+    useEffect(() => {
+        if (data?.disciplinaryCase) {
+            const caseData = data.disciplinaryCase;
+            setFormData({
+                leaderName: caseData.leaderName || '',
+                position: caseData.position || '',
+                constituency: caseData.constituency || '',
+                district: caseData.district || '',
+                issueCategory: caseData.issueCategory || '',
+                issueDescription: caseData.issueDescription || '',
+                issueSource: caseData.issueSource || '',
+                initiationDate: caseData.initiationDate ? caseData.initiationDate.split('T')[0] : '',
+                sourceLinks: caseData.sourceLinks && caseData.sourceLinks.length > 0 ? caseData.sourceLinks : [''],
+            });
+        }
+    }, [data]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
@@ -101,19 +126,19 @@ export default function CreateDisciplinaryCasePage() {
 
         try {
             // Upload leader photo if provided
-            let leaderPhotoUrl = '';
+            let leaderPhotoUrl = undefined;
             if (leaderPhotoFile) {
                 const leaderPhotoBase64 = await convertFilesToBase64([leaderPhotoFile]);
                 leaderPhotoUrl = leaderPhotoBase64[0];
             }
 
             // Convert images to base64 for upload
-            let imageUrls: string[] = [];
+            let imageUrls: string[] | undefined = undefined;
             if (imageFiles) {
                 imageUrls = await convertFilesToBase64(imageFiles);
             }
 
-            let evidenceUrls: string[] = [];
+            let evidenceUrls: string[] | undefined = undefined;
             if (evidenceFiles) {
                 evidenceUrls = await convertFilesToBase64(evidenceFiles);
             }
@@ -121,39 +146,60 @@ export default function CreateDisciplinaryCasePage() {
             // Filter out empty source links
             const validSourceLinks = formData.sourceLinks.filter(link => link.trim() !== '');
 
-            // Note: Evidence docs handling would typically go to a separate storage service
-            // For this implementation plan, we'll focus on the images integration
+            // Build update input - only include fields that have values
+            const updateInput: any = {};
+            if (formData.leaderName) updateInput.leaderName = formData.leaderName;
+            if (formData.position) updateInput.position = formData.position;
+            if (formData.constituency) updateInput.constituency = formData.constituency;
+            if (formData.district) updateInput.district = formData.district;
+            if (formData.issueCategory) updateInput.issueCategory = formData.issueCategory;
+            if (formData.issueDescription) updateInput.issueDescription = formData.issueDescription;
+            if (formData.issueSource) updateInput.issueSource = formData.issueSource;
+            if (formData.initiationDate) updateInput.initiationDate = formData.initiationDate;
+            if (leaderPhotoUrl) updateInput.leaderPhotoUrl = leaderPhotoUrl;
+            if (imageUrls && imageUrls.length > 0) updateInput.imageUrls = imageUrls;
+            if (evidenceUrls && evidenceUrls.length > 0) updateInput.evidenceUrls = evidenceUrls;
+            if (validSourceLinks.length > 0) updateInput.sourceLinks = validSourceLinks;
 
-            await createCase({
+            await updateCase({
                 variables: {
-                    input: {
-                        leaderName: formData.leaderName,
-                        leaderPhotoUrl: leaderPhotoUrl || undefined,
-                        position: formData.position,
-                        constituency: formData.constituency || undefined,
-                        district: formData.district || undefined,
-                        issueCategory: formData.issueCategory,
-                        issueDescription: formData.issueDescription,
-                        issueSource: formData.issueSource,
-                        initiationDate: formData.initiationDate || undefined,
-                        imageUrls: imageUrls.length > 0 ? imageUrls : undefined,
-                        evidenceUrls: evidenceUrls.length > 0 ? evidenceUrls : undefined,
-                        sourceLinks: validSourceLinks.length > 0 ? validSourceLinks : undefined
-                    }
+                    id: caseId,
+                    input: updateInput
                 }
             });
 
-            router.push('/disciplinary-cases');
+            router.push(`/disciplinary-cases/${caseId}`);
         } catch (err: any) {
-            setError(err.message || t('errors.createFailed'));
+            setError(err.message || t('errors.updateFailed') || 'Failed to update case');
         }
     };
+
+    if (fetching) {
+        return (
+            <Container maxWidth={false} sx={{ py: 4, display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
+                <CircularProgress />
+            </Container>
+        );
+    }
+
+    if (fetchError || !data?.disciplinaryCase) {
+        return (
+            <Container maxWidth={false} sx={{ py: 4 }}>
+                <Alert severity="error">
+                    {fetchError?.message || 'Case not found or you do not have permission to edit it'}
+                </Alert>
+                <Button startIcon={<ArrowBack />} onClick={() => router.back()} sx={{ mt: 2 }}>
+                    Go Back
+                </Button>
+            </Container>
+        );
+    }
 
     return (
         <Container maxWidth={false} sx={{ py: 4, px: { xs: 2, sm: 3 }, maxWidth: '900px', mx: 'auto' }}>
             <Button
                 startIcon={<ArrowBack />}
-                onClick={() => router.push('/disciplinary-cases')}
+                onClick={() => router.push(`/disciplinary-cases/${caseId}`)}
                 sx={{ mb: 2 }}
             >
                 {t('actions.cancel')}
@@ -161,10 +207,10 @@ export default function CreateDisciplinaryCasePage() {
 
             <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
                 <Typography variant="h4" fontWeight="bold" gutterBottom color="primary">
-                    {t('title')}
+                    Edit Disciplinary Case
                 </Typography>
                 <Typography variant="body2" color="text.secondary" paragraph>
-                    {t('description')}
+                    Update case information. New images and documents will be added to existing ones.
                 </Typography>
 
                 {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
@@ -225,7 +271,7 @@ export default function CreateDisciplinaryCasePage() {
                         {/* Leader Profile Photo */}
                         <Grid item xs={12}>
                             <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 600 }}>
-                                {t('fields.leaderPhoto')}
+                                {t('fields.leaderPhoto')} (Optional - Upload new to replace)
                             </Typography>
                             <Button
                                 variant="outlined"
@@ -355,7 +401,9 @@ export default function CreateDisciplinaryCasePage() {
 
                         {/* Evidence Upload */}
                         <Grid item xs={12}>
-                            <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>{t('section.evidence')}</Typography>
+                            <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+                                {t('section.evidence')} (Optional - Add more files)
+                            </Typography>
                         </Grid>
 
                         <Grid item xs={12} sm={6}>
@@ -408,17 +456,17 @@ export default function CreateDisciplinaryCasePage() {
 
                         <Grid item xs={12}>
                             <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ mt: 2 }}>
-                                <Button variant="outlined" onClick={() => router.back()}>
+                                <Button variant="outlined" onClick={() => router.push(`/disciplinary-cases/${caseId}`)}>
                                     {t('actions.cancel')}
                                 </Button>
                                 <Button
                                     type="submit"
                                     variant="contained"
-                                    startIcon={creating ? <CircularProgress size={20} /> : <Save />}
-                                    disabled={creating}
+                                    startIcon={updating ? <CircularProgress size={20} /> : <Save />}
+                                    disabled={updating}
                                     sx={{ minWidth: 150 }}
                                 >
-                                    {creating ? t('actions.creating') : t('actions.create')}
+                                    {updating ? 'Updating...' : 'Update Case'}
                                 </Button>
                             </Stack>
                         </Grid>

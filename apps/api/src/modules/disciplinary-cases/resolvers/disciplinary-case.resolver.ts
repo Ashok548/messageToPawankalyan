@@ -2,7 +2,7 @@ import { Resolver, Query, Mutation, Args, ID, Context } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { DisciplinaryCaseService } from '../services/disciplinary-case.service';
 import { DisciplinaryCase, CaseVisibility } from '../entities/disciplinary-case.entity';
-import { CreateDisciplinaryCaseInput, DisciplinaryCaseFilterInput, UpdateCaseStatusInput, RecordDecisionInput } from '../dto/disciplinary-case.input';
+import { CreateDisciplinaryCaseInput, DisciplinaryCaseFilterInput, UpdateCaseStatusInput, RecordDecisionInput, UpdateDisciplinaryCaseInput } from '../dto/disciplinary-case.input';
 import { GqlAuthGuard } from '../../../common/guards/gql-auth.guard';
 import { AdminGuard } from '../../../common/guards/admin.guard';
 import { SuperAdminGuard } from '../../../common/guards/super-admin.guard';
@@ -43,6 +43,17 @@ export class DisciplinaryCaseResolver {
     ) {
         const user = context.req.user;
         return this.service.create(input, user.id, user.role);
+    }
+
+    @Mutation(() => DisciplinaryCase, { description: 'Update an existing disciplinary case (Super Admin only)' })
+    @UseGuards(GqlAuthGuard, SuperAdminGuard)
+    async updateDisciplinaryCase(
+        @Args('id', { type: () => ID }) id: string,
+        @Args('input') input: UpdateDisciplinaryCaseInput,
+        @Context() context: any,
+    ) {
+        const user = context.req.user;
+        return this.service.update(id, input, user.id, user.role);
     }
 
     @Mutation(() => DisciplinaryCase, { description: 'Update the status of a disciplinary case' })

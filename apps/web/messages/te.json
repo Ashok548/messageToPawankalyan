@@ -199,29 +199,6 @@
             "onHold": "నిలిపివేయబడింది"
         }
     },
-    "caseStatus": {
-        "status": {
-            "UNDER_REVIEW": "సమీక్షలో ఉంది",
-            "CLARIFICATION_REQUIRED": "వివరణ అవసరం",
-            "REVIEW_COMPLETED": "సమీక్ష పూర్తయింది",
-            "ACTION_TAKEN": "చర్య తీసుకోబడింది",
-            "CLOSED": "మూసివేయబడింది",
-            "ARCHIVED": "ఆర్కైవ్ చేయబడింది"
-        },
-        "action": {
-            "NO_ACTION": "ఎటువంటి చర్య తీసుకోలేదు",
-            "WARNING": "హెచ్చరిక జారీ చేయబడింది",
-            "TEMPORARY_SUSPENSION": "తాత్కాలిక సస్పెన్షన్",
-            "PERMANENT_SUSPENSION": "శాశ్వత సస్పెన్షన్",
-            "POSITION_REVOKED": "పదవి రద్దు చేయబడింది",
-            "MEMBERSHIP_REVOKED": "సభ్యత్వం రద్దు చేయబడింది"
-        },
-        "visibility": {
-            "INTERNAL_ONLY": "అంతర్గత మాత్రమే",
-            "PUBLIC": "బహిరంగ",
-            "RESTRICTED": "నియంత్రిత"
-        }
-    },
     "leaders": {
         "title": "సమాజానికి కావాల్సిన నాయకులు",
         "subtitle": "కమ్యూనిటీ సేవ మరియు సామాజిక రచనపై క్షేత్ర స్థాయి స్వరాలను రికార్డ్ చేయడం",
@@ -465,6 +442,29 @@
             "maxSize": "గరిష్ట పరిమాణం 500KB"
         }
     },
+    "caseStatus": {
+        "status": {
+            "UNDER_REVIEW": "పరిశీలనలో ఉంది",
+            "CLARIFICATION_REQUIRED": "వివరణ అవసరం",
+            "REVIEW_COMPLETED": "పరిశీలన పూర్తయింది",
+            "ACTION_TAKEN": "చర్య తీసుకోబడింది",
+            "CLOSED": "మూసివేయబడింది",
+            "ARCHIVED": "భద్రపరచబడింది"
+        },
+        "action": {
+            "NO_ACTION": "చర్య లేదు",
+            "WARNING": "హెచ్చరిక",
+            "TEMPORARY_SUSPENSION": "తాత్కాలిక సస్పెన్షన్",
+            "PERMANENT_SUSPENSION": "శాశ్వత సస్పెన్షన్",
+            "POSITION_REVOKED": "పదవి రద్దు",
+            "MEMBERSHIP_REVOKED": "సభ్యత్వం రద్దు"
+        },
+        "visibility": {
+            "INTERNAL_ONLY": "అంతర్గత మాత్రమే",
+            "PUBLIC": "బహిరంగ",
+            "RESTRICTED": "నియంత్రిత"
+        }
+    },
     "disciplinary": {
         "title": "క్రమశిక్షణా కేసులు",
         "createCase": "కేసును సృష్టించండి",
@@ -504,8 +504,10 @@
         "effectiveTo": "వరకు అమలు",
         "labels": {
             "category": "వర్గం",
-            "source": "మూలం"
+            "source": "మూలం",
+            "status": "స్థితి"
         },
+        "newStatus": "కొత్త స్థితి",
         "form": {
             "title": "క్రమశిక్షణా కేసును ప్రారంభించండి",
             "description": "క్రమశిక్షణా సమస్య కోసం కొత్త అధికారిక రికార్డును సృష్టించండి. ఇది ప్రారంభంలో నిర్వాహకులకు మాత్రమే కనిపిస్తుంది.",
