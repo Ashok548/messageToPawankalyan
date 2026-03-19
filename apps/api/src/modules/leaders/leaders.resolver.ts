@@ -20,6 +20,12 @@ export class LeadersResolver {
         return this.service.findById(id);
     }
 
+    @Query(() => [Leader], { name: 'allLeaders', description: 'Admin only: Get all leaders regardless of status' })
+    @UseGuards(GqlAuthGuard, AdminGuard)
+    async findAllForAdmin(): Promise<Leader[]> {
+        return this.service.findAllForAdmin();
+    }
+
     @Query(() => [Leader], { name: 'leadersByStatus', description: 'Admin only: Get leaders by status' })
     @UseGuards(GqlAuthGuard, AdminGuard)
     async findByStatus(@Args('status', { type: () => LeaderStatus }) status: LeaderStatus): Promise<Leader[]> {

@@ -185,7 +185,7 @@ export default function SocialMediaWarriorsPage() {
                                                 sx={{
                                                     mb: 2,
                                                     lineHeight: 1.6,
-                                                    display: '-webkit-box',
+                                                    display: { xs: 'none', sm: '-webkit-box' },
                                                     WebkitLineClamp: 2,
                                                     WebkitBoxOrient: 'vertical',
                                                     overflow: 'hidden'
@@ -216,9 +216,9 @@ export default function SocialMediaWarriorsPage() {
                                         <Box
                                             sx={{
                                                 display: 'flex',
-                                                flexDirection: 'column',
-                                                alignItems: { xs: 'flex-start', md: 'flex-end' },
-                                                justifyContent: 'center',
+                                                flexDirection: { xs: 'row', md: 'column' },
+                                                alignItems: { xs: 'center', md: 'flex-end' },
+                                                justifyContent: { xs: 'flex-end', md: 'center' },
                                                 gap: 1,
                                                 minWidth: { md: 100 }
                                             }}

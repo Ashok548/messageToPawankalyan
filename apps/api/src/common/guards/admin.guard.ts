@@ -9,6 +9,12 @@ export class AdminGuard implements CanActivate {
 
         const user = req.user;
 
+        console.log('[AdminGuard Debug]', {
+            hasUser: !!user,
+            user,
+            userRole: user?.role,
+        });
+
         if (!user) {
             throw new ForbiddenException('Authentication required');
         }

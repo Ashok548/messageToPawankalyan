@@ -208,7 +208,29 @@
                 "profileNotFound": "Leader profile not found",
                 "disclaimer": {
                         "title": "Community Voices Disclaimer",
-                        "text": "The profiles featured here represent contributor opinions and community observations. This is not an official endorsement, ranking, or political affiliation platform."
+                        "text": "The profiles featured here represent contributor opinions and community observations. This is not an official endorsement, ranking, or political affiliation platform.",
+                        "profileText": "The profiles featured here represent contributor opinions and community observations. This is not an official endorsement, ranking, or political affiliation platform."
+                },
+                "noPhoto": "No Photo",
+                "profile": {
+                        "submitted": "Submitted",
+                        "submittedBy": "Submitted By",
+                        "areaOfService": "Area of Service",
+                        "position": "Position",
+                        "years": "Years of Association",
+                        "values": "Values Represented",
+                        "association": "Party Association",
+                        "nominatedPost": "Nominated Post",
+                        "socialMedia": "Social Media Presence",
+                        "primaryPlatform": "Primary Platform",
+                        "otherPlatforms": "Other Platforms",
+                        "visitProfile": "Visit Profile",
+                        "whySocietyNeeds": "Why Society Needs This Leader",
+                        "status": "Profile Status",
+                        "primary": "Primary",
+                        "approveLeader": "Approve Leader",
+                        "hideProfile": "Hide Profile",
+                        "editData": "Edit Profile"
                 },
                 "form": {
                         "title": "Submit Leader Profile",

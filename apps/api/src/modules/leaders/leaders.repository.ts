@@ -23,6 +23,13 @@ export class LeadersRepository {
         return leaders.map(this.mapToEntity);
     }
 
+    async findAllForAdmin(): Promise<Leader[]> {
+        const leaders = await this.prisma.leader.findMany({
+            orderBy: { createdAt: 'desc' },
+        });
+        return leaders.map(this.mapToEntity);
+    }
+
     async findById(id: string): Promise<Leader | null> {
         const leader = await this.prisma.leader.findUnique({
             where: { id },

@@ -1,16 +1,16 @@
 'use client';
 
-import { Box, Container, Typography, TextField, MenuItem, Button, Alert, RadioGroup, FormControlLabel, Radio, FormControl, FormLabel, Card, CardMedia } from '@mui/material';
-import { useState } from 'react';
+import { Box, Container, Typography, TextField, MenuItem, Button, Alert, RadioGroup, FormControlLabel, Radio, FormControl, FormLabel } from '@mui/material';
+import { useState, useCallback } from 'react';
 import { useMutation } from '@apollo/client';
 import { gql } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { STATES, ANDHRA_PRADESH_DISTRICTS, ANDHRA_PRADESH_CONSTITUENCIES } from '@repo/constants';
-import { useImageUpload } from '@/hooks/use-image-upload';
 import { getErrorMessage } from '@/utils/error-helpers';
 import { ImageUploadField } from '@/components/forms/ImageUploadField';
+import type { ImageFile } from '@/utils/file-helpers';
 
 const CREATE_ATROCITY = gql`
     mutation CreateAtrocity($input: CreateAtrocityInput!) {
@@ -48,8 +48,12 @@ export default function ReportAtrocityPage() {
 
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [mutationError, setMutationError] = useState<string | null>(null);
-    const { images, handleImageSelect: onImageSelect } = useImageUpload({ maxImages: 2, maxSizeKB: 500 });
+    const [images, setImages] = useState<ImageFile[]>([]);
     const [createAtrocity, { loading }] = useMutation(CREATE_ATROCITY);
+
+    const handleImagesChange = useCallback((newImages: ImageFile[]) => {
+        setImages(newImages);
+    }, []);
 
     const handleChange = (field: string, value: string) => {
         setFormData((prev) => {
@@ -418,51 +422,12 @@ export default function ReportAtrocityPage() {
                         />
 
                         {/* Image Upload */}
-                        <Box>
-                            <Typography variant="subtitle2" sx={{ mb: 1 }}>
-                                {t('attachImages')}
-                            </Typography>
-
-
-
-
-
-
-
-                            {/* Image Previews */}
-                            {images.length > 0 && (
-                                <Box sx={{ mt: 2, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-                                    {images.map((image, index) => (
-                                        <Card key={index} sx={{ position: 'relative', width: 150, height: 150 }}>
-                                            <CardMedia
-                                                component="img"
-                                                image={image.preview}
-                                                alt={`Preview ${index + 1}`}
-                                                sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                            />
-
-                                            <Typography
-                                                variant="caption"
-                                                sx={{
-                                                    position: 'absolute',
-                                                    bottom: 4,
-                                                    left: 4,
-                                                    right: 4,
-                                                    bgcolor: 'rgba(0, 0, 0, 0.6)',
-                                                    color: 'white',
-                                                    px: 1,
-                                                    py: 0.5,
-                                                    borderRadius: 1,
-                                                    fontSize: '0.7rem',
-                                                }}
-                                            >
-                                                {(image.file.size / 1024).toFixed(2)} KB
-                                            </Typography>
-                                        </Card>
-                                    ))}
-                                </Box>
-                            )}
-                        </Box>
+                        <ImageUploadField
+                            maxImages={2}
+                            maxSizeKB={500}
+                            onChange={handleImagesChange}
+                            label={t('attachImages')}
+                        />
 
                         {/* Submit Buttons */}
                         <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>

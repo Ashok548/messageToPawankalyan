@@ -1,11 +1,14 @@
 'use client';
 
-import { useQuery, gql } from '@apollo/client';
-import { Box, Container, Typography, Button, Grid, Alert, CircularProgress, Card, CardContent } from '@mui/material';
+import { useQuery, useMutation, gql } from '@apollo/client';
+import { Box, Container, Typography, Button, Alert, CircularProgress, Card, CardContent, Chip, IconButton } from '@mui/material';
 import { useNavigate } from '@/hooks/use-navigate';
 import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import AddIcon from '@mui/icons-material/Add';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import EditIcon from '@mui/icons-material/Edit';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PlatformIcon from '@/components/PlatformIcon';
 import { SocialPlatform } from '@/utils/socialMediaValidation';
 
@@ -23,7 +26,37 @@ const GET_LEADERS = gql`
             primaryPlatform
             primaryProfileUrl
             submittedBy
+            status
             createdAt
+        }
+    }
+`;
+
+const GET_ALL_LEADERS_ADMIN = gql`
+    query GetAllLeadersAdmin {
+        allLeaders {
+            id
+            name
+            district
+            mandal
+            reason
+            serviceAreas
+            values
+            photo
+            primaryPlatform
+            primaryProfileUrl
+            submittedBy
+            status
+            createdAt
+        }
+    }
+`;
+
+const UPDATE_LEADER_STATUS = gql`
+    mutation UpdateLeaderStatus($id: String!, $status: LeaderStatus!) {
+        updateLeaderStatus(id: $id, status: $status) {
+            id
+            status
         }
     }
 `;
@@ -40,6 +73,7 @@ interface Leader {
     primaryPlatform?: string;
     primaryProfileUrl?: string;
     submittedBy: string;
+    status: string;
     createdAt: string;
 }
 
@@ -48,25 +82,47 @@ export default function LeadersSocietyNeedsPage() {
     const tCommon = useTranslations('common');
     const locale = useLocale();
     const { navigate } = useNavigate();
-    const { data, loading, error } = useQuery(GET_LEADERS);
-    const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [authChecked, setAuthChecked] = useState(false);
+    const [authToken, setAuthToken] = useState<string | null>(null);
 
     useEffect(() => {
-        // Check if user is SUPER_ADMIN
-        const checkSuperAdmin = async () => {
-            const token = localStorage.getItem('authToken');
-            if (token) {
-                // Decode JWT to check role field
-                try {
-                    const payload = JSON.parse(atob(token.split('.')[1]));
-                    setIsSuperAdmin(payload.role === 'SUPER_ADMIN');
-                } catch (e) {
-                    setIsSuperAdmin(false);
-                }
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                setIsAdmin(payload.role === 'ADMIN' || payload.role === 'SUPER_ADMIN');
+                setAuthToken(token);
+            } catch (e) {
+                setIsAdmin(false);
             }
-        };
-        checkSuperAdmin();
+        }
+        setAuthChecked(true);
     }, []);
+
+    const { data: publicData, loading: publicLoading, error: publicError } = useQuery(GET_LEADERS, {
+        skip: !authChecked || isAdmin,
+    });
+    const { data: adminData, loading: adminLoading, error: adminError } = useQuery(GET_ALL_LEADERS_ADMIN, {
+        skip: !authChecked || !isAdmin,
+        fetchPolicy: 'network-only',
+        context: {
+            headers: {
+                authorization: authToken ? `Bearer ${authToken}` : '',
+            },
+        },
+    });
+    const [updateLeaderStatus, { loading: approving }] = useMutation(UPDATE_LEADER_STATUS, {
+        context: {
+            headers: {
+                authorization: authToken ? `Bearer ${authToken}` : '',
+            },
+        },
+        refetchQueries: [{ query: GET_ALL_LEADERS_ADMIN, context: { headers: { authorization: authToken ? `Bearer ${authToken}` : '' } } }],
+    });
+
+    const loading = !authChecked || publicLoading || adminLoading;
+    const error = publicError || adminError;
 
     if (loading) {
         return (
@@ -84,7 +140,7 @@ export default function LeadersSocietyNeedsPage() {
         );
     }
 
-    const leaders: Leader[] = data?.leaders || [];
+    const leaders: Leader[] = (isAdmin ? adminData?.allLeaders : publicData?.leaders) || [];
 
     return (
         <Box component="main" sx={{ minHeight: '100vh', backgroundColor: '#fafafa', py: 4 }}>
@@ -110,8 +166,8 @@ export default function LeadersSocietyNeedsPage() {
                         </Typography>
                     </Box>
 
-                    {/* SUPER_ADMIN-only Create Button */}
-                    {isSuperAdmin && (
+                    {/* Admin Create Button */}
+                    {isAdmin && (
                         <Button
                             variant="contained"
                             onClick={() => navigate(`/${locale}/submit-leader`)}
@@ -186,8 +242,11 @@ export default function LeadersSocietyNeedsPage() {
 
                                 {/* Content Section */}
                                 <CardContent sx={{ flex: 1, p: 3, '&:last-child': { pb: 3 } }}>
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={12} md={9}>
+                                    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2 }}>
+
+                                        {/* CENTER: Main Content */}
+                                        <Box sx={{ flex: 1 }}>
+                                            {/* Name & Location */}
                                             <Box sx={{ mb: 1 }}>
                                                 <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2, mb: 0.5, color: '#1a1a1a' }}>
                                                     {leader.name}
@@ -197,13 +256,14 @@ export default function LeadersSocietyNeedsPage() {
                                                 </Typography>
                                             </Box>
 
+                                            {/* Description — hidden on mobile */}
                                             <Typography
                                                 variant="body2"
                                                 color="text.secondary"
                                                 sx={{
                                                     mb: 2,
                                                     lineHeight: 1.6,
-                                                    display: '-webkit-box',
+                                                    display: { xs: 'none', sm: '-webkit-box' },
                                                     WebkitLineClamp: 2,
                                                     WebkitBoxOrient: 'vertical',
                                                     overflow: 'hidden'
@@ -212,97 +272,88 @@ export default function LeadersSocietyNeedsPage() {
                                                 {leader.reason}
                                             </Typography>
 
-                                            {/* Tags */}
-                                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                                                {leader.serviceAreas.slice(0, 3).map((area, idx) => (
-                                                    <Box
-                                                        key={idx}
-                                                        sx={{
-                                                            px: 1.5,
-                                                            py: 0.5,
-                                                            bgcolor: '#f5f5f5',
-                                                            color: 'text.secondary',
-                                                            borderRadius: 1,
-                                                            fontSize: '0.75rem',
-                                                            fontWeight: 500,
-                                                            letterSpacing: '0.02em',
-                                                        }}
-                                                    >
-                                                        {area}
-                                                    </Box>
-                                                ))}
-                                                {leader.serviceAreas.length > 3 && (
-                                                    <Typography variant="caption" color="text.secondary" sx={{ alignSelf: 'center', ml: 0.5 }}>
-                                                        +{leader.serviceAreas.length - 3} {tCommon('more')}
-                                                    </Typography>
-                                                )}
-                                            </Box>
-                                        </Grid>
-
-                                        {/* View Profile CTA (Desktop: Right aligned, Mobile: Hidden or bottom) */}
-                                        <Grid item xs={12} md={3} sx={{ display: 'flex', flexDirection: 'column', alignItems: { xs: 'flex-start', md: 'flex-end' }, justifyContent: 'center', gap: 1 }}>
-                                            {isSuperAdmin && (
-                                                <Button
-                                                    variant="outlined"
-                                                    size="small"
-                                                    color="primary"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        navigate(`/${locale}/submit-leader?id=${leader.id}`);
-                                                    }}
-                                                    sx={{ fontSize: '0.75rem', py: 0.5 }}
-                                                >
-                                                    {tCommon('edit')}
-                                                </Button>
-                                            )}
-                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                            {/* Service Areas — dot-separated */}
+                                            <Box>
                                                 <Typography
-                                                    variant="button"
+                                                    variant="body2"
+                                                    color="text.secondary"
                                                     sx={{
-                                                        color: 'primary.main',
-                                                        textTransform: 'none',
-                                                        fontWeight: 600,
-                                                        fontSize: '0.9rem',
-                                                        '&:hover': { textDecoration: 'underline' }
+                                                        display: '-webkit-box',
+                                                        WebkitLineClamp: 1,
+                                                        WebkitBoxOrient: 'vertical',
+                                                        overflow: 'hidden'
                                                     }}
                                                 >
-                                                    {tCommon('view')} →
+                                                    {leader.serviceAreas.slice(0, 3).join(' • ')}
+                                                    {leader.serviceAreas.length > 3 && ` • +${leader.serviceAreas.length - 3} ${tCommon('more')}`}
                                                 </Typography>
-
-                                                {/* Primary Platform Icon */}
-                                                {leader.primaryPlatform && leader.primaryProfileUrl && (
-                                                    <Box
-                                                        component="a"
-                                                        href={leader.primaryProfileUrl}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        onClick={(e) => e.stopPropagation()}
-                                                        sx={{
-                                                            display: 'flex',
-                                                            alignItems: 'center',
-                                                            justifyContent: 'center',
-                                                            width: 36,
-                                                            height: 36,
-                                                            borderRadius: 1,
-                                                            backgroundColor: 'background.paper',
-                                                            border: '1px solid',
-                                                            borderColor: 'divider',
-                                                            transition: 'all 0.2s',
-                                                            '&:hover': {
-                                                                transform: 'translateY(-2px)',
-                                                                boxShadow: 2,
-                                                                borderColor: 'primary.main',
-                                                            }
-                                                        }}
-                                                        aria-label={`View on ${leader.primaryPlatform}`}
-                                                        title={`View on ${leader.primaryPlatform}`}
-                                                    >
-                                                        <PlatformIcon platform={leader.primaryPlatform as SocialPlatform} size={20} />
-                                                    </Box>
-                                                )}
                                             </Box>
-                                        </Grid>
-                                    </Grid>
+                                        </Box>
+
+                                        {/* RIGHT: Actions */}
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                flexDirection: { xs: 'row', md: 'column' },
+                                                alignItems: { xs: 'center', md: 'flex-end' },
+                                                justifyContent: { xs: 'flex-end', md: 'center' },
+                                                gap: 1,
+                                                minWidth: { md: 100 }
+                                            }}
+                                        >
+                                            {isAdmin && (
+                                                <>
+                                                    <Chip
+                                                        label={leader.status}
+                                                        size="small"
+                                                        color={
+                                                            leader.status === 'APPROVED' ? 'success' :
+                                                            leader.status === 'PENDING' ? 'warning' : 'default'
+                                                        }
+                                                        sx={{ display: { xs: 'none', md: 'flex' } }}
+                                                    />
+                                                    {leader.status === 'PENDING' && (
+                                                        <IconButton
+                                                            color="success"
+                                                            size="small"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                updateLeaderStatus({ variables: { id: leader.id, status: 'APPROVED' } });
+                                                            }}
+                                                            disabled={approving}
+                                                            aria-label="Approve Leader"
+                                                        >
+                                                            <CheckCircleIcon />
+                                                        </IconButton>
+                                                    )}
+                                                    <IconButton
+                                                        color="primary"
+                                                        size="small"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            navigate(`/${locale}/submit-leader?id=${leader.id}`);
+                                                        }}
+                                                        aria-label="Edit Leader"
+                                                    >
+                                                        <EditIcon />
+                                                    </IconButton>
+                                                </>
+                                            )}
+
+                                            {/* View Profile */}
+                                            <IconButton
+                                                color="primary"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    navigate(`/${locale}/leader-profile/${leader.id}`);
+                                                }}
+                                                aria-label="View Profile"
+                                                sx={{ '&:hover': { backgroundColor: 'primary.50' } }}
+                                            >
+                                                <VisibilityIcon />
+                                            </IconButton>
+                                        </Box>
+                                    </Box>
                                 </CardContent>
                             </Card>
                         ))}

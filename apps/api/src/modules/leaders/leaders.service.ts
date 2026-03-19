@@ -16,6 +16,10 @@ export class LeadersService {
         return this.repository.findAll();
     }
 
+    async findAllForAdmin(): Promise<Leader[]> {
+        return this.repository.findAllForAdmin();
+    }
+
     async findById(id: string): Promise<Leader | null> {
         return this.repository.findById(id);
     }

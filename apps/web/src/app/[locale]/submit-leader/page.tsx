@@ -4,7 +4,7 @@ import { useMutation, useQuery, gql } from '@apollo/client';
 import { Box, Container, Typography, TextField, Button, Alert, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Checkbox, FormGroup, Paper, IconButton, CircularProgress } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useRef, useEffect, Suspense } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import CloseIcon from '@mui/icons-material/Close';
@@ -121,6 +121,7 @@ export default function SubmitLeaderPage() {
 function SubmitLeaderContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const locale = useLocale();
     const editId = searchParams.get('id');
     const isEditMode = !!editId;
     const t = useTranslations('leaders.form');
@@ -223,7 +224,7 @@ function SubmitLeaderContent() {
         try {
             const payload = JSON.parse(atob(token.split('.')[1]));
             if (payload.role !== 'ADMIN' && payload.role !== 'SUPER_ADMIN') {
-                router.push('/leaders-society-needs');
+                router.push(`/${locale}/leaders-society-needs`);
             }
         } catch (e) {
             router.push('/login');
@@ -615,7 +616,7 @@ function SubmitLeaderContent() {
             }
 
             if (image) URL.revokeObjectURL(image.preview);
-            router.push('/leaders-society-needs');
+            router.push(`/${locale}/leaders-society-needs`);
 
         } catch (err: any) {
             console.error('Error submitting leader:', err);
