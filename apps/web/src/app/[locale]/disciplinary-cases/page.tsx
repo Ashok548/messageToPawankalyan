@@ -26,7 +26,7 @@ export default function DisciplinaryCasesPage() {
     const tCaseStatus = useTranslations('caseStatus');
     const tCommon = useTranslations('common');
     const locale = useLocale();
-    const router = useRouter();
+    const { navigate } = useNavigate();
     const { user } = useAuth();
     const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
 

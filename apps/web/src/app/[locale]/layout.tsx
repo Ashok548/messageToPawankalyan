@@ -29,8 +29,7 @@ export default async function LocaleLayout({
 
     setRequestLocale(locale);
     const messages = await getMessages({ locale });
-    console.log('[Layout] messages keys for', locale, ':', Object.keys(messages).slice(0, 20));
-    console.log('[Layout] has home key:', !!messages.home);
+
 
     return (
         <html lang={locale}>
