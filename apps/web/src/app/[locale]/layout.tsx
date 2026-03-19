@@ -1,5 +1,5 @@
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { ApolloProvider } from '@/components/providers/apollo-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
@@ -22,13 +22,15 @@ export default async function LocaleLayout({
     params: Promise<{ locale: string }>;
 }) {
     const { locale } = await params;
-    console.log('locale:', locale);
 
     if (!locales.includes(locale as any)) {
         notFound();
     }
 
+    setRequestLocale(locale);
     const messages = await getMessages({ locale });
+    console.log('[Layout] messages keys for', locale, ':', Object.keys(messages).slice(0, 20));
+    console.log('[Layout] has home key:', !!messages.home);
 
     return (
         <html lang={locale}>

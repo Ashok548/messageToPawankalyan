@@ -1,8 +1,12 @@
 import { Box, Container, Typography } from '@mui/material';
+import { setRequestLocale } from 'next-intl/server';
+import { HomePageTabs } from '@/components/page-components/HomePageTabs';
 import { useTranslations } from 'next-intl';
 
-export default function HomePage() {
+export default function HomePage({ params: { locale } }: { params: { locale: string } }) {
+    setRequestLocale(locale);
     const t = useTranslations('home');
+
     return (
         <Box
             component="main"
@@ -15,8 +19,8 @@ export default function HomePage() {
             <Container
                 maxWidth={false}
                 sx={{
-                    maxWidth: 680,
-                    px: { xs: 3, sm: 4 },
+                    maxWidth: { xs: '100%', md: 900, lg: 1100 },
+                    px: { xs: 2, sm: 4, md: 6 },
                 }}
             >
                 {/* Article Title */}
@@ -45,78 +49,8 @@ export default function HomePage() {
                     {t('publishedDate')}
                 </Typography>
 
-                {/* Article Body */}
-                <Box
-                    sx={{
-                        '& p': {
-                            fontSize: { xs: 17, sm: 18 },
-                            lineHeight: 1.7,
-                            color: '#2e2e2e',
-                            mb: 3,
-                            fontFamily: 'Georgia, serif',
-                        },
-                    }}
-                >
-                    <Typography component="p">
-                        {t('intro')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('accountability')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('shift')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('technology')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('challenges')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('janasainiks')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('grassroots')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('violence')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('approach')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('empowerment')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('relationship')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('transparency')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('future')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('pathForward')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('message')}
-                    </Typography>
-                </Box>
+                {/* Tabs Component */}
+                <HomePageTabs />
             </Container>
         </Box>
     );
