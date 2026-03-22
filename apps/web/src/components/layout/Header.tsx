@@ -125,6 +125,14 @@ export default function Header() {
 
                     {/* Center: Logo & Title */}
                     <Box sx={{ display: 'flex', alignItems: 'center', flex: 1, overflow: 'hidden' }}>
+                        {/* Logo */}
+                        <Image
+                            src="/assets/logo_navigation.png"
+                            alt="Logo"
+                            width={40}
+                            height={40}
+                            priority
+                        />
 
                         <Box
                             component="h1"
