@@ -1,5 +1,5 @@
 import { Card, CardContent, Typography, Box, Chip, IconButton } from '@mui/material';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -20,7 +20,7 @@ interface AtrocityCardProps {
     isVerified?: boolean;
 }
 
-export default function AtrocityCard({
+export default React.memo(function AtrocityCard({
     id,
     leaderName,
     state,
@@ -207,4 +207,4 @@ export default function AtrocityCard({
             </CardContent>
         </Card>
     );
-}
+});

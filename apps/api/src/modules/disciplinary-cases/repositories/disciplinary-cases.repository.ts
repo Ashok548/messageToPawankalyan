@@ -42,7 +42,7 @@ export class DisciplinaryCasesRepository {
         });
     }
 
-    async findAll(filter?: DisciplinaryCaseFilterInput, userRole?: string): Promise<DisciplinaryCase[]> {
+    async findAll(filter?: DisciplinaryCaseFilterInput, userRole?: string, take = 20, skip = 0): Promise<DisciplinaryCase[]> {
         const where: Prisma.DisciplinaryCaseWhereInput = {};
 
         // Apply visibility filter based on user role
@@ -79,6 +79,8 @@ export class DisciplinaryCasesRepository {
             orderBy: {
                 initiationDate: 'desc',
             },
+            take,
+            skip,
         });
     }
 

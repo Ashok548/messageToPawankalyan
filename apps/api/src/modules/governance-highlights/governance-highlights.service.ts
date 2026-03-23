@@ -12,12 +12,12 @@ export class GovernanceHighlightsService {
         private readonly imagekitService: ImageKitService,
     ) { }
 
-    async findAll(): Promise<GovernanceHighlight[]> {
-        return this.repository.findAll();
+    async findAll(take = 20, skip = 0): Promise<GovernanceHighlight[]> {
+        return this.repository.findAll(take, skip);
     }
 
-    async findByCategory(category: HighlightCategory): Promise<GovernanceHighlight[]> {
-        return this.repository.findByCategory(category);
+    async findByCategory(category: HighlightCategory, take = 20, skip = 0): Promise<GovernanceHighlight[]> {
+        return this.repository.findByCategory(category, take, skip);
     }
 
     async findById(id: string): Promise<GovernanceHighlight | null> {

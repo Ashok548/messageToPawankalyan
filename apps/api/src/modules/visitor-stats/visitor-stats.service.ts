@@ -1,37 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
 
+// Single-row sentinel used for upsert (there is always exactly one stats record)
+const STATS_SENTINEL_ID = '00000000-0000-0000-0000-000000000001';
+
 @Injectable()
 export class VisitorStatsService {
     constructor(private prisma: PrismaService) { }
 
     async getStats() {
-        // Get or create the stats record (there should only be one)
-        let stats = await this.prisma.visitorStats.findFirst();
-
-        if (!stats) {
-            stats = await this.prisma.visitorStats.create({
-                data: {
-                    totalVisitors: 0,
-                },
-            });
-        }
-
-        return stats;
+        return this.prisma.visitorStats.upsert({
+            where: { id: STATS_SENTINEL_ID },
+            update: {},
+            create: { id: STATS_SENTINEL_ID, totalVisitors: 0 },
+        });
     }
 
     async incrementVisitors() {
-        // Get or create stats
-        const stats = await this.getStats();
-
-        // Increment the counter atomically
-        return this.prisma.visitorStats.update({
-            where: { id: stats.id },
-            data: {
-                totalVisitors: {
-                    increment: 1,
-                },
-            },
+        return this.prisma.visitorStats.upsert({
+            where: { id: STATS_SENTINEL_ID },
+            update: { totalVisitors: { increment: 1 } },
+            create: { id: STATS_SENTINEL_ID, totalVisitors: 1 },
         });
     }
 }

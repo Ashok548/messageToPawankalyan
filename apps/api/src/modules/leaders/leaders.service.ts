@@ -12,12 +12,12 @@ export class LeadersService {
         private readonly imagekitService: ImageKitService,
     ) { }
 
-    async findAll(): Promise<Leader[]> {
-        return this.repository.findAll();
+    async findAll(take = 20, skip = 0): Promise<Leader[]> {
+        return this.repository.findAll(take, skip);
     }
 
-    async findAllForAdmin(): Promise<Leader[]> {
-        return this.repository.findAllForAdmin();
+    async findAllForAdmin(take = 50, skip = 0): Promise<Leader[]> {
+        return this.repository.findAllForAdmin(take, skip);
     }
 
     async findById(id: string): Promise<Leader | null> {
@@ -29,55 +29,33 @@ export class LeadersService {
     }
 
     async create(input: CreateLeaderInput): Promise<Leader> {
-        let photoUrl: string | undefined;
+        // Validate before any uploads
+        if (input.photo) this.imagekitService.validateImageSize(input.photo);
+        if (input.gallery?.length) input.gallery.forEach(img => this.imagekitService.validateImageSize(img));
 
-        // Handle photo upload if provided
-        if (input.photo) {
-            try {
-                // Validate image size (max 500KB)
-                this.imagekitService.validateImageSize(input.photo);
-
-                // Upload image to ImageKit
-                const fileName = `leader_${Date.now()}.jpg`;
-                const uploadResult = await this.imagekitService.uploadMultipleImages(
+        // Upload photo and gallery in parallel
+        const ts = Date.now();
+        const [photoResults, galleryResults] = await Promise.all([
+            input.photo
+                ? this.imagekitService.uploadMultipleImages(
                     [input.photo] as unknown as Uploadable[],
-                    [fileName],
+                    [`leader_${ts}.jpg`],
                     'leaders',
-                );
-                photoUrl = uploadResult[0];
-            } catch (error) {
-                throw new BadRequestException(
-                    `Failed to upload photo: ${error instanceof Error ? error.message : 'Unknown error'}`,
-                );
-            }
-        }
-
-        let galleryUrls: string[] = [];
-        // Handle gallery upload if provided
-        if (input.gallery && input.gallery.length > 0) {
-            try {
-                // Validate each image
-                input.gallery.forEach(img => this.imagekitService.validateImageSize(img));
-
-                const fileNames = input.gallery.map((_, i) => `leader_gallery_${Date.now()}_${i}.jpg`);
-
-                galleryUrls = await this.imagekitService.uploadMultipleImages(
+                ).catch(err => { throw new BadRequestException(`Failed to upload photo: ${err instanceof Error ? err.message : 'Unknown error'}`); })
+                : Promise.resolve([] as string[]),
+            input.gallery?.length
+                ? this.imagekitService.uploadMultipleImages(
                     input.gallery as unknown as Uploadable[],
-                    fileNames,
-                    'leaders-gallery'
-                );
-            } catch (error) {
-                throw new BadRequestException(
-                    `Failed to upload gallery: ${error instanceof Error ? error.message : 'Unknown error'}`,
-                );
-            }
-        }
+                    input.gallery.map((_, i) => `leader_gallery_${ts}_${i}.jpg`),
+                    'leaders-gallery',
+                ).catch(err => { throw new BadRequestException(`Failed to upload gallery: ${err instanceof Error ? err.message : 'Unknown error'}`); })
+                : Promise.resolve([] as string[]),
+        ]);
 
-        // Create leader entry with uploaded photo URL
         return this.repository.create({
             ...input,
-            photo: photoUrl,
-            gallery: galleryUrls.length > 0 ? galleryUrls : undefined,
+            photo: photoResults[0],
+            gallery: galleryResults.length > 0 ? galleryResults : undefined,
         });
     }
 

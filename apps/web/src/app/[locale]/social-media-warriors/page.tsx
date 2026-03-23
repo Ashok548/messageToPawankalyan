@@ -7,7 +7,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import AddIcon from '@mui/icons-material/Add';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
-import { useState, useEffect } from 'react';
+import { useAuth } from '@/hooks/use-auth';
 
 const GET_WARRIORS = gql`
     query GetSocialMediaWarriors {
@@ -42,20 +42,9 @@ export default function SocialMediaWarriorsPage() {
     const tCommon = useTranslations('common');
     const locale = useLocale();
     const { navigate } = useNavigate();
-    const [isAdmin, setIsAdmin] = useState(false);
+    const { user } = useAuth();
+    const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
     const { data, loading, error } = useQuery(GET_WARRIORS);
-
-    useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            try {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                setIsAdmin(payload.role === 'ADMIN' || payload.role === 'SUPER_ADMIN');
-            } catch (e) {
-                console.error('Invalid token');
-            }
-        }
-    }, []);
 
     if (loading) {
         return (

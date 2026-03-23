@@ -207,8 +207,8 @@ export class DisciplinaryCaseService {
         return this.repository.update(id, updateData);
     }
 
-    async findAll(filter?: DisciplinaryCaseFilterInput, userRole?: string): Promise<DisciplinaryCase[]> {
-        return this.repository.findAll(filter, userRole);
+    async findAll(filter?: DisciplinaryCaseFilterInput, userRole?: string, take = 20, skip = 0): Promise<DisciplinaryCase[]> {
+        return this.repository.findAll(filter, userRole, take, skip);
     }
 
     async findById(id: string, userRole?: string): Promise<DisciplinaryCase> {

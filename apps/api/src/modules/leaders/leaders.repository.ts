@@ -15,17 +15,21 @@ export class LeadersRepository {
         };
     }
 
-    async findAll(): Promise<Leader[]> {
+    async findAll(take = 20, skip = 0): Promise<Leader[]> {
         const leaders = await this.prisma.leader.findMany({
             where: { status: LeaderStatus.APPROVED },
             orderBy: { createdAt: 'desc' },
+            take,
+            skip,
         });
         return leaders.map(this.mapToEntity);
     }
 
-    async findAllForAdmin(): Promise<Leader[]> {
+    async findAllForAdmin(take = 50, skip = 0): Promise<Leader[]> {
         const leaders = await this.prisma.leader.findMany({
             orderBy: { createdAt: 'desc' },
+            take,
+            skip,
         });
         return leaders.map(this.mapToEntity);
     }
@@ -37,10 +41,12 @@ export class LeadersRepository {
         return leader ? this.mapToEntity(leader) : null;
     }
 
-    async findByStatus(status: LeaderStatus): Promise<Leader[]> {
+    async findByStatus(status: LeaderStatus, take = 20, skip = 0): Promise<Leader[]> {
         const leaders = await this.prisma.leader.findMany({
             where: { status },
             orderBy: { createdAt: 'desc' },
+            take,
+            skip,
         });
         return leaders.map(this.mapToEntity);
     }

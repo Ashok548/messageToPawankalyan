@@ -398,17 +398,25 @@ input OtherPlatformInput {
   profileUrl: String!
 }
 
+input PaginationInput {
+  """Number of records to skip"""
+  skip: Int = 0
+
+  """Number of records to return"""
+  take: Int = 20
+}
+
 type Query {
   """Admin only: Get all leaders regardless of status"""
-  allLeaders: [Leader!]!
-  atrocities: [Atrocity!]!
+  allLeaders(pagination: PaginationInput): [Leader!]!
+  atrocities(pagination: PaginationInput): [Atrocity!]!
   atrocity(id: String!): Atrocity
 
   """Get a single disciplinary case by ID"""
   disciplinaryCase(id: ID!): DisciplinaryCase!
 
   """List disciplinary cases with optional filtering"""
-  disciplinaryCases(filter: DisciplinaryCaseFilterInput): [DisciplinaryCase!]!
+  disciplinaryCases(filter: DisciplinaryCaseFilterInput, pagination: PaginationInput): [DisciplinaryCase!]!
 
   """SUPER_ADMIN only: Get all users for management"""
   getAllUsers: [User!]!
@@ -416,11 +424,11 @@ type Query {
   governanceHighlight(id: String!): GovernanceHighlight
 
   """Get all verified and visible governance highlights"""
-  governanceHighlights(category: HighlightCategory): [GovernanceHighlight!]!
+  governanceHighlights(category: HighlightCategory, pagination: PaginationInput): [GovernanceHighlight!]!
   leader(id: String!): Leader
 
   """Get all approved leaders"""
-  leaders: [Leader!]!
+  leaders(pagination: PaginationInput): [Leader!]!
 
   """Admin only: Get leaders by status"""
   leadersByStatus(status: LeaderStatus!): [Leader!]!
@@ -430,13 +438,13 @@ type Query {
   """
   Get social media warriors (all for super admin, approved only for others)
   """
-  socialMediaWarriors: [SocialMediaWarrior!]!
+  socialMediaWarriors(pagination: PaginationInput): [SocialMediaWarrior!]!
 
   """Admin only: Get warriors by status"""
   socialMediaWarriorsByStatus(status: WarriorStatus!): [SocialMediaWarrior!]!
-  unverifiedAtrocities: [Atrocity!]!
+  unverifiedAtrocities(pagination: PaginationInput): [Atrocity!]!
   user(id: String!): User!
-  users: [User!]!
+  users(pagination: PaginationInput): [User!]!
 }
 
 input RecordDecisionInput {

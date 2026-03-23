@@ -23,8 +23,8 @@ export class UsersService {
         return this.usersRepository.findByMobile(mobile);
     }
 
-    async findAll(): Promise<User[]> {
-        return this.usersRepository.findAll();
+    async findAll(take = 50, skip = 0): Promise<User[]> {
+        return this.usersRepository.findAll(take, skip);
     }
 
     async create(input: CreateUserInput): Promise<User> {

@@ -17,8 +17,7 @@ export class ImageKitService {
         const urlEndpoint = process.env.IMAGEKIT_URL_ENDPOINT;
 
         if (!publicKey || !privateKey || !urlEndpoint) {
-            console.warn('ImageKit credentials not configured. Image upload will not work.');
-            console.warn('Required: IMAGEKIT_PUBLIC_KEY, IMAGEKIT_PRIVATE_KEY, IMAGEKIT_URL_ENDPOINT');
+            // ImageKit credentials not configured. Image upload will not work.
         }
 
         this.imagekit = new ImageKit({
@@ -101,8 +100,6 @@ export class ImageKitService {
         try {
             await this.imagekit.files.delete(fileId);
         } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-            console.error(`Failed to delete image ${fileId}:`, errorMessage);
             // Don't throw error as this is cleanup operation
         }
     }

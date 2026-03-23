@@ -36,9 +36,11 @@ export class UsersRepository {
         }
     }
 
-    async findAll(): Promise<User[]> {
+    async findAll(take = 50, skip = 0): Promise<User[]> {
         return this.prisma.user.findMany({
             orderBy: { createdAt: 'desc' },
+            take,
+            skip,
         }) as unknown as Promise<User[]>;
     }
 

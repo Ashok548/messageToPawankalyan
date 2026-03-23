@@ -1,24 +1,29 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { AtrocitiesService } from './atrocities.service';
 import { Atrocity } from './entities/atrocity.entity';
 import { CreateAtrocityInput, UpdateAtrocityInput } from './dto/atrocity.input';
 import { GqlAuthGuard } from '../../common/guards/gql-auth.guard';
 import { SuperAdminGuard } from '../../common/guards/super-admin.guard';
+import { PaginationInput } from '../../common/dto/pagination.input';
 
 @Resolver(() => Atrocity)
 export class AtrocitiesResolver {
     constructor(private readonly service: AtrocitiesService) { }
 
     @Query(() => [Atrocity], { name: 'atrocities' })
-    async findAll(): Promise<Atrocity[]> {
-        return this.service.findAll();
+    async findAll(
+        @Args('pagination', { nullable: true }) pagination?: PaginationInput,
+    ): Promise<Atrocity[]> {
+        return this.service.findAll(pagination?.take, pagination?.skip);
     }
 
     @Query(() => [Atrocity], { name: 'unverifiedAtrocities' })
     @UseGuards(GqlAuthGuard, SuperAdminGuard)
-    async findUnverified(): Promise<Atrocity[]> {
-        return this.service.findUnverified();
+    async findUnverified(
+        @Args('pagination', { nullable: true }) pagination?: PaginationInput,
+    ): Promise<Atrocity[]> {
+        return this.service.findUnverified(pagination?.take, pagination?.skip);
     }
 
     @Query(() => Atrocity, { name: 'atrocity', nullable: true })

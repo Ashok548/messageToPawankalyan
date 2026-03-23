@@ -8,6 +8,7 @@ import { AdminGuard } from '../../../common/guards/admin.guard';
 import { SuperAdminGuard } from '../../../common/guards/super-admin.guard';
 import { GqlOptionalAuthGuard } from '../../../common/guards/gql-optional-auth.guard';
 import { UserRole } from '../../users/entities/user.entity';
+import { PaginationInput } from '../../../common/dto/pagination.input';
 
 @Resolver(() => DisciplinaryCase)
 export class DisciplinaryCaseResolver {
@@ -18,11 +19,10 @@ export class DisciplinaryCaseResolver {
     async findAll(
         @Context() context: any,
         @Args('filter', { nullable: true }) filter?: DisciplinaryCaseFilterInput,
+        @Args('pagination', { nullable: true }) pagination?: PaginationInput,
     ) {
-        // Allow public access for public cases, but restrict internal ones
-        // If not authenticated, context.req.user will be undefined
         const userRole = context.req?.user?.role;
-        return this.service.findAll(filter, userRole);
+        return this.service.findAll(filter, userRole, pagination?.take, pagination?.skip);
     }
 
     @Query(() => DisciplinaryCase, { name: 'disciplinaryCase', description: 'Get a single disciplinary case by ID' })

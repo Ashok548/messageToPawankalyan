@@ -5,10 +5,11 @@ import { useQuery } from '@apollo/client';
 import { GET_ATROCITIES, GET_UNVERIFIED_ATROCITIES } from '@/graphql/queries/atrocities';
 import AtrocityCard from '@/components/atrocities/AtrocityCard';
 import { useNavigate } from '@/hooks/use-navigate';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import AddIcon from '@mui/icons-material/Add';
 import { Spinner } from '@/components/ui/spinner';
+import { useAuth } from '@/hooks/use-auth';
 
 interface Atrocity {
     id: string;
@@ -30,21 +31,9 @@ export default function AttrocitiesToJanasainiksPage() {
     const tCommon = useTranslations('common');
     const locale = useLocale();
     const { navigate } = useNavigate();
-    const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+    const { user } = useAuth();
+    const isSuperAdmin = user?.role === 'SUPER_ADMIN';
     const [filter, setFilter] = useState<'all' | 'unverified'>('all');
-
-    // Check if user is SUPER_ADMIN
-    useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            try {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                setIsSuperAdmin(payload.role === 'SUPER_ADMIN');
-            } catch (e) {
-                setIsSuperAdmin(false);
-            }
-        }
-    }, []);
 
     // Use different query based on filter
     const { data, loading, error } = useQuery(

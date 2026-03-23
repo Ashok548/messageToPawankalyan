@@ -76,6 +76,9 @@ model Atrocity {
   @@index([createdAt])
   @@index([isVerified])
   @@index([state])
+  @@index([atrocityType])
+  @@index([isVerified, createdAt])
+  @@index([state, isVerified])
   @@map("atrocities")
 }
 
@@ -104,6 +107,8 @@ model Leader {
   @@index([status])
   @@index([district])
   @@index([createdAt])
+  @@index([status, district])
+  @@index([status, createdAt])
   @@map("leaders")
 }
 
@@ -132,6 +137,8 @@ model SocialMediaWarrior {
   @@index([status])
   @@index([district])
   @@index([createdAt])
+  @@index([status, district])
+  @@index([status, createdAt])
   @@map("social_media_warriors")
 }
 
@@ -209,6 +216,10 @@ model DisciplinaryCase {
   @@index([visibility])
   @@index([initiationDate])
   @@index([caseNumber])
+  @@index([initiatedBy])
+  @@index([reviewAuthority])
+  @@index([decisionAuthority])
+  @@index([status, visibility])
   @@map("disciplinary_cases")
 }
 

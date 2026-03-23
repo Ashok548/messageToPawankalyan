@@ -19,7 +19,8 @@ import {
     IconButton,
     Tooltip
 } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useAuth } from '@/hooks/use-auth';
 import { useTranslations, useLocale } from 'next-intl';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import VerifiedIcon from '@mui/icons-material/Verified';
@@ -78,7 +79,8 @@ export default function SocialWarriorProfilePage() {
     const params = useParams();
     const { navigate } = useNavigate();
     const id = params.id as string;
-    const [isAdmin, setIsAdmin] = useState(false);
+    const { user } = useAuth();
+    const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
 
@@ -87,18 +89,6 @@ export default function SocialWarriorProfilePage() {
     });
 
     const [updateStatus, { loading: updating }] = useMutation(UPDATE_WARRIOR_STATUS);
-
-    useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            try {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                setIsAdmin(payload.role === 'ADMIN' || payload.role === 'SUPER_ADMIN');
-            } catch (e) {
-                console.error('Invalid token');
-            }
-        }
-    }, []);
 
     const handleStatusUpdate = async (status: string) => {
         try {

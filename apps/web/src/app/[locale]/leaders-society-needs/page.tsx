@@ -3,7 +3,6 @@
 import { useQuery, useMutation, gql } from '@apollo/client';
 import { Box, Container, Typography, Button, Alert, CircularProgress, Card, CardContent, Chip, IconButton } from '@mui/material';
 import { useNavigate } from '@/hooks/use-navigate';
-import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import AddIcon from '@mui/icons-material/Add';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -11,6 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PlatformIcon from '@/components/PlatformIcon';
 import { SocialPlatform } from '@/utils/socialMediaValidation';
+import { useAuth } from '@/hooks/use-auth';
 
 const GET_LEADERS = gql`
     query GetLeaders {
@@ -82,46 +82,21 @@ export default function LeadersSocietyNeedsPage() {
     const tCommon = useTranslations('common');
     const locale = useLocale();
     const { navigate } = useNavigate();
-    const [isAdmin, setIsAdmin] = useState(false);
-    const [authChecked, setAuthChecked] = useState(false);
-    const [authToken, setAuthToken] = useState<string | null>(null);
-
-    useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            try {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                setIsAdmin(payload.role === 'ADMIN' || payload.role === 'SUPER_ADMIN');
-                setAuthToken(token);
-            } catch (e) {
-                setIsAdmin(false);
-            }
-        }
-        setAuthChecked(true);
-    }, []);
+    const { user, loading: authLoading } = useAuth();
+    const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
 
     const { data: publicData, loading: publicLoading, error: publicError } = useQuery(GET_LEADERS, {
-        skip: !authChecked || isAdmin,
+        skip: authLoading || isAdmin,
     });
     const { data: adminData, loading: adminLoading, error: adminError } = useQuery(GET_ALL_LEADERS_ADMIN, {
-        skip: !authChecked || !isAdmin,
-        fetchPolicy: 'network-only',
-        context: {
-            headers: {
-                authorization: authToken ? `Bearer ${authToken}` : '',
-            },
-        },
+        skip: authLoading || !isAdmin,
+        fetchPolicy: 'cache-and-network',
     });
     const [updateLeaderStatus, { loading: approving }] = useMutation(UPDATE_LEADER_STATUS, {
-        context: {
-            headers: {
-                authorization: authToken ? `Bearer ${authToken}` : '',
-            },
-        },
-        refetchQueries: [{ query: GET_ALL_LEADERS_ADMIN, context: { headers: { authorization: authToken ? `Bearer ${authToken}` : '' } } }],
+        refetchQueries: [{ query: GET_ALL_LEADERS_ADMIN }],
     });
 
-    const loading = !authChecked || publicLoading || adminLoading;
+    const loading = authLoading || publicLoading || adminLoading;
     const error = publicError || adminError;
 
     if (loading) {

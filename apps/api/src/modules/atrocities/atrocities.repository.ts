@@ -7,16 +7,20 @@ import { Atrocity } from './entities/atrocity.entity';
 export class AtrocitiesRepository {
     constructor(private readonly prisma: PrismaService) { }
 
-    async findAll(): Promise<Atrocity[]> {
+    async findAll(take = 20, skip = 0): Promise<Atrocity[]> {
         return this.prisma.atrocity.findMany({
             orderBy: { createdAt: 'desc' },
+            take,
+            skip,
         }) as Promise<Atrocity[]>;
     }
 
-    async findByVerificationStatus(isVerified: boolean): Promise<Atrocity[]> {
+    async findByVerificationStatus(isVerified: boolean, take = 20, skip = 0): Promise<Atrocity[]> {
         return this.prisma.atrocity.findMany({
             where: { isVerified },
             orderBy: { createdAt: 'desc' },
+            take,
+            skip,
         }) as Promise<Atrocity[]>;
     }
 

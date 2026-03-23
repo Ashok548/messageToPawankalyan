@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import { useTranslations, useLocale } from 'next-intl';
 import { useNavigate } from '@/hooks/use-navigate';
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'; // useEffect kept for other uses
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -28,6 +28,7 @@ import HandshakeIcon from '@mui/icons-material/Handshake';
 import BadgeIcon from '@mui/icons-material/Badge';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import CloseIcon from '@mui/icons-material/Close';
+import { useAuth } from '@/hooks/use-auth';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import PlatformIcon from '@/components/PlatformIcon';
 import { SocialPlatform } from '@/utils/socialMediaValidation';
@@ -75,8 +76,8 @@ export default function LeaderProfilePage({ params }: { params: { id: string } }
     const locale = useLocale();
     const { navigate } = useNavigate();
     const id = params.id;
-
-    const [isAdmin, setIsAdmin] = useState(false);
+    const { user } = useAuth();
+    const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
 
@@ -85,18 +86,6 @@ export default function LeaderProfilePage({ params }: { params: { id: string } }
     });
 
     const [updateLeaderStatus, { loading: updating }] = useMutation(UPDATE_LEADER_STATUS);
-
-    useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            try {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                setIsAdmin(payload.role === 'ADMIN' || payload.role === 'SUPER_ADMIN');
-            } catch (e) {
-                console.error('Invalid token');
-            }
-        }
-    }, []);
 
     const handleStatusUpdate = async (status: string) => {
         try {

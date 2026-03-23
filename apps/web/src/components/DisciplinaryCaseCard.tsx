@@ -27,7 +27,7 @@ interface DisciplinaryCaseCardProps {
     isAdmin?: boolean;
 }
 
-export const DisciplinaryCaseCard: React.FC<DisciplinaryCaseCardProps> = ({ data, isAdmin = false }) => {
+export const DisciplinaryCaseCard: React.FC<DisciplinaryCaseCardProps> = React.memo(({ data, isAdmin = false }) => {
     const { navigate } = useNavigate();
     const t = useTranslations('disciplinary.form.issueCategories');
 
@@ -192,4 +192,4 @@ export const DisciplinaryCaseCard: React.FC<DisciplinaryCaseCardProps> = ({ data
             </CardContent>
         </Card>
     );
-};
+});

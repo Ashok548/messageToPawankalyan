@@ -6,6 +6,7 @@ import { UpdateUserInput, UpdateUserRoleInput } from './dto/user.input';
 import { GqlAuthGuard } from '../../common/guards/gql-auth.guard';
 import { SuperAdminGuard } from '../../common/guards/super-admin.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { PaginationInput } from '../../common/dto/pagination.input';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -26,8 +27,10 @@ export class UsersResolver {
     }
 
     @Query(() => [User])
-    async users(): Promise<User[]> {
-        return this.usersService.findAll();
+    async users(
+        @Args('pagination', { nullable: true }) pagination?: PaginationInput,
+    ): Promise<User[]> {
+        return this.usersService.findAll(pagination?.take, pagination?.skip);
     }
 
     @Query(() => [User], { description: 'SUPER_ADMIN only: Get all users for management' })

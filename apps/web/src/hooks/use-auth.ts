@@ -31,7 +31,7 @@ export function useAuth() {
     );
 
     const { data: userData, loading: userLoading, error: userError } = useQuery(GET_CURRENT_USER, {
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-and-network',
         skip: typeof window === 'undefined' || !localStorage.getItem('authToken'),
     });
 

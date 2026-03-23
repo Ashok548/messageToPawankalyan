@@ -9,8 +9,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import ImageLightbox from '@/components/ui/image-lightbox';
+import { useAuth } from '@/hooks/use-auth';
 
 interface Atrocity {
     id: string;
@@ -36,22 +37,10 @@ export default function AtrocityDescriptionPage() {
     const { id } = params;
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+    const { user } = useAuth();
+    const isSuperAdmin = user?.role === 'SUPER_ADMIN';
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
-
-    // Check if user is SUPER_ADMIN
-    useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            try {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                setIsSuperAdmin(payload.role === 'SUPER_ADMIN');
-            } catch (e) {
-                setIsSuperAdmin(false);
-            }
-        }
-    }, []);
 
     // Approve mutation
     const [approveAtrocity, { loading: approving }] = useMutation(APPROVE_ATROCITY_MUTATION, {

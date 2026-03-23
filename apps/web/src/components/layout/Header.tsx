@@ -36,7 +36,9 @@ export default function Header() {
 
     const handleNavigation = (href: string) => {
         setDrawerOpen(false);
-        navigate(href);
+        if (pathname !== href) {
+            navigate(href);
+        }
     };
 
     // Check localStorage for user's choice
@@ -112,7 +114,6 @@ export default function Header() {
                     <IconButton
                         onClick={toggleDrawer(true)}
                         sx={{
-                            mr: 2,
                             color: 'text.primary',
                             '&:hover': {
                                 backgroundColor: 'rgba(0, 0, 0, 0.04)',
@@ -129,7 +130,7 @@ export default function Header() {
                         <Image
                             src="/assets/logo_navigation.png"
                             alt="Logo"
-                            width={40}
+                            width={60}
                             height={40}
                             priority
                         />

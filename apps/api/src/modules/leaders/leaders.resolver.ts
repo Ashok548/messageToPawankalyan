@@ -5,14 +5,17 @@ import { Leader, LeaderStatus } from './entities/leader.entity';
 import { CreateLeaderInput, UpdateLeaderInput } from './dto/leader.input';
 import { GqlAuthGuard } from '../../common/guards/gql-auth.guard';
 import { AdminGuard } from '../../common/guards/admin.guard';
+import { PaginationInput } from '../../common/dto/pagination.input';
 
 @Resolver(() => Leader)
 export class LeadersResolver {
     constructor(private readonly service: LeadersService) { }
 
     @Query(() => [Leader], { name: 'leaders', description: 'Get all approved leaders' })
-    async findAll(): Promise<Leader[]> {
-        return this.service.findAll();
+    async findAll(
+        @Args('pagination', { nullable: true }) pagination?: PaginationInput,
+    ): Promise<Leader[]> {
+        return this.service.findAll(pagination?.take, pagination?.skip);
     }
 
     @Query(() => Leader, { name: 'leader', nullable: true })
@@ -22,8 +25,10 @@ export class LeadersResolver {
 
     @Query(() => [Leader], { name: 'allLeaders', description: 'Admin only: Get all leaders regardless of status' })
     @UseGuards(GqlAuthGuard, AdminGuard)
-    async findAllForAdmin(): Promise<Leader[]> {
-        return this.service.findAllForAdmin();
+    async findAllForAdmin(
+        @Args('pagination', { nullable: true }) pagination?: PaginationInput,
+    ): Promise<Leader[]> {
+        return this.service.findAllForAdmin(pagination?.take, pagination?.skip);
     }
 
     @Query(() => [Leader], { name: 'leadersByStatus', description: 'Admin only: Get leaders by status' })

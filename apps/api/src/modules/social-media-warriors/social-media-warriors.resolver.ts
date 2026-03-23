@@ -6,6 +6,7 @@ import { CreateSocialMediaWarriorInput, UpdateSocialMediaWarriorInput } from './
 import { GqlAuthGuard } from '../../common/guards/gql-auth.guard';
 import { OptionalGqlAuthGuard } from '../../common/guards/optional-gql-auth.guard';
 import { AdminGuard } from '../../common/guards/admin.guard';
+import { PaginationInput } from '../../common/dto/pagination.input';
 
 @Resolver(() => SocialMediaWarrior)
 export class SocialMediaWarriorsResolver {
@@ -13,11 +14,13 @@ export class SocialMediaWarriorsResolver {
 
     @Query(() => [SocialMediaWarrior], { name: 'socialMediaWarriors', description: 'Get social media warriors (all for super admin, approved only for others)' })
     @UseGuards(OptionalGqlAuthGuard)
-    async findAll(@Context() context: any): Promise<SocialMediaWarrior[]> {
+    async findAll(
+        @Context() context: any,
+        @Args('pagination', { nullable: true }) pagination?: PaginationInput,
+    ): Promise<SocialMediaWarrior[]> {
         const user = context.req?.user;
-        console.log(user)
         const isSuperAdmin = user?.role === 'SUPER_ADMIN';
-        return this.service.findAll(isSuperAdmin);
+        return this.service.findAll(isSuperAdmin, pagination?.take, pagination?.skip);
     }
 
     @Query(() => SocialMediaWarrior, { name: 'socialMediaWarrior', nullable: true })

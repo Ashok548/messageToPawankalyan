@@ -4,7 +4,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { GET_GOVERNANCE_HIGHLIGHTS, CREATE_GOVERNANCE_HIGHLIGHT_MUTATION, UPDATE_GOVERNANCE_HIGHLIGHT_MUTATION, DELETE_GOVERNANCE_HIGHLIGHT_MUTATION } from '@/graphql/queries/governance-highlights';
 import { Box, Container, Typography, ToggleButtonGroup, ToggleButton, Grid, CircularProgress, Alert, Chip, Card, CardContent, CardMedia, Link as MuiLink, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Select, MenuItem, FormControl, InputLabel, IconButton, Snackbar } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import { useNavigate } from '@/hooks/use-navigate';
@@ -13,6 +13,7 @@ import LinkIcon from '@mui/icons-material/Link';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useAuth } from '@/hooks/use-auth';
 
 enum HighlightCategory {
     INNOVATIVE_INITIATIVE = 'INNOVATIVE_INITIATIVE',
@@ -55,8 +56,9 @@ export default function GovernanceHighlightsPage() {
     const tCommon = useTranslations('common');
     const locale = useLocale();
     const { navigate } = useNavigate();
+    const { user } = useAuth();
+    const isSuperAdmin = user?.role === 'SUPER_ADMIN';
     const [category, setCategory] = useState<HighlightCategory | null>(HighlightCategory.PENDING_ISSUE_ADDRESSED);
-    const [isSuperAdmin, setIsSuperAdmin] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [editingHighlight, setEditingHighlight] = useState<GovernanceHighlight | null>(null);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -102,18 +104,6 @@ export default function GovernanceHighlightsPage() {
             transition: { duration: 0.15 }
         }
     };
-
-    useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            try {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                setIsSuperAdmin(payload.role === 'SUPER_ADMIN');
-            } catch (e) {
-                setIsSuperAdmin(false);
-            }
-        }
-    }, []);
 
     const { data, loading, error, refetch } = useQuery(GET_GOVERNANCE_HIGHLIGHTS, {
         variables: category ? { category } : {},

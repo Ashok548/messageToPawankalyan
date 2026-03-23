@@ -12,12 +12,12 @@ export class AtrocitiesService {
         private readonly imagekitService: ImageKitService,
     ) { }
 
-    async findAll(): Promise<Atrocity[]> {
-        return this.repository.findAll();
+    async findAll(take = 20, skip = 0): Promise<Atrocity[]> {
+        return this.repository.findAll(take, skip);
     }
 
-    async findUnverified(): Promise<Atrocity[]> {
-        return this.repository.findByVerificationStatus(false);
+    async findUnverified(take = 20, skip = 0): Promise<Atrocity[]> {
+        return this.repository.findByVerificationStatus(false, take, skip);
     }
 
     async findById(id: string): Promise<Atrocity | null> {

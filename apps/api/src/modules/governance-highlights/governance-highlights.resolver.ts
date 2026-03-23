@@ -5,6 +5,7 @@ import { GovernanceHighlight, HighlightCategory } from './entities/governance-hi
 import { CreateGovernanceHighlightInput, UpdateGovernanceHighlightInput } from './dto/governance-highlight.input';
 import { GqlAuthGuard } from '../../common/guards/gql-auth.guard';
 import { SuperAdminGuard } from '../../common/guards/super-admin.guard';
+import { PaginationInput } from '../../common/dto/pagination.input';
 
 @Resolver(() => GovernanceHighlight)
 export class GovernanceHighlightsResolver {
@@ -12,12 +13,13 @@ export class GovernanceHighlightsResolver {
 
     @Query(() => [GovernanceHighlight], { name: 'governanceHighlights', description: 'Get all verified and visible governance highlights' })
     async findAll(
-        @Args('category', { type: () => HighlightCategory, nullable: true }) category?: HighlightCategory
+        @Args('category', { type: () => HighlightCategory, nullable: true }) category?: HighlightCategory,
+        @Args('pagination', { nullable: true }) pagination?: PaginationInput,
     ): Promise<GovernanceHighlight[]> {
         if (category) {
-            return this.service.findByCategory(category);
+            return this.service.findByCategory(category, pagination?.take, pagination?.skip);
         }
-        return this.service.findAll();
+        return this.service.findAll(pagination?.take, pagination?.skip);
     }
 
     @Query(() => GovernanceHighlight, { name: 'governanceHighlight', nullable: true })

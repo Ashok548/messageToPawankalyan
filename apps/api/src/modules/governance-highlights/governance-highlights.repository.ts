@@ -7,17 +7,19 @@ import { GovernanceHighlight } from './entities/governance-highlight.entity';
 export class GovernanceHighlightsRepository {
     constructor(private readonly prisma: PrismaService) { }
 
-    async findAll(): Promise<GovernanceHighlight[]> {
+    async findAll(take = 20, skip = 0): Promise<GovernanceHighlight[]> {
         return this.prisma.governanceHighlight.findMany({
             where: {
                 isVerified: true,
                 isVisible: true,
             },
             orderBy: { createdAt: 'desc' },
+            take,
+            skip,
         }) as Promise<GovernanceHighlight[]>;
     }
 
-    async findByCategory(category: string): Promise<GovernanceHighlight[]> {
+    async findByCategory(category: string, take = 20, skip = 0): Promise<GovernanceHighlight[]> {
         return this.prisma.governanceHighlight.findMany({
             where: {
                 category: category as any,
@@ -25,6 +27,8 @@ export class GovernanceHighlightsRepository {
                 isVisible: true,
             },
             orderBy: { createdAt: 'desc' },
+            take,
+            skip,
         }) as Promise<GovernanceHighlight[]>;
     }
 
