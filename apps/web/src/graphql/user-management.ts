@@ -28,3 +28,21 @@ export const UPDATE_USER_ROLE = gql`
         }
     }
 `;
+
+export const ADMIN_CREATE_USER = gql`
+    mutation AdminCreateUser($input: AdminCreateUserInput!) {
+        adminCreateUser(input: $input) {
+            user {
+                id
+                name
+                email
+                mobile
+                role
+                isVerified
+                createdAt
+                updatedAt
+            }
+            tempPassword
+        }
+    }
+`;

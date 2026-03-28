@@ -90,3 +90,29 @@ export class UpdateUserRoleInput {
     @IsEnum(UserRole)
     role: UserRole;
 }
+
+@InputType()
+export class AdminCreateUserInput {
+    @Field()
+    @IsString()
+    @MinLength(2)
+    name: string;
+
+    @Field()
+    @IsString()
+    mobile: string;
+
+    @Field({ nullable: true })
+    @IsEmail()
+    @IsOptional()
+    email?: string;
+
+    @Field({ nullable: true })
+    @IsOptional()
+    age?: number;
+
+    @Field(() => UserRole, { nullable: true })
+    @IsOptional()
+    @IsEnum(UserRole)
+    role?: UserRole;
+}

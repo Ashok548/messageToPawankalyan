@@ -12,6 +12,60 @@ enum ActionOutcome {
   WARNING
 }
 
+input AdminCreateUserInput {
+  age: Float
+  email: String
+  mobile: String!
+  name: String!
+  role: UserRole
+}
+
+type AdminCreateUserPayload {
+  tempPassword: String!
+  user: User!
+}
+
+type Analysis {
+  adminNotes: String
+
+  """Optional contextual or systemic considerations"""
+  considerations: String
+  createdAt: DateTime!
+  createdById: String!
+  createdByUser: User
+  id: ID!
+
+  """Assessment of how this issue affects the community"""
+  impact: String!
+  issue: PublicIssue
+  issueId: String!
+
+  """Factual observations gathered about the issue"""
+  observations: String!
+
+  """Structured account of what the problem is and how it manifests"""
+  problemUnderstanding: String!
+  rejectionReason: String
+  reviewedAt: DateTime
+  reviewedById: String
+  reviewedByUser: User
+  status: AnalysisStatus!
+  updatedAt: DateTime!
+}
+
+input AnalysisFilterInput {
+  createdById: String
+  issueId: String
+  status: AnalysisStatus
+}
+
+"""Moderation status of a public issue analysis"""
+enum AnalysisStatus {
+  APPROVED
+  PENDING
+  REJECTED
+}
+
 type Atrocity {
   atrocityBy: String
   atrocityType: AtrocityType!
@@ -57,6 +111,23 @@ enum CaseVisibility {
   INTERNAL_ONLY
   PUBLIC
   RESTRICTED
+}
+
+input CreateAnalysisInput {
+  """Optional contextual or systemic considerations"""
+  considerations: String
+
+  """Assessment of how this issue affects the community"""
+  impact: String!
+
+  """ID of the public issue this analysis belongs to"""
+  issueId: String!
+
+  """Factual observations gathered about the issue"""
+  observations: String!
+
+  """Structured account of what the problem is and how it manifests"""
+  problemUnderstanding: String!
 }
 
 input CreateAtrocityInput {
@@ -138,6 +209,29 @@ input CreateLeaderInput {
   serviceAreas: [String!]!
   submittedBy: SubmittedBy!
   values: [String!]!
+}
+
+input CreatePublicIssueInput {
+  category: PublicIssueCategory!
+  constituency: String
+  description: String!
+  district: String!
+
+  """Notes describing the evidence provided"""
+  evidenceNote: String
+
+  """Base64 encoded images"""
+  images: [String!]
+  mandal: String
+
+  """URLs of supporting media (video, audio, images)"""
+  mediaUrls: [String!]
+  state: String!
+  title: String!
+
+  """Strength of evidence documentation"""
+  verificationStatus: VerificationStatus
+  village: String
 }
 
 input CreateSocialMediaWarriorInput {
@@ -286,6 +380,15 @@ enum IssueCategory {
   PUBLIC_STATEMENT_VIOLATION
 }
 
+"""
+Public importance level derived from community support count or admin override
+"""
+enum IssuePriority {
+  HIGH
+  NORMAL
+  NOTABLE
+}
+
 """Source of the disciplinary issue"""
 enum IssueSource {
   EXTERNAL_COMPLAINT
@@ -334,7 +437,13 @@ input LoginInput {
 type Mutation {
   """Add an internal note to a case"""
   addCaseInternalNote(id: ID!, note: String!): DisciplinaryCase!
+
+  """SUPER_ADMIN only: Create a new user with auto-generated password"""
+  adminCreateUser(input: AdminCreateUserInput!): AdminCreateUserPayload!
   approveAtrocity(id: String!): Atrocity!
+
+  """Admin: submit a structured analysis on a public issue"""
+  createAnalysis(input: CreateAnalysisInput!): Analysis!
   createAtrocity(input: CreateAtrocityInput!): Atrocity!
 
   """Create a new disciplinary case"""
@@ -345,6 +454,7 @@ type Mutation {
 
   """Admin only: Create new leader profile"""
   createLeader(input: CreateLeaderInput!): Leader!
+  createPublicIssue(input: CreatePublicIssueInput!): PublicIssue!
 
   """Admin only: Create new social media warrior profile"""
   createSocialMediaWarrior(input: CreateSocialMediaWarriorInput!): SocialMediaWarrior!
@@ -356,6 +466,7 @@ type Mutation {
 
   """Admin only: Delete leader profile"""
   deleteLeader(id: String!): Leader!
+  deletePublicIssue(id: String!): PublicIssue!
 
   """Admin only: Delete warrior profile"""
   deleteSocialMediaWarrior(id: String!): SocialMediaWarrior!
@@ -375,6 +486,10 @@ type Mutation {
 
   """SUPER_ADMIN only: Toggle visibility"""
   toggleGovernanceHighlightVisibility(id: String!): GovernanceHighlight!
+  togglePublicIssueSupport(id: String!): PublicIssue!
+
+  """SUPER_ADMIN: approve or reject an analysis submission"""
+  updateAnalysisStatus(id: String!, input: UpdateAnalysisStatusInput!): Analysis!
   updateAtrocity(id: String!, input: UpdateAtrocityInput!): Atrocity!
 
   """Update the status of a disciplinary case"""
@@ -394,6 +509,8 @@ type Mutation {
 
   """Admin only: Update leader status"""
   updateLeaderStatus(adminNotes: String, id: String!, status: LeaderStatus!): Leader!
+  updatePublicIssue(id: String!, input: UpdatePublicIssueInput!): PublicIssue!
+  updatePublicIssueStatus(id: String!, input: UpdatePublicIssueStatusInput!): PublicIssue!
 
   """Admin only: Update social media warrior profile"""
   updateSocialMediaWarrior(id: String!, input: UpdateSocialMediaWarriorInput!): SocialMediaWarrior!
@@ -430,12 +547,96 @@ input PaginationInput {
   take: Int = 20
 }
 
+type PublicIssue {
+  adminNotes: String
+  approvedAt: DateTime
+  category: PublicIssueCategory!
+  constituency: String
+  createdAt: DateTime!
+  description: String!
+  district: String!
+  evidenceNote: String
+  hasUserSupported: Boolean
+  id: ID!
+  images: [String!]!
+  inProgressAt: DateTime
+  isHighPriority: Boolean!
+  isHighlighted: Boolean!
+  mandal: String
+  mediaUrls: [String!]!
+  priority: IssuePriority!
+  rejectionReason: String
+  resolvedAt: DateTime
+  reviewedAt: DateTime
+  reviewedByUser: User
+  state: String!
+  status: PublicIssueStatus!
+  submittedByUser: User
+  supportCount: Int!
+  takenUpAt: DateTime
+  title: String!
+  updatedAt: DateTime!
+  verificationStatus: VerificationStatus!
+  village: String
+}
+
+"""Category of a public issue submission"""
+enum PublicIssueCategory {
+  CORRUPTION
+  INDUSTRIAL_POLLUTION
+  INFRASTRUCTURE
+  LAND_MAFIA
+  OTHER
+  POLICY_CONCERN
+  PUBLIC_SERVICES
+}
+
+input PublicIssueFilterInput {
+  category: PublicIssueCategory
+  dateFrom: String
+  dateTo: String
+  district: String
+  priority: IssuePriority
+  searchTerm: String
+  sortBy: PublicIssueSortBy
+  state: String
+  status: PublicIssueStatus
+}
+
+"""Sort order for public issue feed"""
+enum PublicIssueSortBy {
+  LATEST
+  TRENDING
+}
+
+"""Moderation status of a public issue submission"""
+enum PublicIssueStatus {
+  APPROVED
+  IN_PROGRESS
+  PENDING
+  REJECTED
+  RESOLVED
+  TAKEN_UP
+}
+
 type Query {
+  """SUPER_ADMIN only: all analyses including pending and rejected"""
+  allAnalyses(filter: AnalysisFilterInput, pagination: PaginationInput): [Analysis!]!
+
   """Admin only: Get all leaders regardless of status"""
   allLeaders(pagination: PaginationInput): [Leader!]!
 
+  """SUPER_ADMIN only: all public issues with moderation states"""
+  allPublicIssues(filter: PublicIssueFilterInput, pagination: PaginationInput): [PublicIssue!]!
+
   """SUPER_ADMIN only: all voices with moderation states"""
   allVoices(filter: VoiceFilterInput, pagination: PaginationInput): [Voice!]!
+
+  """Approved analyses for a given public issue"""
+  analyses(issueId: String!, pagination: PaginationInput): [Analysis!]!
+
+  """Single analysis by ID"""
+  analysis(id: String!): Analysis!
   atrocities(pagination: PaginationInput): [Atrocity!]!
   atrocity(id: String!): Atrocity
 
@@ -461,6 +662,10 @@ type Query {
   leadersByStatus(status: LeaderStatus!): [Leader!]!
   me: User
   myVoices(pagination: PaginationInput): [Voice!]!
+  publicIssue(id: String!): PublicIssue!
+
+  """Approved public issues only"""
+  publicIssues(filter: PublicIssueFilterInput, pagination: PaginationInput): [PublicIssue!]!
   socialMediaWarrior(id: String!): SocialMediaWarrior
 
   """
@@ -547,6 +752,12 @@ enum SubmittedBy {
   SUPPORTER
 }
 
+input UpdateAnalysisStatusInput {
+  adminNotes: String
+  rejectionReason: String
+  status: AnalysisStatus!
+}
+
 input UpdateAtrocityInput {
   atrocityBy: String
   atrocityType: AtrocityType
@@ -629,6 +840,42 @@ input UpdateLeaderInput {
   values: [String!]
 }
 
+input UpdatePublicIssueInput {
+  adminNotes: String
+  category: PublicIssueCategory
+  constituency: String
+  description: String
+  district: String
+
+  """Notes describing the evidence provided"""
+  evidenceNote: String
+
+  """Base64 encoded images or existing URLs"""
+  images: [String!]
+
+  """Admin flag to highlight this issue in the UI"""
+  isHighlighted: Boolean
+  mandal: String
+
+  """URLs of supporting media (video, audio, images)"""
+  mediaUrls: [String!]
+
+  """Admin override for public importance level"""
+  priority: IssuePriority
+  state: String
+  title: String
+
+  """Strength of evidence documentation"""
+  verificationStatus: VerificationStatus
+  village: String
+}
+
+input UpdatePublicIssueStatusInput {
+  adminNotes: String
+  rejectionReason: String
+  status: PublicIssueStatus!
+}
+
 input UpdateSocialMediaWarriorInput {
   adminNotes: String
   digitalContributions: [String!]
@@ -709,6 +956,15 @@ enum UserRole {
   ADMIN
   SUPER_ADMIN
   USER
+}
+
+"""
+Strength of documentation evidence — indicates evidence quality, not truth validation
+"""
+enum VerificationStatus {
+  BASIC_REVIEWED
+  STRONG_EVIDENCE
+  UNVERIFIED
 }
 
 input VerifyOtpInput {

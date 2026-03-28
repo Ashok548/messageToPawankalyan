@@ -42,3 +42,12 @@ export class User {
     otp?: string;
 }
 
+@ObjectType()
+export class AdminCreateUserPayload {
+    @Field(() => User)
+    user: User;
+
+    @Field()
+    tempPassword: string;
+}
+

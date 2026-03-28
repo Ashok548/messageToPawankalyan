@@ -1,8 +1,8 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User, UserRole } from './entities/user.entity';
-import { UpdateUserInput, UpdateUserRoleInput } from './dto/user.input';
+import { User, UserRole, AdminCreateUserPayload } from './entities/user.entity';
+import { UpdateUserInput, UpdateUserRoleInput, AdminCreateUserInput } from './dto/user.input';
 import { GqlAuthGuard } from '../../common/guards/gql-auth.guard';
 import { SuperAdminGuard } from '../../common/guards/super-admin.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
@@ -58,5 +58,13 @@ export class UsersResolver {
     @Mutation(() => User)
     async deleteUser(@Args('id') id: string): Promise<User> {
         return this.usersService.delete(id);
+    }
+
+    @Mutation(() => AdminCreateUserPayload, { description: 'SUPER_ADMIN only: Create a new user with auto-generated password' })
+    @UseGuards(GqlAuthGuard, SuperAdminGuard)
+    async adminCreateUser(
+        @Args('input') input: AdminCreateUserInput,
+    ): Promise<AdminCreateUserPayload> {
+        return this.usersService.adminCreateUser(input);
     }
 }

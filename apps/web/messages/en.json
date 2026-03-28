@@ -50,6 +50,7 @@
                         "warriors": "Social Media Warriors",
                         "whyJoin": "Why Join JanaSena",
                         "disciplinary": "Disciplinary Cases",
+                        "publicIssues": "Public Issues",
                         "logout": "Logout",
                         "voices": "Voices",
                         "userManagement": "User Management",
@@ -874,6 +875,169 @@
                         "markUnderReview": "Mark under review",
                         "markResolved": "Mark resolved",
                         "defaultRejectReason": "This submission does not meet moderation standards right now."
+                }
+        },
+        "publicIssues": {
+                "eyebrow": "Moderated civic reporting",
+                "title": "Public Issues",
+                "subtitle": "A structured, review-first system for serious state-level problems such as corruption, land mafia, pollution, and policy concerns.",
+                "submitIssue": "Submit Issue",
+                "submitFirstIssue": "Submit the first issue",
+                "publicNotice": "Only approved issues are visible publicly. Every new submission starts as Pending until reviewed by a Super Admin.",
+                "submitTitle": "Report a Public Issue",
+                "submitSubtitle": "Document a serious public issue with enough detail and evidence for moderation.",
+                "submissionRule": "Every new issue is marked Pending by default and remains private until the Super Admin approves it.",
+                "detailNotFound": "This issue could not be found or is not available for your account.",
+                "submittedByLabel": "Submitted by",
+                "reviewedByLabel": "Approved by",
+                "anonymousSubmission": "Anonymous",
+                "adminLabel": "Admin",
+                "noEvidence": "No evidence attached",
+                "emptyTitle": "No approved public issues yet",
+                "emptySubtitle": "Once issues are approved, they will appear here for the public.",
+                "rejectionReason": "Rejection reason",
+                "adminNotes": "Admin notes",
+                "evidenceGallery": "Evidence preview",
+                "support": "Support",
+                "supported": "Supported",
+                "supportersCount": "{count} supporters",
+                "supportersStatement": "{count} people support this",
+                "aboutTitle": "About this Issue",
+                "evidenceTitle": "Evidence",
+                "summaryTitle": "Issue Summary",
+                "adminControlsTitle": "Admin Controls",
+                "totalSupportCount": "Total support count",
+                "publicSubmissionDisclaimer": "This is a publicly submitted issue and not officially verified.",
+                "viewAllEvidence": "View All",
+                "moreImagesOverlay": "+{count} more",
+                "verifiedLabel": "Verified",
+                "highPriority": "High Priority",
+                "priority": {
+                        "NORMAL": "Normal Priority",
+                        "NOTABLE": "Notable Priority",
+                        "HIGH": "High Priority",
+                        "high": "High Priority"
+                },
+                "verification": {
+                        "UNVERIFIED": "Unverified",
+                        "BASIC_REVIEWED": "Basic Review Completed",
+                        "STRONG_EVIDENCE": "Strong Evidence"
+                },
+                "loginToSupport": "Log in to support this issue",
+                "fields": {
+                        "title": "Title",
+                        "description": "Description",
+                        "category": "Category",
+                        "state": "State",
+                        "district": "District",
+                        "constituency": "Constituency",
+                        "mandal": "Mandal / Area",
+                        "village": "Village / Locality",
+                        "images": "Evidence images (optional, max 4)"
+                },
+                "categories": {
+                        "CORRUPTION": "Corruption",
+                        "LAND_MAFIA": "Land Mafia",
+                        "INDUSTRIAL_POLLUTION": "Industrial Pollution",
+                        "POLICY_CONCERN": "Policy Concern",
+                        "PUBLIC_SERVICES": "Public Services",
+                        "INFRASTRUCTURE": "Infrastructure",
+                        "OTHER": "Other"
+                },
+                "status": {
+                        "PENDING": "Pending",
+                        "APPROVED": "Approved",
+                        "TAKEN_UP": "Taken Up",
+                        "IN_PROGRESS": "In Progress",
+                        "RESOLVED": "Resolved",
+                        "REJECTED": "Rejected"
+                },
+                "validation": {
+                        "title": "Title must be at least 5 characters.",
+                        "description": "Description must be at least 20 characters.",
+                        "district": "Select a district."
+                },
+                "filters": {
+                        "search": "Search issues",
+                        "status": "Status",
+                        "category": "Category",
+                        "location": "Location",
+                        "allStatuses": "All statuses",
+                        "allCategories": "All categories",
+                        "allLocations": "All locations",
+                        "highPriority": "High Priority",
+                        "trending": "Trending",
+                        "latest": "Latest",
+                        "locationBased": "By Location"
+                },
+                "admin": {
+                        "title": "Public Issues moderation queue",
+                        "subtitle": "Review pending and historical submissions, then open the issue detail page to edit, approve, or reject.",
+                        "openQueue": "Open moderation queue",
+                        "tabs": {
+                                "PENDING": "Pending",
+                                "APPROVED": "Approved",
+                                "REJECTED": "Rejected"
+                        },
+                        "noResults": "No public issues match the current filters",
+                        "noResultsHint": "Adjust the filters to inspect more submissions.",
+                        "superAdminView": "Super Admin view",
+                        "editDialogTitle": "Edit issue before approval",
+                        "rejectDialogTitle": "Reject issue",
+                        "rejectReasonPlaceholder": "Explain why this issue is being rejected.",
+                        "adminNotesField": "Internal notes",
+                        "priorityField": "Priority",
+                        "verificationField": "Verification status",
+                        "authRequired": "Super Admin login required to manage this issue.",
+                        "editNotice": "Core issue details can be corrected here before the record becomes public.",
+                        "editFirst": "Edit before approval",
+                        "statusActions": "Change Status",
+                        "markTakenUp": "Mark Taken Up",
+                        "markInProgress": "Mark In Progress",
+                        "markResolved": "Mark Resolved",
+                        "statusHelp": {
+                                "APPROVED": "Issue reviewed and made visible to the public",
+                                "TAKEN_UP": "Authorities have acknowledged and accepted this issue",
+                                "IN_PROGRESS": "Active work is underway to resolve this issue",
+                                "RESOLVED": "Issue has been resolved",
+                                "REJECTED": "Issue does not meet the criteria for public listing"
+                        },
+                        "deleteDialogTitle": "Delete public issue",
+                        "deleteConfirmation": "This will permanently delete this issue along with all its analysis and support data. This action cannot be undone."
+                },
+                "analysis": {
+                        "title": "Analysis & Insights",
+                        "subtitle": "Structured public insight that adds context to the issue beyond the raw report.",
+                        "restrictedBadge": "Restricted submitters",
+                        "restrictedNote": "Only admin reviewers can submit structured insights for moderation.",
+                        "restrictedLogin": "Log in with an admin account to submit analysis.",
+                        "submitTitle": "Submit structured insight",
+                        "submitHint": "New analysis submissions stay private until approved.",
+                        "submitCta": "Submit insight",
+                        "submitting": "Submitting insight...",
+                        "underReview": "Your analysis is under review.",
+                        "publishedLive": "Your insight has been published and is now visible to everyone.",
+                        "empty": "No approved analysis has been published for this issue yet.",
+                        "byline": "Approved insight • {date}",
+                        "fields": {
+                                "problemUnderstanding": "Problem Understanding",
+                                "impact": "Impact",
+                                "observations": "Observations",
+                                "considerations": "Considerations"
+                        },
+                        "validation": {
+                                "problemUnderstanding": "Problem Understanding must be at least 20 characters.",
+                                "impact": "Impact must be at least 20 characters.",
+                                "observations": "Observations must be at least 20 characters."
+                        }
+                },
+                "timeline": {
+                        "title": "Issue Lifecycle",
+                        "SUBMITTED": "Submitted",
+                        "APPROVED": "Approved",
+                        "TAKEN_UP": "Taken Up",
+                        "IN_PROGRESS": "In Progress",
+                        "RESOLVED": "Resolved"
                 }
         },
         "projects": {

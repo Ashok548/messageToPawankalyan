@@ -15,6 +15,7 @@ import { ImageKitModule } from './common/imagekit/imagekit.module';
 import { DisciplinaryCaseModule } from './modules/disciplinary-cases/disciplinary-case.module';
 import { VisitorStatsModule } from './modules/visitor-stats/visitor-stats.module';
 import { VoicesModule } from './modules/voices/voices.module';
+import { PublicIssuesModule } from './modules/public-issues/public-issues.module';
 
 @Module({
     imports: [
@@ -44,6 +45,7 @@ import { VoicesModule } from './modules/voices/voices.module';
         DisciplinaryCaseModule,
         VisitorStatsModule,
         VoicesModule,
+        PublicIssuesModule,
     ],
 })
 export class AppModule { }

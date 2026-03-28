@@ -25,6 +25,12 @@ export const MIN_PAGE_SIZE = 1;
 // Validation Constants
 // ============================================
 
+// ============================================
+// Public Issues Constants
+// ============================================
+
+export const PUBLIC_ISSUE_HIGH_PRIORITY_THRESHOLD = 50;
+
 export const VALIDATION = {
     // User
     EMAIL_MAX_LENGTH: 255,

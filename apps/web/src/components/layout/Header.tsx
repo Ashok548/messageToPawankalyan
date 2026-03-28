@@ -64,7 +64,7 @@ export default function Header() {
     const handleLogout = () => {
         logout();
         handleProfileMenuClose();
-        router.push('/');
+        router.push(`/${locale}`);
     };
 
     // Define all menu items with translations
@@ -76,6 +76,7 @@ export default function Header() {
         { label: t('navigation.warriors'), href: `/${locale}/social-media-warriors`, showForAll: false },
         { label: t('navigation.governance'), href: `/${locale}/governance-highlights`, showForAll: true },
         { label: t('navigation.disciplinary'), href: `/${locale}/disciplinary-cases`, showForAll: true },
+        { label: t('navigation.publicIssues'), href: `/${locale}/public-issues`, showForAll: true },
         { label: t('navigation.voices'), href: `/${locale}/voices`, showForAll: true },
         ...(isSuperAdmin ? [{ label: t('navigation.userManagement'), href: `/${locale}/user-management`, showForAll: true }] : []),
     ];

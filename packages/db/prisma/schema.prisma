@@ -26,6 +26,11 @@ model User {
   projects       Project[]
   submittedVoices Voice[]           @relation("SubmittedVoices")
   reviewedVoices  Voice[]           @relation("ReviewedVoices")
+  submittedPublicIssues PublicIssue[] @relation("SubmittedPublicIssues")
+  reviewedPublicIssues  PublicIssue[] @relation("ReviewedPublicIssues")
+  publicIssueSupports   PublicIssueSupport[]
+  createdAnalyses       Analysis[]   @relation("CreatedAnalyses")
+  reviewedAnalyses      Analysis[]   @relation("ReviewedAnalyses")
 
   @@index([mobile])
   @@index([email])
@@ -259,6 +264,92 @@ model Voice {
   @@map("voices")
 }
 
+model PublicIssue {
+  id              String              @id @default(uuid()) @db.Uuid
+  title           String              @db.VarChar(160)
+  description     String
+  category        PublicIssueCategory
+  state           String              @db.VarChar(50)
+  district        String              @db.VarChar(50)
+  constituency    String?             @db.VarChar(80)
+  mandal          String?             @db.VarChar(80)
+  village         String?             @db.VarChar(80)
+  images          String[]            @default([])
+  mediaUrls           String[]              @default([]) @map("media_urls")
+  verificationStatus  VerificationStatus    @default(UNVERIFIED) @map("verification_status")
+  evidenceNote        String?               @map("evidence_note")
+  status          PublicIssueStatus   @default(PENDING)
+  adminNotes      String?             @map("admin_notes")
+  rejectionReason String?             @map("rejection_reason")
+  submittedById   String?             @map("submitted_by_id") @db.Uuid
+  reviewedById    String?             @map("reviewed_by_id") @db.Uuid
+  reviewedAt      DateTime?           @map("reviewed_at") @db.Timestamptz(3)
+  supportCount    Int                 @default(0) @map("support_count")
+  isHighPriority  Boolean             @default(false) @map("is_high_priority")
+  priority        IssuePriority       @default(NORMAL) @map("priority")
+  isHighlighted   Boolean             @default(false) @map("is_highlighted")
+  approvedAt      DateTime?           @map("approved_at") @db.Timestamptz(3)
+  takenUpAt       DateTime?           @map("taken_up_at") @db.Timestamptz(3)
+  inProgressAt    DateTime?           @map("in_progress_at") @db.Timestamptz(3)
+  resolvedAt      DateTime?           @map("resolved_at") @db.Timestamptz(3)
+  createdAt       DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime            @updatedAt @map("updated_at") @db.Timestamptz(3)
+  submittedByUser User?               @relation("SubmittedPublicIssues", fields: [submittedById], references: [id], onDelete: SetNull)
+  reviewedByUser  User?               @relation("ReviewedPublicIssues", fields: [reviewedById], references: [id], onDelete: SetNull)
+  supports        PublicIssueSupport[]
+  analyses        Analysis[]
+
+  @@index([status])
+  @@index([category])
+  @@index([district])
+  @@index([createdAt])
+  @@index([supportCount])
+  @@index([status, createdAt])
+  @@index([submittedById, createdAt])
+  @@map("public_issues")
+}
+
+model PublicIssueSupport {
+  id        String      @id @default(uuid()) @db.Uuid
+  issueId   String      @map("issue_id") @db.Uuid
+  userId    String      @map("user_id") @db.Uuid
+  createdAt DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  issue     PublicIssue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([issueId, userId])
+  @@index([issueId])
+  @@index([userId])
+  @@map("public_issue_supports")
+}
+
+model Analysis {
+  id                     String         @id @default(uuid()) @db.Uuid
+  issueId                String         @map("issue_id") @db.Uuid
+  createdById            String         @map("created_by_id") @db.Uuid
+  reviewedById           String?        @map("reviewed_by_id") @db.Uuid
+  problemUnderstanding   String         @map("problem_understanding")
+  impact                 String
+  observations           String
+  considerations         String?
+  status                 AnalysisStatus @default(PENDING)
+  adminNotes             String?        @map("admin_notes")
+  rejectionReason        String?        @map("rejection_reason")
+  reviewedAt             DateTime?      @map("reviewed_at") @db.Timestamptz(3)
+  createdAt              DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt              DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
+  issue                  PublicIssue    @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  createdByUser          User           @relation("CreatedAnalyses", fields: [createdById], references: [id], onDelete: Cascade)
+  reviewedByUser         User?          @relation("ReviewedAnalyses", fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  @@index([issueId])
+  @@index([status])
+  @@index([issueId, status])
+  @@index([createdById])
+  @@index([createdAt])
+  @@map("analyses")
+}
+
 enum UserRole {
   USER
   ADMIN
@@ -403,4 +494,51 @@ enum VoiceCategory {
   OTHER
 
   @@map("voice_category")
+}
+
+enum PublicIssueStatus {
+  PENDING
+  APPROVED
+  TAKEN_UP
+  IN_PROGRESS
+  RESOLVED
+  REJECTED
+
+  @@map("public_issue_status")
+}
+
+enum PublicIssueCategory {
+  CORRUPTION
+  LAND_MAFIA
+  INDUSTRIAL_POLLUTION
+  POLICY_CONCERN
+  PUBLIC_SERVICES
+  INFRASTRUCTURE
+  OTHER
+
+  @@map("public_issue_category")
+}
+
+enum VerificationStatus {
+  UNVERIFIED
+  BASIC_REVIEWED
+  STRONG_EVIDENCE
+
+  @@map("verification_status")
+}
+
+enum IssuePriority {
+  NORMAL
+  NOTABLE
+  HIGH
+
+  @@map("issue_priority")
+}
+
+enum AnalysisStatus {
+  PENDING
+  APPROVED
+  REJECTED
+
+  @@map("analysis_status")
 }

@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { Box, Container, Typography, Alert, Snackbar } from '@mui/material';
+import { Box, Container, Typography, Alert, Snackbar, Button } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { GET_ALL_USERS, UPDATE_USER_ROLE } from '@/graphql/user-management';
 import { UserManagementTable } from './components/UserManagementTable';
 import { RoleChangeDialog } from './components/RoleChangeDialog';
+import { AddUserDialog } from './components/AddUserDialog';
 import { Spinner } from '@/components/ui/spinner';
 import { useAuth } from '@/hooks/use-auth';
 
@@ -33,6 +35,7 @@ function UserManagementContent() {
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [newRole, setNewRole] = useState('');
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' });
+    const [addUserOpen, setAddUserOpen] = useState(false);
 
     const { data, loading, error, refetch } = useQuery(GET_ALL_USERS);
 
@@ -133,21 +136,32 @@ function UserManagementContent() {
             >
                 <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3 } }}>
                     {/* Page Header */}
-                    <Box sx={{ mb: 4 }}>
-                        <Typography
-                            variant="h4"
-                            component="h1"
-                            sx={{
-                                fontWeight: 700,
-                                mb: 1,
-                                color: 'text.primary',
-                            }}
+                    <Box sx={{ mb: 4, display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 2 }}>
+                        <Box>
+                            <Typography
+                                variant="h4"
+                                component="h1"
+                                sx={{
+                                    fontWeight: 700,
+                                    mb: 1,
+                                    color: 'text.primary',
+                                }}
+                            >
+                                {t('title')}
+                            </Typography>
+                            <Typography variant="body1" color="text.secondary">
+                                {t('description')}
+                            </Typography>
+                        </Box>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            startIcon={<PersonAddIcon />}
+                            onClick={() => setAddUserOpen(true)}
+                            sx={{ whiteSpace: 'nowrap' }}
                         >
-                            {t('title')}
-                        </Typography>
-                        <Typography variant="body1" color="text.secondary">
-                            {t('description')}
-                        </Typography>
+                            Add User
+                        </Button>
                     </Box>
 
                     {/* User Statistics */}
@@ -230,6 +244,17 @@ function UserManagementContent() {
                 newRole={newRole}
                 onConfirm={handleConfirmRoleChange}
                 onCancel={handleCancelRoleChange}
+            />
+
+            {/* Add User Dialog */}
+            <AddUserDialog
+                open={addUserOpen}
+                onClose={() => setAddUserOpen(false)}
+                onSuccess={() => {
+                    setAddUserOpen(false);
+                    refetch();
+                    setSnackbar({ open: true, message: 'User created successfully', severity: 'success' });
+                }}
             />
 
             {/* Snackbar for notifications */}
