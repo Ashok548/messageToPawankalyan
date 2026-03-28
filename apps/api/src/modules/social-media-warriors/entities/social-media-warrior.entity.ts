@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
+import { ObjectType, Field, ID, Int, registerEnumType } from '@nestjs/graphql';
 import { WarriorStatus, SubmittedBy } from '@prisma/client';
 
 export { WarriorStatus, SubmittedBy };
@@ -57,6 +57,9 @@ export class SocialMediaWarrior {
     @Field({ nullable: true })
     primaryProfileUrl?: string;
 
+    @Field(() => Int, { nullable: true })
+    primaryFollowersCount?: number;
+
     @Field(() => [WarriorOtherPlatform], { nullable: true })
     otherPlatforms?: WarriorOtherPlatform[];
 
@@ -83,4 +86,7 @@ export class WarriorOtherPlatform {
 
     @Field()
     profileUrl: string;
+
+    @Field(() => Int, { nullable: true })
+    followersCount?: number;
 }

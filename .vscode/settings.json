@@ -1,5 +1,8 @@
 {
   "editor.minimap.enabled": false,
   "files.autoSave": "off",
-  "typescript.tsserver.maxTsServerMemory": 4096
+  "typescript.tsserver.maxTsServerMemory": 4096,
+  "chat.tools.terminal.autoApprove": {
+    "pnpm": true
+  }
 }

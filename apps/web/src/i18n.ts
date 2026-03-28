@@ -11,7 +11,7 @@ export const localeNames: Record<Locale, string> = {
     en: 'English',
 };
 
-export const defaultLocale: Locale = 'en';
+export const defaultLocale: Locale = 'te';
 
 export default getRequestConfig(async ({ requestLocale }) => {
     const locale = await requestLocale;

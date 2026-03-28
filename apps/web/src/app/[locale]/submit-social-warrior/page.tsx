@@ -21,10 +21,12 @@ const CREATE_SOCIAL_MEDIA_WARRIOR = gql`
             partyPosition
             nominatedPost
             primaryPlatform
+            primaryFollowersCount
             primaryProfileUrl
             otherPlatforms {
                 platform
                 profileUrl
+                followersCount
             }
         }
     }
@@ -39,10 +41,12 @@ const UPDATE_SOCIAL_MEDIA_WARRIOR = gql`
             partyPosition
             nominatedPost
             primaryPlatform
+            primaryFollowersCount
             primaryProfileUrl
             otherPlatforms {
                 platform
                 profileUrl
+                followersCount
             }
         }
     }
@@ -64,10 +68,12 @@ const GET_SOCIAL_MEDIA_WARRIOR_FOR_EDIT = gql`
             partyPosition
             nominatedPost
             primaryPlatform
+            primaryFollowersCount
             primaryProfileUrl
             otherPlatforms {
                 platform
                 profileUrl
+                followersCount
             }
             submittedBy
         }
@@ -159,11 +165,13 @@ function SubmitSocialWarriorContent() {
         partyPosition: '',
         nominatedPost: '',
         primaryPlatform: '' as 'TWITTER' | 'FACEBOOK' | 'INSTAGRAM' | 'YOUTUBE' | '',
+        primaryFollowersCount: '',
         primaryProfileUrl: '',
         otherPlatforms: [] as Array<{
             id: string;
             platform: 'TWITTER' | 'FACEBOOK' | 'INSTAGRAM' | 'YOUTUBE' | '';
             profileUrl: string;
+            followersCount: string;
         }>,
         consentAcknowledged: false,
     });
@@ -184,11 +192,13 @@ function SubmitSocialWarriorContent() {
                 partyPosition: w.partyPosition || '',
                 nominatedPost: w.nominatedPost || '',
                 primaryPlatform: (w.primaryPlatform as any) || '',
+                primaryFollowersCount: w.primaryFollowersCount != null ? w.primaryFollowersCount.toString() : '',
                 primaryProfileUrl: w.primaryProfileUrl || '',
                 otherPlatforms: (w.otherPlatforms || []).map((p: any, idx: number) => ({
                     id: `other-${idx}`,
                     platform: p.platform,
-                    profileUrl: p.profileUrl
+                    profileUrl: p.profileUrl,
+                    followersCount: p.followersCount != null ? p.followersCount.toString() : ''
                 })),
                 consentAcknowledged: true // Auto-acknowledge for edit
             });
@@ -262,17 +272,23 @@ function SubmitSocialWarriorContent() {
         setFormData((prev) => ({
             ...prev,
             primaryPlatform: platform,
+            primaryFollowersCount: '',
             primaryProfileUrl: '', // Clear URL when platform changes
             // Remove this platform from other platforms if it exists
             otherPlatforms: prev.otherPlatforms.filter(p => p.platform !== platform)
         }));
         // Clear any existing error
-        setErrors((prev) => ({ ...prev, primaryProfileUrl: '' }));
+        setErrors((prev) => ({ ...prev, primaryProfileUrl: '', primaryFollowersCount: '' }));
     };
 
     const handlePrimaryUrlChange = (url: string) => {
         setFormData((prev) => ({ ...prev, primaryProfileUrl: url }));
         setErrors((prev) => ({ ...prev, primaryProfileUrl: '' }));
+    };
+
+    const handlePrimaryFollowersCountChange = (value: string) => {
+        setFormData((prev) => ({ ...prev, primaryFollowersCount: value }));
+        setErrors((prev) => ({ ...prev, primaryFollowersCount: '' }));
     };
 
     const handlePrimaryUrlBlur = () => {
@@ -292,13 +308,14 @@ function SubmitSocialWarriorContent() {
                 {
                     id: `other-${Date.now()}`,
                     platform: '',
-                    profileUrl: ''
+                    profileUrl: '',
+                    followersCount: ''
                 }
             ]
         }));
     };
 
-    const handleOtherPlatformChange = (id: string, field: 'platform' | 'profileUrl', value: string) => {
+    const handleOtherPlatformChange = (id: string, field: 'platform' | 'profileUrl' | 'followersCount', value: string) => {
         setFormData((prev) => ({
             ...prev,
             otherPlatforms: prev.otherPlatforms.map(p =>
@@ -309,6 +326,7 @@ function SubmitSocialWarriorContent() {
         setErrors((prev) => {
             const newErrors = { ...prev };
             delete newErrors[`otherPlatform_${id}`];
+            delete newErrors[`otherPlatformFollowers_${id}`];
             return newErrors;
         });
     };
@@ -335,6 +353,7 @@ function SubmitSocialWarriorContent() {
         setErrors((prev) => {
             const newErrors = { ...prev };
             delete newErrors[`otherPlatform_${id}`];
+            delete newErrors[`otherPlatformFollowers_${id}`];
             return newErrors;
         });
     };
@@ -502,6 +521,22 @@ function SubmitSocialWarriorContent() {
             newErrors.consent = tValidation('consentRequired');
         }
 
+        if (formData.primaryFollowersCount) {
+            const primaryFollowersCount = Number(formData.primaryFollowersCount);
+            if (!Number.isInteger(primaryFollowersCount) || primaryFollowersCount < 0) {
+                newErrors.primaryFollowersCount = 'Followers count must be a non-negative whole number';
+            }
+        }
+
+        formData.otherPlatforms.forEach((platform) => {
+            if (platform.followersCount) {
+                const followersCount = Number(platform.followersCount);
+                if (!Number.isInteger(followersCount) || followersCount < 0) {
+                    newErrors[`otherPlatformFollowers_${platform.id}`] = 'Followers count must be a non-negative whole number';
+                }
+            }
+        });
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -583,11 +618,16 @@ function SubmitSocialWarriorContent() {
                 partyPosition: formData.partyPosition || undefined,
                 nominatedPost: formData.nominatedPost || undefined,
                 primaryPlatform: formData.primaryPlatform || undefined,
+                primaryFollowersCount: formData.primaryFollowersCount ? parseInt(formData.primaryFollowersCount) : undefined,
                 primaryProfileUrl: formData.primaryProfileUrl || undefined,
                 otherPlatforms: formData.otherPlatforms.length > 0
                     ? formData.otherPlatforms
                         .filter(p => p.platform && p.profileUrl)
-                        .map(p => ({ platform: p.platform, profileUrl: p.profileUrl }))
+                        .map(p => ({
+                            platform: p.platform,
+                            profileUrl: p.profileUrl,
+                            followersCount: p.followersCount ? parseInt(p.followersCount) : undefined,
+                        }))
                     : undefined,
                 submittedBy: formData.submittedBy,
             };
@@ -815,28 +855,39 @@ function SubmitSocialWarriorContent() {
 
                             {/* Primary Platform URL */}
                             {formData.primaryPlatform && (
-                                <TextField
-                                    fullWidth
-                                    label={`${getPlatformName(formData.primaryPlatform as SocialPlatform)} ${t('profileUrl')}`}
-                                    value={formData.primaryProfileUrl}
-                                    onChange={(e) => handlePrimaryUrlChange(e.target.value)}
-                                    onBlur={handlePrimaryUrlBlur}
-                                    error={!!errors.primaryProfileUrl}
-                                    helperText={
-                                        errors.primaryProfileUrl ||
-                                        (formData.primaryProfileUrl && !errors.primaryProfileUrl ? t('validUrl') : '') ||
-                                        getPlatformPlaceholder(formData.primaryPlatform as SocialPlatform)
-                                    }
-                                    placeholder={getPlatformPlaceholder(formData.primaryPlatform as SocialPlatform)}
-                                    size="small"
-                                    sx={{ mb: 2 }}
-                                    FormHelperTextProps={{
-                                        sx: {
-                                            color: errors.primaryProfileUrl ? 'error.main' :
-                                                (formData.primaryProfileUrl && !errors.primaryProfileUrl ? 'success.main' : 'text.secondary')
+                                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 1fr) 180px' }, gap: 2, mb: 2 }}>
+                                    <TextField
+                                        fullWidth
+                                        label={`${getPlatformName(formData.primaryPlatform as SocialPlatform)} ${t('profileUrl')}`}
+                                        value={formData.primaryProfileUrl}
+                                        onChange={(e) => handlePrimaryUrlChange(e.target.value)}
+                                        onBlur={handlePrimaryUrlBlur}
+                                        error={!!errors.primaryProfileUrl}
+                                        helperText={
+                                            errors.primaryProfileUrl ||
+                                            (formData.primaryProfileUrl && !errors.primaryProfileUrl ? t('validUrl') : '') ||
+                                            getPlatformPlaceholder(formData.primaryPlatform as SocialPlatform)
                                         }
-                                    }}
-                                />
+                                        placeholder={getPlatformPlaceholder(formData.primaryPlatform as SocialPlatform)}
+                                        size="small"
+                                        FormHelperTextProps={{
+                                            sx: {
+                                                color: errors.primaryProfileUrl ? 'error.main' :
+                                                    (formData.primaryProfileUrl && !errors.primaryProfileUrl ? 'success.main' : 'text.secondary')
+                                            }
+                                        }}
+                                    />
+                                    <TextField
+                                        label="Followers Count"
+                                        type="number"
+                                        value={formData.primaryFollowersCount}
+                                        onChange={(e) => handlePrimaryFollowersCountChange(e.target.value)}
+                                        error={!!errors.primaryFollowersCount}
+                                        helperText={errors.primaryFollowersCount || 'Optional'}
+                                        size="small"
+                                        InputProps={{ inputProps: { min: 0, step: 1 } }}
+                                    />
+                                </Box>
                             )}
 
                             {/* Additional Platforms */}
@@ -901,6 +952,19 @@ function SubmitSocialWarriorContent() {
                                                                 color: errors[`otherPlatform_${otherPlatform.id}`] ? 'error.main' : 'text.secondary'
                                                             }
                                                         }}
+                                                    />
+
+                                                    <TextField
+                                                        label="Followers Count"
+                                                        type="number"
+                                                        value={otherPlatform.followersCount}
+                                                        onChange={(e) => handleOtherPlatformChange(otherPlatform.id, 'followersCount', e.target.value)}
+                                                        error={!!errors[`otherPlatformFollowers_${otherPlatform.id}`]}
+                                                        helperText={errors[`otherPlatformFollowers_${otherPlatform.id}`] || 'Optional'}
+                                                        disabled={!otherPlatform.platform}
+                                                        size="small"
+                                                        sx={{ width: { xs: '100%', sm: 160 }, flexShrink: 0 }}
+                                                        InputProps={{ inputProps: { min: 0, step: 1 } }}
                                                     />
 
                                                     {/* Remove Button */}

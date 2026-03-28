@@ -14,6 +14,7 @@ import { GovernanceHighlightsModule } from './modules/governance-highlights/gove
 import { ImageKitModule } from './common/imagekit/imagekit.module';
 import { DisciplinaryCaseModule } from './modules/disciplinary-cases/disciplinary-case.module';
 import { VisitorStatsModule } from './modules/visitor-stats/visitor-stats.module';
+import { VoicesModule } from './modules/voices/voices.module';
 
 @Module({
     imports: [
@@ -42,6 +43,7 @@ import { VisitorStatsModule } from './modules/visitor-stats/visitor-stats.module
         GovernanceHighlightsModule,
         DisciplinaryCaseModule,
         VisitorStatsModule,
+        VoicesModule,
     ],
 })
 export class AppModule { }

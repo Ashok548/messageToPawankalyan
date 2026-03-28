@@ -57,65 +57,37 @@ export default function MessageToJanasainiksPage() {
                         },
                     }}
                 >
-                    <Typography component="p">
-                        {t('p1')}
-                    </Typography>
+                    <Typography component="p">{t('greeting')}</Typography>
 
-                    <Typography component="p">
-                        {t('p2')}
+                    <Typography sx={{ fontSize: { xs: 20, sm: 22 }, fontWeight: 700, color: '#1a1a1a', mt: 5, mb: 2, borderLeft: '4px solid #E31E24', pl: 2 }}>
+                        {t('s1heading')}
                     </Typography>
+                    <Typography component="p">{t('s1p1')}</Typography>
+                    <Typography component="p">{t('s1p2')}</Typography>
 
-                    <Typography component="p">
-                        {t('p3')}
+                    <Typography sx={{ fontSize: { xs: 20, sm: 22 }, fontWeight: 700, color: '#1a1a1a', mt: 5, mb: 2, borderLeft: '4px solid #E31E24', pl: 2 }}>
+                        {t('s2heading')}
                     </Typography>
+                    <Typography component="p">{t('s2p1')}</Typography>
+                    <Typography component="p">{t('s2p2')}</Typography>
+                    <Typography component="p">{t('s2p3')}</Typography>
 
-                    <Typography component="p">
-                        {t('p4')}
+                    <Typography sx={{ fontSize: { xs: 20, sm: 22 }, fontWeight: 700, color: '#1a1a1a', mt: 5, mb: 2, borderLeft: '4px solid #E31E24', pl: 2 }}>
+                        {t('s3heading')}
                     </Typography>
+                    <Typography component="p">{t('s3p1')}</Typography>
+                    <Typography component="p">{t('s3p2')}</Typography>
 
-                    <Typography component="p">
-                        {t('p5')}
+                    <Typography sx={{ fontSize: { xs: 20, sm: 22 }, fontWeight: 700, color: '#1a1a1a', mt: 5, mb: 2, borderLeft: '4px solid #E31E24', pl: 2 }}>
+                        {t('s4heading')}
                     </Typography>
+                    <Typography component="p">{t('s4p1')}</Typography>
 
-                    <Typography component="p">
-                        {t('p6')}
+                    <Typography sx={{ fontSize: { xs: 20, sm: 22 }, fontWeight: 700, color: '#1a1a1a', mt: 5, mb: 2, borderLeft: '4px solid #E31E24', pl: 2 }}>
+                        {t('s5heading')}
                     </Typography>
-
-                    <Typography component="p">
-                        {t('p7')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('p8')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('p9')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('p10')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('p11')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('p12')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('p13')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('p14')}
-                    </Typography>
-
-                    <Typography component="p">
-                        {t('p15')}
-                    </Typography>
+                    <Typography component="p">{t('s5p1')}</Typography>
+                    <Typography component="p">{t('s5p2')}</Typography>
                 </Box>
             </Container>
         </Box>

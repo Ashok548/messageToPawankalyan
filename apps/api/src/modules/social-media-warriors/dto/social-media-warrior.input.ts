@@ -1,5 +1,5 @@
-import { InputType, Field } from '@nestjs/graphql';
-import { IsString, IsNotEmpty, IsOptional, IsArray, IsEnum, MinLength, MaxLength, ArrayMinSize, ArrayMaxSize } from 'class-validator';
+import { InputType, Field, Int } from '@nestjs/graphql';
+import { IsString, IsNotEmpty, IsOptional, IsArray, IsEnum, MinLength, MaxLength, ArrayMinSize, ArrayMaxSize, IsInt, Min } from 'class-validator';
 import { SubmittedBy } from '../entities/social-media-warrior.entity';
 
 @InputType()
@@ -11,6 +11,12 @@ export class WarriorOtherPlatformInput {
     @Field()
     @IsString()
     profileUrl: string;
+
+    @Field(() => Int, { nullable: true })
+    @IsOptional()
+    @IsInt()
+    @Min(0)
+    followersCount?: number;
 }
 
 @InputType()
@@ -88,6 +94,12 @@ export class CreateSocialMediaWarriorInput {
     @IsOptional()
     @IsString()
     primaryProfileUrl?: string;
+
+    @Field(() => Int, { nullable: true })
+    @IsOptional()
+    @IsInt()
+    @Min(0)
+    primaryFollowersCount?: number;
 
     @Field(() => [WarriorOtherPlatformInput], { nullable: true })
     @IsOptional()
@@ -176,6 +188,12 @@ export class UpdateSocialMediaWarriorInput {
     @IsOptional()
     @IsString()
     primaryProfileUrl?: string;
+
+    @Field(() => Int, { nullable: true })
+    @IsOptional()
+    @IsInt()
+    @Min(0)
+    primaryFollowersCount?: number;
 
     @Field(() => [WarriorOtherPlatformInput], { nullable: true })
     @IsOptional()

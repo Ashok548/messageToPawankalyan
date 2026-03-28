@@ -1,11 +1,15 @@
 'use client';
 
-import { Box, Container, Typography, Divider } from '@mui/material';
+import { Box, Container, Typography, Divider, Chip } from '@mui/material';
 import { motion } from 'framer-motion';
-import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { useLocale } from 'next-intl';
+import teMessages from '../../../../messages/te.json';
 
 export default function WhyJoinJanaSenaPage() {
-    const t = useTranslations('whyJoin');
+    const locale = useLocale();
+    // Always use Telugu content for this page
+    const t = (key: string) => getNestedValue(teMessages.whyJoin, key);
     const fadeInUp = {
         initial: { opacity: 0, y: 20 },
         animate: { opacity: 1, y: 0 },
@@ -83,6 +87,13 @@ export default function WhyJoinJanaSenaPage() {
                     ]}
                 />
 
+                <RefBox
+                    label={t('refs.evidenceLabel')}
+                    links={[
+                        { text: t('refs.disciplinary'), href: `/${locale}/disciplinary-cases` },
+                    ]}
+                />
+
                 <Divider sx={{ my: 6 }} />
 
                 {/* Values & Principles */}
@@ -105,6 +116,13 @@ export default function WhyJoinJanaSenaPage() {
                             heading: t('values.items.3.heading'),
                             text: t('values.items.3.text')
                         }
+                    ]}
+                />
+
+                <RefBox
+                    label={t('refs.leaderLabel')}
+                    links={[
+                        { text: t('refs.leaders'), href: `/${locale}/leaders-society-needs` },
                     ]}
                 />
 
@@ -169,6 +187,13 @@ export default function WhyJoinJanaSenaPage() {
                     >
                         {t('leadership.p4')}
                     </Typography>
+
+                    <RefBox
+                        label={t('refs.governanceLabel')}
+                        links={[
+                            { text: t('refs.governance'), href: `/${locale}/governance-highlights` },
+                        ]}
+                    />
                 </Box>
 
                 <Divider sx={{ my: 6 }} />
@@ -230,6 +255,48 @@ export default function WhyJoinJanaSenaPage() {
                     </Typography>
                 </Box>
             </Container>
+        </Box>
+    );
+}
+
+// Helper to get nested values from objects
+function getNestedValue(obj: any, path: string): any {
+    return path.split('.').reduce((current, prop) => current?.[prop], obj);
+}
+function RefBox({ label, links }: { label: string; links: { text: string; href: string }[] }) {
+    return (
+        <Box
+            sx={{
+                backgroundColor: '#fff3f3',
+                border: '1px solid #E31E24',
+                borderRadius: 2,
+                p: 2.5,
+                mb: 4,
+                display: 'flex',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                gap: 1.5,
+            }}
+        >
+            <Typography variant="body2" sx={{ fontWeight: 600, color: '#1a1a1a', mr: 1 }}>
+                {label}
+            </Typography>
+            {links.map((link) => (
+                <Chip
+                    key={link.href}
+                    label={link.text}
+                    component={Link}
+                    href={link.href}
+                    clickable
+                    size="small"
+                    sx={{
+                        backgroundColor: '#E31E24',
+                        color: '#fff',
+                        fontWeight: 500,
+                        '&:hover': { backgroundColor: '#b71c1c' },
+                    }}
+                />
+            ))}
         </Box>
     );
 }

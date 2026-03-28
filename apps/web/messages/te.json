@@ -612,23 +612,112 @@
                 "returnHome": "హోమ్‌కు వెళ్ళు"
         },
         "messageToJanasainiks": {
-                "title": "జనసైనికులకు సందేశం: బలమైన ఉద్యమాన్ని నిర్మించడం",
-                "publishedDate": "ప్రచురించబడింది: జనవరి 24, 2026",
-                "p1": "Dear Janasainiks, you are the backbone of our movement. Your dedication, sacrifice, and unwavering commitment to the cause of people's welfare form the foundation upon which we build our vision for a better society. This message is a recognition of your efforts and a call to strengthen our collective resolve in the face of challenges.",
-                "p2": "The role you play goes far beyond traditional political activism. You are community organizers, problem solvers, and bridges between leadership and the people. Every day, you work tirelessly to understand the concerns of ordinary citizens, to mobilize support for positive change, and to ensure that the voice of the common person is heard in the corridors of power.",
-                "p3": "In recent times, we have witnessed unprecedented challenges to grassroots democratic participation. The obstacles you face—whether they are logistical, political, or personal—are real and significant. Yet, your resilience in the face of these challenges is what gives our movement its strength and credibility. Your commitment inspires others to join the cause and reinforces the belief that positive change is possible.",
-                "p4": "As we move forward, it is essential that we strengthen our organizational structures and support systems. This means creating better channels of communication between different levels of our movement, ensuring that resources reach those who need them most, and establishing mechanisms for feedback and continuous improvement. Your input in shaping these systems is not just welcome—it is essential.",
-                "p5": "Training and capacity building must be a priority. We recognize that effective grassroots work requires a diverse set of skills—from community organizing and public speaking to conflict resolution and digital communication. We are committed to providing you with the training, tools, and resources necessary to excel in your role and to grow as leaders in your own right.",
-                "p6": "The safety and security of every Janasainik is of paramount importance. No one should have to face threats, harassment, or violence for their political beliefs or activities. We are working to establish stronger support networks, legal assistance programs, and rapid response mechanisms to ensure that you can carry out your work without fear. Your safety is not negotiable, and we will stand firmly against any attempts to intimidate or harm our workers.",
-                "p7": "Communication is the lifeblood of any successful movement. We need to ensure that information flows freely and accurately between all levels of our organization. This means not just top-down directives, but also bottom-up feedback. Your observations from the field, your understanding of local issues, and your insights into community dynamics are invaluable. We must create formal channels for this information to reach decision-makers and influence our strategies.",
-                "p8": "Unity in diversity is our strength. Our movement brings together people from different backgrounds, regions, and walks of life. This diversity is not a weakness to be managed but a strength to be celebrated. It gives us a broader perspective, helps us understand different viewpoints, and makes our movement more representative of the society we seek to serve. Let us embrace this diversity and learn from each other.",
-                "p9": "Transparency and accountability must guide all our actions. As representatives of a people's movement, we must hold ourselves to the highest standards of integrity and ethical conduct. This means being honest about our challenges, transparent about our resources, and accountable for our decisions. When we make mistakes—and we will—we must acknowledge them, learn from them, and do better.",
-                "p10": "The digital age presents both opportunities and challenges for grassroots organizing. Social media and digital tools can amplify our message and help us reach more people, but they also come with risks of misinformation and digital harassment. We need to develop digital literacy among our workers, establish guidelines for online conduct, and create support systems for those who face online abuse.",
-                "p11": "Remember that sustainable activism requires taking care of yourself. Burnout is real, and the emotional toll of political work can be significant. It is not selfish to prioritize your mental and physical health—it is necessary. Take breaks when you need them, seek support when you're struggling, and remember that this is a marathon, not a sprint. We need you to be in this for the long haul.",
-                "p12": "Your families and loved ones also make sacrifices for this movement. The time you spend in meetings, rallies, and community work is time away from them. We acknowledge this sacrifice and are grateful for their support. We must also ensure that our movement creates space for family life and personal commitments, recognizing that balanced, fulfilled individuals make the most effective activists.",
-                "p13": "As we look to the future, let us remember why we started this journey. It was not for personal gain or political power, but for the welfare of the people, for justice, and for a better society. These ideals must continue to guide us, even when the path is difficult and the obstacles seem insurmountable. Our commitment to these principles is what sets us apart and gives our movement its moral authority.",
-                "p14": "The road ahead will not be easy. We will face opposition, setbacks, and moments of doubt. But together, united in our purpose and committed to our values, there is no challenge we cannot overcome. Your courage, dedication, and hard work are the driving force of this movement. You are not just workers or volunteers—you are leaders, changemakers, and the hope for a better tomorrow.",
-                "p15": "To every Janasainik reading this: thank you. Thank you for your service, your sacrifice, and your unwavering belief in our shared vision. Together, we will build a movement that truly serves the people, that stands up for justice, and that creates lasting positive change in our society. The future we dream of is possible, and it will be built by people like you, one community at a time, one conversation at a time, one act of service at a time. Stay strong, stay united, and let us march forward together toward the future we deserve."
+                "title": "జనసేన సైనికులు కు నమస్కారం 🙏",
+                "publishedDate": "మార్చి 23, 2026",
+                "greeting": "జనసేన సైనికులు కు నమస్కారం 🙏",
+                "s1heading": "జనసైనికుడు - భావజాలం",
+                "s1p1": "ఆంధ్ర రాష్ట్రంలో రాజకీయాలు అత్యంత డబ్బుతో కూడుకున్నవి అయిన ఈ సమయంలో, రాష్ట్రంలోని ప్రధాన పార్టీలకు మద్దతుగా కాకుండా, డబ్బు, అధికారం ఆశలు లేని నాయకుడు అయిన పవన్ కళ్యాణ్ గారి బాటలో మీరు నడవాలని అనుకోవడం అంటేనే,",
+                "s1p2": "మీరు సోషలిస్ట్ మరియు విప్లవ భావజాలం కలిగిన వారు, దోపిడీని, అణిచివేతను సహించని వారు అని అర్థం చేసుకోవచ్చు. అందువల్ల, మనలాంటి జనసైనికులు ఈ సమాజానికి అవసరం.",
+                "s2heading": "రాజకీయం - రబ్బరు చెప్పులు",
+                "s2p1": "పవన్ కళ్యాణ్ గారు చెప్పిన ఈ వాక్యం, బహుళ అర్థాలతో ఉండటంతో జనసైనికులు సతమతం అవుతున్నారు. అసలు, రాజకీయాలకు యాక్సెస్ లేని యువతకు, ప్రజలకు జనసేన పార్టీ ఒక పునాది గా మారాలి అనేది కళ్యాణ్ గారి ఆలోచన.",
+                "s2p2": "రబ్బరు చెప్పులు తో, అలాగే ప్రజా సమస్యల పట్ల అవగాహనతో, వార్డ్ మరియు కార్పొరేషన్ స్థాయి రాజకీయ అవకాశం జనసేనలో సాధ్యపడుతుంది. కానీ, అతి కొంత మంది జనసైనికులు కేవలం రబ్బరు చెప్పులు తోనే నియోజకవర్గ ఇంచార్జ్ లేదా జిల్లా అధ్యక్షులు అవ్వాలని సంవత్సరాలుగా ప్రయత్నిస్తున్నారు.",
+                "s2p3": "అయితే, ఆర్థిక స్థోమత మరియు ప్రజా సమస్యల పట్ల అవగాహనతో క్రింది స్థాయి నుండి పై స్థాయి వరకు ఎదగడం జనసేనలో సాధ్యం. ఇది ఎవరిని నిరుత్సాహపరిచే ఉద్దేశ్యం కాదు, కేవలం కళ్యాణ్ గారి ఆలోచన మాత్రమే.",
+                "s3heading": "ప్రశ్నించడం - సమాంతర విధానం (Flat Hierarchy)",
+                "s3p1": "\"A boss is always right\", \"Believe in your leader\" అనే భావనతో, నాయకత్వంపై నమ్మకం కలిగి ఉండటం అవసరం. అధినాయకుడు ఏ నిర్ణయం తీసుకున్నా, అది సేన బాగోగులు దృష్ట్యా తీసుకున్న నిర్ణయమే అవుతుంది.",
+                "s3p2": "అధినాయకుడు నిర్ణయాలను శంకించేవాడు నాయకుడు సేనలో భాగం కాలేడు. మన పై స్థాయి మండల, జిల్లా మరియు రాష్ట్ర స్థాయి నాయకులను పవన్ కళ్యాణ్ గారి వలె గౌరవించాలి. పరస్పర గౌరవం ఈ సమాజంలో మనల్ని, మన పార్టీని ఉన్నత స్థానాలకు చేరవేస్తుంది.",
+                "s4heading": "వ్యూహం - పొత్తు",
+                "s4p1": "ఈ దేశంలో అత్యధిక జనాభా శతాబ్దాలుగా అణిచివేతకు గురి అయి ఉన్నవారే. ఇప్పటికీ విద్యకు యాక్సెస్ లేని ప్రజలు ఎంతోమంది ఉన్నారు. కళ్యాణ్ గారు ఆశించిన మార్పుకు పునాది వేయాలంటే, కాలానికి అనుగుణంగా వ్యూహాత్మకంగా అడుగులు వేయాలి. అప్పటివరకు రాష్ట్రాన్ని కాపాడుకోవడం కూడా అవసరం, అందుకు పొత్తు తప్పనిసరి.",
+                "s5heading": "ముగింపు - జనసైనికుల కర్తవ్యం",
+                "s5p1": "పవన్ కళ్యాణ్ గారు మనకి పొత్తులో అధికారం ఇచ్చి, మనకు ఒక ప్లాట్ఫారం నిర్మించి ఇచ్చారు. మరియు, మనకు జనసైనికులు అనే పదవి ఇచ్చి, ఈ పదవిని మన మిత్ర, ప్రత్యర్థి పార్టీల చేత పలికించేలా చేశారు.",
+                "s5p2": "ఒక జనసైనికుడు 10 మంది మిగతా పార్టీల కార్యకర్తలతో సమానం. కాబట్టి, జనసైనికులు ఏకం అయ్యి, పొత్తులో జనసేనకు రావలసిన భాగస్వామ్యం మీద దృష్టి పెట్టండి. అవసరం అయితే, మీ ప్రాంతంలో ప్రజల తరఫున ప్రతిపక్ష పాత్ర పోషించండి."
+        },
+        "voices": {
+                "eyebrow": "ప్రజల వాణి వేదిక",
+                "title": "ప్రజల గొంతుక",
+                "subtitle": "సమాజంపై ప్రజలు సమస్యలు, అభిప్రాయాలు, సూచనలు సమర్పించగల క్రమబద్ధమైన మరియు కఠినంగా మోడరేట్ అయ్యే విభాగం.",
+                "submitVoice": "గొంతుక సమర్పించండి",
+                "submitFirstVoice": "మొదటి గొంతుకను సమర్పించండి",
+                "allVoices": "అన్ని గొంతుకలు",
+                "myVoices": "నా గొంతుకలు",
+                "myVoicesTitle": "నా గొంతుకలు",
+                "myVoicesSubtitle": "మీరు సమర్పించిన ప్రతి అంశం ఏ స్థితిలో ఉందో ఇక్కడ చూడండి.",
+                "publicNotice": "ఆమోదించబడిన గొంతుకలు మాత్రమే పబ్లిక్‌కు కనిపిస్తాయి. ప్రతి కొత్త సమర్పణ ముందుగా పెండింగ్‌లో ఉంటుంది.",
+                "submitTitle": "గొంతుక సమర్పించండి",
+                "submitSubtitle": "సమాజానికి సంబంధించిన అసలు సమస్య, ప్రజాభిప్రాయం లేదా ఉపయోగకరమైన సూచనను వివరాలతో పంపండి.",
+                "submissionRule": "ప్రతి కొత్త గొంతుక డిఫాల్ట్‌గా పెండింగ్‌లో ఉంటుంది. సూపర్ అడ్మిన్ ఆమోదించిన తర్వాత మాత్రమే పబ్లిక్‌కు కనిపిస్తుంది.",
+                "detailNotFound": "ఈ గొంతుక కనబడలేదు లేదా మీకు అందుబాటులో లేదు.",
+                "submittedByLabel": "సమర్పించిన వారు",
+                "reviewedByLabel": "సమీక్షించిన వారు",
+                "anonymousSubmission": "నమోదైన సభ్యుడు",
+                "noMedia": "మీడియా జోడించలేదు",
+                "noOwnVoices": "మీరు ఇంకా ఏ గొంతుకను సమర్పించలేదు",
+                "noOwnVoicesHint": "మోడరేషన్ స్థితిని ట్రాక్ చేయడానికి ఒక సమగ్ర సమర్పణ చేయండి.",
+                "emptyTitle": "ఇంకా ఆమోదించిన గొంతుకలు లేవు",
+                "emptySubtitle": "సమర్పణలు ఆమోదించబడిన తర్వాత ఇక్కడ కనిపిస్తాయి.",
+                "rejectionReason": "తిరస్కరణ కారణం",
+                "adminNotes": "అడ్మిన్ గమనికలు",
+                "fields": {
+                        "title": "శీర్షిక",
+                        "description": "వివరణ",
+                        "category": "వర్గం",
+                        "state": "రాష్ట్రం",
+                        "district": "జిల్లా",
+                        "constituency": "నియోజకవర్గం",
+                        "mandal": "మండలం / ప్రాంతం",
+                        "village": "గ్రామం / పరిసర ప్రాంతం",
+                        "images": "చిత్రాలు (ఐచ్ఛికం, గరిష్టం 2)",
+                        "video": "వీడియో జోడించండి (ఐచ్ఛికం)",
+                        "audio": "వాయిస్ రికార్డింగ్ జోడించండి (ఐచ్ఛికం)"
+                },
+                "categories": {
+                        "ISSUE": "సమస్య",
+                        "OPINION": "అభిప్రాయం",
+                        "SUGGESTION": "సూచన",
+                        "COMPLAINT": "ఫిర్యాదు",
+                        "FEEDBACK": "అభిప్రాయం / స్పందన",
+                        "OTHER": "ఇతర"
+                },
+                "status": {
+                        "PENDING": "పెండింగ్",
+                        "APPROVED": "ఆమోదించబడింది",
+                        "REJECTED": "తిరస్కరించబడింది",
+                        "UNDER_REVIEW": "సమీక్షలో ఉంది",
+                        "RESOLVED": "పరిష్కరించబడింది"
+                },
+                "media": {
+                        "video": "వీడియో",
+                        "audio": "వాయిస్ రికార్డింగ్",
+                        "tooLarge": "ఫైల్ 5MB పరిమితిని మించిపోయింది.",
+                        "readError": "ఫైల్ చదవలేకపోయాం. మళ్లీ ప్రయత్నించండి."
+                },
+                "validation": {
+                        "title": "శీర్షిక కనీసం 5 అక్షరాలు ఉండాలి.",
+                        "description": "వివరణ కనీసం 20 అక్షరాలు ఉండాలి.",
+                        "district": "జిల్లాను ఎంచుకోండి.",
+                        "constituency": "నియోజకవర్గాన్ని ఎంచుకోండి."
+                },
+                "filters": {
+                        "search": "వెతుకు",
+                        "status": "స్థితి",
+                        "category": "వర్గం",
+                        "location": "ప్రాంతం",
+                        "fromDate": "ప్రారంభ తేదీ",
+                        "toDate": "ముగింపు తేదీ",
+                        "allStatuses": "అన్ని స్థితులు",
+                        "allCategories": "అన్ని వర్గాలు",
+                        "allLocations": "అన్ని ప్రాంతాలు"
+                },
+                "admin": {
+                        "title": "గొంతుకల మోడరేషన్ డాష్‌బోర్డ్",
+                        "subtitle": "అన్ని సమర్పణలను పరిశీలించి, ఫిల్టర్ చేసి, పబ్లిక్‌గా చూపించాలా వద్దా నిర్ణయించండి.",
+                        "noResults": "ప్రస్తుతం ఫిల్టర్లకు సరిపోయే గొంతుకలు లేవు",
+                        "noResultsHint": "మరిన్ని సమర్పణలు చూడటానికి ఫిల్టర్లను మార్చండి.",
+                        "reviewDialogTitle": "గొంతుకను సమీక్షించండి",
+                        "adminNotesField": "అంతర్గత గమనికలు",
+                        "markUnderReview": "సమీక్షలోగా గుర్తించండి",
+                        "markResolved": "పరిష్కరించబడింది గా గుర్తించండి",
+                        "defaultRejectReason": "ఈ సమర్పణ ప్రస్తుతం మోడరేషన్ ప్రమాణాలకు సరిపోలలేదు."
+                }
         },
         "projects": {
                 "title": "ప్రాజెక్టులు",
@@ -647,65 +736,74 @@
                 "deleteConfirmation": "మీరు ఖచ్చితంగా ఈ ప్రాజెక్ట్‌ని తొలగించాలనుకుంటున్నారా?"
         },
         "whyJoin": {
-                "title": "జనసేనలో ఎందుకు చేరాలి",
-                "subtitle": "ప్రజల ప్రథమ రాజకీయాల కోసం ఒక ఉద్యమం",
-                "intro": "జనసేన కేవలం ఒక రాజకీయ పార్టీ మాత్రమే కాదు—ఇది ప్రజల పట్ల ఒక నిబద్ధత, చిత్తశుద్ధితో సేవ చేస్తామనే వాగ్దానం మరియు న్యాయమైన, సమానమైన సమాజం కోసం ఒక విజన్.",
+                "title": "జనసేనలో ఎందుకు చేరాలి?",
+                "subtitle": "రాజకీయ శక్తి అనేది అన్ని తాళాలను తెరవగల మాస్టర్ కీ.",
+                "intro": "ఈ మాస్టర్ కీ ఎవరి చేతిలో ఉండాలి? కొద్ది మందికా? లేక ప్రజల చేతుల్లోనా?",
                 "ideology": {
-                        "title": "మా సిద్ధాంతం",
+                        "title": "ప్రస్తుత సమాజం ఎదుర్కొంటున్న పరిస్థితి ఇదే:",
                         "points": [
-                                "JanaSena stands firmly on the principles of democratic socialism, where the welfare of every citizen is paramount. We believe in a society where opportunities are not privileges of the few, but rights of the many.",
-                                "Our ideology is rooted in the belief that governance must be transparent, accountable, and people-centric. We envision a political system where leaders are servants of the people, not masters.",
-                                "We champion the cause of social justice, economic empowerment, and environmental sustainability. Every policy, every decision, every action is guided by one question: Does this serve the people?"
+                                "అధికార పక్షం: ప్రజాస్వామ్యాన్ని రాచరికంగా మార్చి, వ్యవస్థలను తన ఆధీనంలో ఉంచుకొని, అక్రమ సంపాదనలో మునిగి, క్రిమినల్స్‌ను ప్రోత్సహిస్తూ, భూ కబ్జాలతో ప్రజల హక్కులను తుంచేస్తోంది.",
+                                "ప్రతిపక్షం: ప్రజల కోసం పోరాడాల్సిన వారు మౌనం వహిస్తున్నారు. ప్రశ్నించాల్సిన వారు ఒప్పందాల రాజకీయాలు నేర్చుకుంటున్నారు.",
+                                "మనం — మంచి వారు: 'నాకెందుకు లే' అనే నిర్లక్ష్య భావన… అదే ఈ పరిస్థితికి కారణం. మన మౌనం వల్లే క్రిమినల్స్ రాజకీయాల్లోకి వచ్చి, రాష్ట్రాన్ని నియంత్రించే స్థాయికి ఎదిగారు."
                         ]
                 },
                 "values": {
-                        "title": "మా ప్రధాన విలువలు",
+                        "title": "జనసేన — ఒక ప్రత్యామ్నాయం",
                         "items": [
                                 {
-                                        "heading": "Transparency & Accountability",
-                                        "text": "We believe in open governance where every decision is made in the light of public scrutiny. Leaders must be accountable to the people they serve."
+                                        "heading": "సామాన్యుడి పరిస్థితి",
+                                        "text": "ఈ రోజుల్లో రాజకీయాలు వారసత్వంగా మారిపోయాయి. పుట్టుకే అవకాశాన్ని నిర్ణయిస్తోంది. నాయకుడి కొడుకు మాత్రమే నాయకుడు అవుతున్న వ్యవస్థ ఏర్పడింది."
                                 },
                                 {
-                                        "heading": "Social Justice",
-                                        "text": "Equality is not negotiable. We stand for the rights of marginalized communities, ensuring that every voice is heard and every person is treated with dignity."
+                                        "heading": "జనసేన అంటే ఏమిటి?",
+                                        "text": "జనసేన కేవలం ఒక పార్టీ కాదు — ఇది ప్రజల పట్ల నిబద్ధత, చిత్తశుద్ధితో సేవ చేయాలనే వాగ్దానం."
                                 },
                                 {
-                                        "heading": "Economic Empowerment",
-                                        "text": "True freedom comes from economic independence. We work towards creating opportunities for employment, entrepreneurship, and sustainable livelihoods for all."
+                                        "heading": "ప్రజాస్వామ్య సామాజికవాదం",
+                                        "text": "ప్రజాస్వామ్య సామాజికవాదం (Democratic Socialism) సూత్రాలపై నిలబడి, ప్రతి పౌరుడి సంక్షేమాన్ని ప్రధానంగా చూస్తుంది. అవకాశాలు కొద్దిమందికే కాదు — ప్రతి ఒక్కరికీ హక్కుగా ఉండాలి అని నమ్ముతుంది."
                                 },
                                 {
-                                        "heading": "Environmental Responsibility",
-                                        "text": "We recognize our duty to protect the environment for future generations. Sustainable development is not an option—it is a necessity."
+                                        "heading": "పాలన తత్వం",
+                                        "text": "పాలన పారదర్శకంగా, బాధ్యతాయుతంగా, ప్రజాకేంద్రంగా ఉండాలి. నాయకులు ప్రజల సేవకులు కావాలి — ఆధిపత్యం చూపేవారు కాదు."
                                 }
                         ]
                 },
                 "leadership": {
-                        "title": "లక్ష్యంతో కూడిన నాయకత్వం: పవన్ కళ్యాణ్ గారు",
-                        "p1": "Pawan Kalyan garu's journey from the world of cinema to public service is a testament to his unwavering commitment to the people. He chose to step away from the comfort of stardom to address the real issues facing ordinary citizens.",
-                        "p2": "His leadership is defined not by rhetoric, but by action. He has consistently stood with farmers, workers, and marginalized communities, fighting for their rights and dignity. His vision is clear: a society where governance is transparent, leaders are accountable, and every citizen has the opportunity to thrive.",
-                        "p3": "What sets him apart is his authenticity. He speaks the language of the people, understands their struggles, and works tirelessly to bring about meaningful change. His dedication to public service is not driven by personal ambition, but by a genuine desire to serve.",
-                        "p4": "Under his leadership, JanaSena has become a platform for honest politics, where integrity is valued over opportunism, and service is prioritized over self-interest. He embodies the values that JanaSena stands for—courage, compassion, and commitment to the people."
+                        "title": "లక్ష్యంతో కూడిన నాయకత్వం — పవన్ కళ్యాణ్ గారు",
+                        "p1": "సినిమా ప్రపంచం నుంచి ప్రజాసేవలోకి వచ్చిన ఆయన ప్రయాణం నిబద్ధతకు నిదర్శనం.",
+                        "p2": "ఆయన మాటల్లో కాదు — చర్యల్లో నాయకత్వం కనిపిస్తుంది. రైతులు, కార్మికులు, అణగారిన వర్గాల కోసం నిరంతరం పోరాడుతున్నారు.",
+                        "p3": "ఆయన ప్రత్యేకత — నిజాయితీ. ప్రజల భాషలో మాట్లాడటం, వారి సమస్యలను అర్థం చేసుకోవడం, మార్పు కోసం కృషి చేయడం.",
+                        "p4": "మా ప్రతి నిర్ణయం ఒక ప్రశ్నతో మొదలవుతుంది: 'ఇది ప్రజలకు ఉపయోగపడుతుందా?'"
                 },
                 "relevance": {
-                        "title": "జనసేన ఈ రోజు ఎందుకు ముఖ్యం",
+                        "title": "జనసేన ఐడియాలజీ",
                         "points": [
-                                "In an era where politics is often reduced to power games and personal gains, JanaSena offers an alternative—a movement grounded in principles, driven by purpose, and focused on people.",
-                                "We face challenges that require bold leadership and innovative solutions: economic inequality, environmental degradation, social injustice, and erosion of democratic values. JanaSena is committed to addressing these challenges head-on.",
-                                "Our relevance lies in our refusal to compromise on our values. We will not engage in divisive politics. We will not make empty promises. We will work, every single day, to build a society that is just, equitable, and prosperous for all."
+                                "సామాన్యులకు రాజకీయాల్లో స్థానం | పార్టీలో కఠినమైన క్రమశిక్షణ | అవినీతి రహిత పరిపాలన లక్ష్యం",
+                                "ప్రజల పట్ల బాధ్యత కలిగిన నాయకత్వం | యువతకు రాజకీయాల్లో అవకాశాలు | సత్యం, న్యాయం, పారదర్శకతకు ప్రాధాన్యం",
+                                "వ్యవస్థల బలోపేతం ద్వారా ప్రజాస్వామ్య పరిరక్షణ | సేవాభావంతో ప్రజలకు అండగా నిలబడే రాజకీయ సంస్కృతి | సామాజిక న్యాయం, ఆర్థిక శక్తివంతం, పర్యావరణ బాధ్యత"
                         ]
                 },
                 "vision": {
-                        "title": "భవిష్యత్తు కోసం మా దృష్టి",
+                        "title": "అందుకే జనసేన",
                         "points": [
-                                "We envision a future where governance is participatory, where citizens are not mere spectators but active participants in shaping their destiny.",
-                                "We dream of a society where education is accessible to all, healthcare is a right, and employment opportunities are abundant. Where farmers are respected, workers are valued, and entrepreneurs are supported.",
-                                "We aspire to build a state—and eventually a nation—where corruption is a thing of the past, where leaders are chosen for their integrity, and where policies are designed to uplift the marginalized.",
-                                "This is not a distant dream. This is the future we are working towards, one step at a time, one policy at a time, one community at a time."
+                                "డబ్బు కోసం కాదు… అధికార ఆశ కోసం కాదు… సమాజ మార్పు కోసం.",
+                                "సామాన్యుడికి స్వరం ఇవ్వడానికి…",
+                                "నిజాయితీ రాజకీయాలకు పునాది వేయడానికి…",
+                                "ప్రజాస్వామ్యాన్ని తిరిగి ప్రజల చేతుల్లోకి తీసుకురావడానికి…"
                         ]
                 },
                 "closing": {
-                        "title": "ఆత్మపరిశీలనకు పిలుపు",
-                        "text": "JanaSena is more than a political party. It is a movement of people who believe in the power of honest politics, who refuse to accept the status quo, and who are willing to work for a better tomorrow. We invite you to reflect on what kind of society you want to live in, and what kind of politics you want to support. The choice is yours, and the future is ours to build—together."
+                        "title": "ఒక ఆలోచన…",
+                        "text": "మీరు ఎలాంటి సమాజంలో జీవించాలనుకుంటున్నారు? మీరు ఎలాంటి రాజకీయాలను మద్దతు ఇస్తారు? ఎందుకంటే — భవిష్యత్తు మనం తీసుకునే నిర్ణయాలపై ఆధారపడి ఉంటుంది."
+                },
+                "refs": {
+                        "evidenceLabel": "ఈ వాస్తవాలు మన యాప్‌లో చూడండి:",
+                        "leaderLabel": "ఇటువంటి నాయకులు ఎవరో చూడండి:",
+                        "governanceLabel": "మంచి పాలన ఉదాహరణలు చూడండి:",
+                        "disciplinary": "క్రమశిక్షణా చర్యలు",
+                        "atrocities": "జనసైనికులపై అణిచివేతలు",
+                        "leaders": "సమాజానికి కావాల్సిన నాయకులు",
+                        "governance": "పాలనా విశేషాలు"
                 }
         },
         "home": {

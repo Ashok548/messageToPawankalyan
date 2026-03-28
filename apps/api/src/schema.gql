@@ -156,10 +156,30 @@ input CreateSocialMediaWarriorInput {
 
   """Base64 encoded image (max 500KB)"""
   photo: String
+  primaryFollowersCount: Int
   primaryPlatform: String
   primaryProfileUrl: String
   reason: String!
   submittedBy: SubmittedBy!
+}
+
+input CreateVoiceInput {
+  """Base64 encoded audio or existing URL"""
+  audioUrl: String
+  category: VoiceCategory!
+  constituency: String
+  description: String!
+  district: String!
+
+  """Base64 encoded images"""
+  images: [String!]
+  mandal: String
+  state: String!
+  title: String!
+
+  """Base64 encoded video or existing URL"""
+  videoUrl: String
+  village: String
 }
 
 """
@@ -328,6 +348,7 @@ type Mutation {
 
   """Admin only: Create new social media warrior profile"""
   createSocialMediaWarrior(input: CreateSocialMediaWarriorInput!): SocialMediaWarrior!
+  createVoice(input: CreateVoiceInput!): Voice!
   deleteAtrocity(id: String!): Atrocity!
 
   """SUPER_ADMIN only: Delete governance highlight"""
@@ -339,6 +360,7 @@ type Mutation {
   """Admin only: Delete warrior profile"""
   deleteSocialMediaWarrior(id: String!): SocialMediaWarrior!
   deleteUser(id: String!): User!
+  deleteVoice(id: String!): Voice!
   forgotPassword(input: ForgotPasswordInput!): VerifyOtpResponse!
   incrementVisitorCount: VisitorStats!
   login(input: LoginInput!): AuthPayload!
@@ -382,6 +404,8 @@ type Mutation {
 
   """SUPER_ADMIN only: Update user role"""
   updateUserRole(input: UpdateUserRoleInput!): User!
+  updateVoice(id: String!, input: UpdateVoiceInput!): Voice!
+  updateVoiceStatus(id: String!, input: UpdateVoiceStatusInput!): Voice!
 
   """Upload and attach additional photos to a case"""
   uploadCaseImages(id: ID!, images: [String!]!): DisciplinaryCase!
@@ -409,6 +433,9 @@ input PaginationInput {
 type Query {
   """Admin only: Get all leaders regardless of status"""
   allLeaders(pagination: PaginationInput): [Leader!]!
+
+  """SUPER_ADMIN only: all voices with moderation states"""
+  allVoices(filter: VoiceFilterInput, pagination: PaginationInput): [Voice!]!
   atrocities(pagination: PaginationInput): [Atrocity!]!
   atrocity(id: String!): Atrocity
 
@@ -433,6 +460,7 @@ type Query {
   """Admin only: Get leaders by status"""
   leadersByStatus(status: LeaderStatus!): [Leader!]!
   me: User
+  myVoices(pagination: PaginationInput): [Voice!]!
   socialMediaWarrior(id: String!): SocialMediaWarrior
 
   """
@@ -445,6 +473,11 @@ type Query {
   unverifiedAtrocities(pagination: PaginationInput): [Atrocity!]!
   user(id: String!): User!
   users(pagination: PaginationInput): [User!]!
+  voice(id: String!): Voice!
+  voiceDashboardStats: VoiceDashboardStats!
+
+  """Approved voices for public; all voices for admins"""
+  voices(pagination: PaginationInput): [Voice!]!
 }
 
 input RecordDecisionInput {
@@ -489,6 +522,7 @@ type SocialMediaWarrior {
   partyPosition: String
   partyYears: Float
   photo: String
+  primaryFollowersCount: Int
   primaryPlatform: String
   primaryProfileUrl: String
   reason: String!
@@ -608,6 +642,7 @@ input UpdateSocialMediaWarriorInput {
   partyPosition: String
   partyYears: Float
   photo: String
+  primaryFollowersCount: Int
   primaryPlatform: String
   primaryProfileUrl: String
   reason: String
@@ -628,6 +663,33 @@ input UpdateUserInput {
 input UpdateUserRoleInput {
   role: UserRole!
   userId: String!
+}
+
+input UpdateVoiceInput {
+  adminNotes: String
+
+  """Base64 encoded audio or existing URL"""
+  audioUrl: String
+  category: VoiceCategory
+  constituency: String
+  description: String
+  district: String
+
+  """Base64 encoded images or existing URLs"""
+  images: [String!]
+  mandal: String
+  state: String
+  title: String
+
+  """Base64 encoded video or existing URL"""
+  videoUrl: String
+  village: String
+}
+
+input UpdateVoiceStatusInput {
+  adminNotes: String
+  rejectionReason: String
+  status: VoiceStatus!
 }
 
 type User {
@@ -668,12 +730,75 @@ type VisitorStats {
   updatedAt: DateTime!
 }
 
+type Voice {
+  adminNotes: String
+  audioUrl: String
+  category: VoiceCategory!
+  constituency: String
+  createdAt: DateTime!
+  description: String!
+  district: String!
+  id: ID!
+  images: [String!]!
+  mandal: String
+  rejectionReason: String
+  reviewedAt: DateTime
+  reviewedByUser: User
+  state: String!
+  status: VoiceStatus!
+  submittedByUser: User
+  title: String!
+  updatedAt: DateTime!
+  videoUrl: String
+  village: String
+}
+
+"""Category of public voice submission"""
+enum VoiceCategory {
+  COMPLAINT
+  FEEDBACK
+  ISSUE
+  OPINION
+  OTHER
+  SUGGESTION
+}
+
+type VoiceDashboardStats {
+  approved: Float!
+  pending: Float!
+  rejected: Float!
+  resolved: Float!
+  total: Float!
+  underReview: Float!
+}
+
+input VoiceFilterInput {
+  category: VoiceCategory
+  dateFrom: String
+  dateTo: String
+  district: String
+  searchTerm: String
+  state: String
+  status: VoiceStatus
+}
+
+"""Moderation status of a public voice submission"""
+enum VoiceStatus {
+  APPROVED
+  PENDING
+  REJECTED
+  RESOLVED
+  UNDER_REVIEW
+}
+
 type WarriorOtherPlatform {
+  followersCount: Int
   platform: String!
   profileUrl: String!
 }
 
 input WarriorOtherPlatformInput {
+  followersCount: Int
   platform: String!
   profileUrl: String!
 }

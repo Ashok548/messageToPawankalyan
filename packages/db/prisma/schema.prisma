@@ -24,6 +24,8 @@ model User {
   initiatedCases DisciplinaryCase[] @relation("InitiatedCases")
   reviewedCases  DisciplinaryCase[] @relation("ReviewedCases")
   projects       Project[]
+  submittedVoices Voice[]           @relation("SubmittedVoices")
+  reviewedVoices  Voice[]           @relation("ReviewedVoices")
 
   @@index([mobile])
   @@index([email])
@@ -126,6 +128,7 @@ model SocialMediaWarrior {
   partyPosition        String?
   nominatedPost        String?
   primaryPlatform      String?
+  primaryFollowersCount Int?
   primaryProfileUrl    String?
   otherPlatforms       Json?
   submittedBy          SubmittedBy   @map("submitted_by")
@@ -221,6 +224,39 @@ model DisciplinaryCase {
   @@index([decisionAuthority])
   @@index([status, visibility])
   @@map("disciplinary_cases")
+}
+
+model Voice {
+  id              String        @id @default(uuid()) @db.Uuid
+  title           String        @db.VarChar(160)
+  description     String
+  category        VoiceCategory
+  state           String        @db.VarChar(50)
+  district        String        @db.VarChar(50)
+  constituency    String?       @db.VarChar(80)
+  mandal          String?       @db.VarChar(80)
+  village         String?       @db.VarChar(80)
+  images          String[]      @default([])
+  videoUrl        String?       @map("video_url")
+  audioUrl        String?       @map("audio_url")
+  status          VoiceStatus   @default(PENDING)
+  adminNotes      String?       @map("admin_notes")
+  rejectionReason String?       @map("rejection_reason")
+  submittedById   String?       @map("submitted_by_id") @db.Uuid
+  reviewedById    String?       @map("reviewed_by_id") @db.Uuid
+  reviewedAt      DateTime?     @map("reviewed_at") @db.Timestamptz(3)
+  createdAt       DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+  submittedByUser User?         @relation("SubmittedVoices", fields: [submittedById], references: [id], onDelete: SetNull)
+  reviewedByUser  User?         @relation("ReviewedVoices", fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([category])
+  @@index([district])
+  @@index([createdAt])
+  @@index([status, createdAt])
+  @@index([submittedById, createdAt])
+  @@map("voices")
 }
 
 enum UserRole {
@@ -346,4 +382,25 @@ enum CaseVisibility {
   RESTRICTED
 
   @@map("case_visibility")
+}
+
+enum VoiceStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  UNDER_REVIEW
+  RESOLVED
+
+  @@map("voice_status")
+}
+
+enum VoiceCategory {
+  ISSUE
+  OPINION
+  SUGGESTION
+  COMPLAINT
+  FEEDBACK
+  OTHER
+
+  @@map("voice_category")
 }

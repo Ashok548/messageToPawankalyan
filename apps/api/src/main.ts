@@ -9,10 +9,9 @@ async function bootstrap() {
         logger: ['error', 'warn', 'log', 'debug', 'verbose'],
     });
 
-    // Increase body size limit for image uploads (base64 encoded)
-    // Default is 100kb, we need more for images
-    app.use(require('express').json({ limit: '2mb' }));
-    app.use(require('express').urlencoded({ limit: '2mb', extended: true }));
+    // Increase body size limit for base64 media uploads.
+    app.use(require('express').json({ limit: '12mb' }));
+    app.use(require('express').urlencoded({ limit: '12mb', extended: true }));
 
     // Enable CORS
     app.enableCors({

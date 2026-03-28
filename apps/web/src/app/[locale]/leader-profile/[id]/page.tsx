@@ -14,6 +14,10 @@ import {
     Divider,
     Stack,
     Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
     IconButton,
     Tooltip,
 } from '@mui/material';
@@ -28,6 +32,7 @@ import HandshakeIcon from '@mui/icons-material/Handshake';
 import BadgeIcon from '@mui/icons-material/Badge';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import CloseIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useAuth } from '@/hooks/use-auth';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import PlatformIcon from '@/components/PlatformIcon';
@@ -70,6 +75,14 @@ const UPDATE_LEADER_STATUS = gql`
     }
 `;
 
+const DELETE_LEADER = gql`
+    mutation DeleteLeader($id: String!) {
+        deleteLeader(id: $id) {
+            id
+        }
+    }
+`;
+
 export default function LeaderProfilePage({ params }: { params: { id: string } }) {
     const t = useTranslations('leaders');
     const tCommon = useTranslations('common');
@@ -78,14 +91,27 @@ export default function LeaderProfilePage({ params }: { params: { id: string } }
     const id = params.id;
     const { user } = useAuth();
     const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
+    const isSuperAdmin = user?.role === 'SUPER_ADMIN';
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
     const { data, loading, error, refetch } = useQuery(GET_LEADER, {
         variables: { id },
     });
 
     const [updateLeaderStatus, { loading: updating }] = useMutation(UPDATE_LEADER_STATUS);
+    const [deleteLeader, { loading: deleting }] = useMutation(DELETE_LEADER);
+
+    const handleDelete = async () => {
+        try {
+            await deleteLeader({ variables: { id } });
+            setDeleteDialogOpen(false);
+            navigate(`/${locale}/leaders-society-needs`);
+        } catch (err) {
+            console.error('Failed to delete leader:', err);
+        }
+    };
 
     const handleStatusUpdate = async (status: string) => {
         try {
@@ -161,6 +187,17 @@ export default function LeaderProfilePage({ params }: { params: { id: string } }
                                     <EditIcon />
                                 </IconButton>
                             </Tooltip>
+                            {isSuperAdmin && (
+                                <Tooltip title="Delete Profile">
+                                    <IconButton
+                                        color="error"
+                                        onClick={() => setDeleteDialogOpen(true)}
+                                        sx={{ bgcolor: 'error.50', '&:hover': { bgcolor: 'error.100' } }}
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            )}
                         </Box>
                     )}
 
@@ -452,6 +489,22 @@ export default function LeaderProfilePage({ params }: { params: { id: string } }
                         </IconButton>
                         <Box component="img" src={selectedImage || ''} sx={{ maxWidth: '100%', maxHeight: '90vh', borderRadius: 1 }} />
                     </Box>
+                </Dialog>
+
+                {/* Delete Confirmation Dialog */}
+                <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+                    <DialogTitle>Delete Leader Profile</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Are you sure you want to permanently delete <strong>{data?.leader?.name}</strong>&apos;s profile? This action cannot be undone.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setDeleteDialogOpen(false)} disabled={deleting}>Cancel</Button>
+                        <Button onClick={handleDelete} color="error" variant="contained" disabled={deleting}>
+                            {deleting ? 'Deleting…' : 'Delete'}
+                        </Button>
+                    </DialogActions>
                 </Dialog>
 
             </Container>

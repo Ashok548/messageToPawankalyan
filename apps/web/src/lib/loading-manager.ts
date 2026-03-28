@@ -14,23 +14,51 @@ class LoadingManager {
     private debounceTimer: NodeJS.Timeout | null = null;
     private readonly DEBOUNCE_DELAY = 200; // ms
     private _navigationLoading = false;
+    private lastEmittedState = false;
+
+    private clearDebounceTimer(): void {
+        if (this.debounceTimer) {
+            clearTimeout(this.debounceTimer);
+            this.debounceTimer = null;
+        }
+    }
+
+    private emitLoadingState(isLoading: boolean): void {
+        if (this.lastEmittedState === isLoading) {
+            return;
+        }
+
+        this.lastEmittedState = isLoading;
+        this.notifySubscribers(isLoading);
+    }
+
+    private scheduleIdleCheck(): void {
+        this.clearDebounceTimer();
+
+        if (this.isLoading()) {
+            this.emitLoadingState(true);
+            return;
+        }
+
+        this.debounceTimer = setTimeout(() => {
+            if (!this.isLoading()) {
+                this.emitLoadingState(false);
+            }
+        }, this.DEBOUNCE_DELAY);
+    }
 
     /**
      * Start a new loading operation
      */
     startLoading(): void {
+        const wasLoading = this.isLoading();
         this.activeRequests++;
-        console.log("Active requests: ", this.activeRequests);
-        // Clear any pending debounce timer
-        if (this.debounceTimer) {
-            clearTimeout(this.debounceTimer);
-            this.debounceTimer = null;
-        }
+        this.clearDebounceTimer();
 
         // Notify subscribers immediately if this is the first request
-        if (this.activeRequests === 1) {
+        if (!wasLoading) {
             // Defer notification to avoid "Cannot update a component while rendering a different component" error
-            setTimeout(() => this.notifySubscribers(true), 0);
+            setTimeout(() => this.emitLoadingState(true), 0);
         }
     }
 
@@ -39,16 +67,7 @@ class LoadingManager {
      */
     stopLoading(): void {
         this.activeRequests = Math.max(0, this.activeRequests - 1);
-
-        // Only hide spinner when all requests are complete
-        if (this.activeRequests === 0) {
-            // Debounce to prevent flashing for very fast requests
-            this.debounceTimer = setTimeout(() => {
-                if (this.activeRequests === 0) {
-                    this.notifySubscribers(false);
-                }
-            }, this.DEBOUNCE_DELAY);
-        }
+        this.scheduleIdleCheck();
     }
 
     /**
@@ -74,7 +93,7 @@ class LoadingManager {
      * Get current loading state
      */
     isLoading(): boolean {
-        return this.activeRequests > 0;
+        return this._navigationLoading || this.activeRequests > 0;
     }
 
     /**
@@ -82,19 +101,26 @@ class LoadingManager {
      */
     reset(): void {
         this.activeRequests = 0;
-        if (this.debounceTimer) {
-            clearTimeout(this.debounceTimer);
-            this.debounceTimer = null;
-        }
-        this.notifySubscribers(false);
+        this._navigationLoading = false;
+        this.clearDebounceTimer();
+        this.emitLoadingState(false);
     }
 
     /**
      * Mark that a navigation-triggered loading is active
      */
     startNavigation(): void {
+        if (this._navigationLoading) {
+            return;
+        }
+
+        const wasLoading = this.isLoading();
         this._navigationLoading = true;
-        this.startLoading();
+        this.clearDebounceTimer();
+
+        if (!wasLoading) {
+            setTimeout(() => this.emitLoadingState(true), 0);
+        }
     }
 
     /**
@@ -110,7 +136,7 @@ class LoadingManager {
     stopNavigation(): void {
         if (this._navigationLoading) {
             this._navigationLoading = false;
-            this.stopLoading();
+            this.scheduleIdleCheck();
         }
     }
 }

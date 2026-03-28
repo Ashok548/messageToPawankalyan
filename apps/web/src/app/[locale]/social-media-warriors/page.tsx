@@ -8,6 +8,8 @@ import AddIcon from '@mui/icons-material/Add';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import { useAuth } from '@/hooks/use-auth';
+import PlatformIcon from '@/components/PlatformIcon';
+import { SocialPlatform, getPlatformName, getPlatformColor } from '@/utils/socialMediaValidation';
 
 const GET_WARRIORS = gql`
     query GetSocialMediaWarriors {
@@ -20,10 +22,21 @@ const GET_WARRIORS = gql`
             digitalContributions
             engagementStyle
             photo
+            primaryPlatform
+            primaryFollowersCount
+            otherPlatforms {
+                platform
+                followersCount
+            }
             createdAt
         }
     }
 `;
+
+interface WarriorOtherPlatform {
+    platform: SocialPlatform;
+    followersCount?: number;
+}
 
 interface SocialMediaWarrior {
     id: string;
@@ -34,7 +47,19 @@ interface SocialMediaWarrior {
     digitalContributions: string[];
     engagementStyle: string[];
     photo?: string;
+    primaryPlatform?: SocialPlatform;
+    primaryFollowersCount?: number;
+    otherPlatforms?: WarriorOtherPlatform[];
     createdAt: string;
+}
+
+function formatFollowersCount(count?: number) {
+    if (count == null) return null;
+
+    return new Intl.NumberFormat('en', {
+        notation: count >= 1000 ? 'compact' : 'standard',
+        maximumFractionDigits: count >= 1000 ? 1 : 0,
+    }).format(count);
 }
 
 export default function SocialMediaWarriorsPage() {
@@ -102,7 +127,15 @@ export default function SocialMediaWarriorsPage() {
                     </Box>
                 ) : (
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                        {warriors.map((warrior) => (
+                        {warriors.map((warrior) => {
+                            const platformBadges = [
+                                warrior.primaryPlatform
+                                    ? { platform: warrior.primaryPlatform, followersCount: warrior.primaryFollowersCount }
+                                    : null,
+                                ...(warrior.otherPlatforms || []),
+                            ].filter((platform): platform is WarriorOtherPlatform => Boolean(platform));
+
+                            return (
                             <Card
                                 key={warrior.id}
                                 onClick={() => navigate(`/${locale}/social-warrior-profile/${warrior.id}`)}
@@ -199,6 +232,51 @@ export default function SocialMediaWarriorsPage() {
                                                     {warrior.digitalContributions.length > 3 && ` • +${warrior.digitalContributions.length - 3} ${t('more')}`}
                                                 </Typography>
                                             </Box>
+
+                                            {platformBadges.length > 0 && (
+                                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1.5 }}>
+                                                    {platformBadges.map((platform, index) => {
+                                                        const color = getPlatformColor(platform.platform);
+                                                        const formattedCount = formatFollowersCount(platform.followersCount);
+                                                        return (
+                                                            <Box
+                                                                key={`${warrior.id}-${platform.platform}-${index}`}
+                                                                sx={{
+                                                                    display: 'inline-flex',
+                                                                    alignItems: 'center',
+                                                                    gap: 0.6,
+                                                                    px: 1.5,
+                                                                    py: 0.6,
+                                                                    borderRadius: 100,
+                                                                    background: `linear-gradient(135deg, ${color} 0%, ${color}bb 100%)`,
+                                                                    boxShadow: `0 2px 8px ${color}55`,
+                                                                    cursor: 'default',
+                                                                    transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+                                                                    '&:hover': {
+                                                                        transform: 'translateY(-2px)',
+                                                                        boxShadow: `0 5px 16px ${color}88`,
+                                                                    },
+                                                                }}
+                                                            >
+                                                                <Box sx={{ color: '#fff', display: 'flex', alignItems: 'center', lineHeight: 0 }}>
+                                                                    <PlatformIcon platform={platform.platform} size={13} colored={false} />
+                                                                </Box>
+                                                                <Typography sx={{ fontSize: 11, fontWeight: 700, color: '#fff', lineHeight: 1, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+                                                                    {getPlatformName(platform.platform)}
+                                                                </Typography>
+                                                                {formattedCount && (
+                                                                    <>
+                                                                        <Box sx={{ width: '1px', height: 10, bgcolor: 'rgba(255,255,255,0.5)', mx: 0.25, flexShrink: 0 }} />
+                                                                        <Typography sx={{ fontSize: 12, fontWeight: 800, color: '#fff', lineHeight: 1, letterSpacing: '0.02em' }}>
+                                                                            {formattedCount}
+                                                                        </Typography>
+                                                                    </>
+                                                                )}
+                                                            </Box>
+                                                        );
+                                                    })}
+                                                </Box>
+                                            )}
                                         </Box>
 
                                         {/* RIGHT: Actions */}
@@ -245,7 +323,8 @@ export default function SocialMediaWarriorsPage() {
                                     </Box>
                                 </CardContent>
                             </Card>
-                        ))}
+                            );
+                        })}
                     </Box>
                 )}
             </Container>

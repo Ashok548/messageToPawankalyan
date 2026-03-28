@@ -671,6 +671,15 @@
                 "closing": {
                         "title": "A Call to Reflection",
                         "text": "JanaSena is more than a political party. It is a movement of people who believe in the power of honest politics, who refuse to accept the status quo, and who are willing to work for a better tomorrow. We invite you to reflect on what kind of society you want to live in, and what kind of politics you want to support. The choice is yours, and the future is ours to build—together."
+                },
+                "refs": {
+                        "evidenceLabel": "See these facts in our app:",
+                        "leaderLabel": "See leaders society truly needs:",
+                        "governanceLabel": "See good governance in action:",
+                        "disciplinary": "Disciplinary Actions",
+                        "atrocities": "Atrocities on Janasainiks",
+                        "leaders": "Leaders Society Needs",
+                        "governance": "Governance Highlights"
                 }
         },
         "home": {
@@ -760,23 +769,112 @@
                 "groundCta2": "Send this to 5 Janasainiks and make the ground voice impossible to ignore."
         },
         "messageToJanasainiks": {
-                "title": "Message to Janasainiks: Building a Stronger Movement Together",
-                "publishedDate": "Published on January 24, 2026",
-                "p1": "Dear Janasainiks, you are the backbone of our movement. Your dedication, sacrifice, and unwavering commitment to the cause of people's welfare form the foundation upon which we build our vision for a better society. This message is a recognition of your efforts and a call to strengthen our collective resolve in the face of challenges.",
-                "p2": "The role you play goes far beyond traditional political activism. You are community organizers, problem solvers, and bridges between leadership and the people. Every day, you work tirelessly to understand the concerns of ordinary citizens, to mobilize support for positive change, and to ensure that the voice of the common person is heard in the corridors of power.",
-                "p3": "In recent times, we have witnessed unprecedented challenges to grassroots democratic participation. The obstacles you face—whether they are logistical, political, or personal—are real and significant. Yet, your resilience in the face of these challenges is what gives our movement its strength and credibility. Your commitment inspires others to join the cause and reinforces the belief that positive change is possible.",
-                "p4": "As we move forward, it is essential that we strengthen our organizational structures and support systems. This means creating better channels of communication between different levels of our movement, ensuring that resources reach those who need them most, and establishing mechanisms for feedback and continuous improvement. Your input in shaping these systems is not just welcome—it is essential.",
-                "p5": "Training and capacity building must be a priority. We recognize that effective grassroots work requires a diverse set of skills—from community organizing and public speaking to conflict resolution and digital communication. We are committed to providing you with the training, tools, and resources necessary to excel in your role and to grow as leaders in your own right.",
-                "p6": "The safety and security of every Janasainik is of paramount importance. No one should have to face threats, harassment, or violence for their political beliefs or activities. We are working to establish stronger support networks, legal assistance programs, and rapid response mechanisms to ensure that you can carry out your work without fear. Your safety is not negotiable, and we will stand firmly against any attempts to intimidate or harm our workers.",
-                "p7": "Communication is the lifeblood of any successful movement. We need to ensure that information flows freely and accurately between all levels of our organization. This means not just top-down directives, but also bottom-up feedback. Your observations from the field, your understanding of local issues, and your insights into community dynamics are invaluable. We must create formal channels for this information to reach decision-makers and influence our strategies.",
-                "p8": "Unity in diversity is our strength. Our movement brings together people from different backgrounds, regions, and walks of life. This diversity is not a weakness to be managed but a strength to be celebrated. It gives us a broader perspective, helps us understand different viewpoints, and makes our movement more representative of the society we seek to serve. Let us embrace this diversity and learn from each other.",
-                "p9": "Transparency and accountability must guide all our actions. As representatives of a people's movement, we must hold ourselves to the highest standards of integrity and ethical conduct. This means being honest about our challenges, transparent about our resources, and accountable for our decisions. When we make mistakes—and we will—we must acknowledge them, learn from them, and do better.",
-                "p10": "The digital age presents both opportunities and challenges for grassroots organizing. Social media and digital tools can amplify our message and help us reach more people, but they also come with risks of misinformation and digital harassment. We need to develop digital literacy among our workers, establish guidelines for online conduct, and create support systems for those who face online abuse.",
-                "p11": "Remember that sustainable activism requires taking care of yourself. Burnout is real, and the emotional toll of political work can be significant. It is not selfish to prioritize your mental and physical health—it is necessary. Take breaks when you need them, seek support when you're struggling, and remember that this is a marathon, not a sprint. We need you to be in this for the long haul.",
-                "p12": "Your families and loved ones also make sacrifices for this movement. The time you spend in meetings, rallies, and community work is time away from them. We acknowledge this sacrifice and are grateful for their support. We must also ensure that our movement creates space for family life and personal commitments, recognizing that balanced, fulfilled individuals make the most effective activists.",
-                "p13": "As we look to the future, let us remember why we started this journey. It was not for personal gain or political power, but for the welfare of the people, for justice, and for a better society. These ideals must continue to guide us, even when the path is difficult and the obstacles seem insurmountable. Our commitment to these principles is what sets us apart and gives our movement its moral authority.",
-                "p14": "The road ahead will not be easy. We will face opposition, setbacks, and moments of doubt. But together, united in our purpose and committed to our values, there is no challenge we cannot overcome. Your courage, dedication, and hard work are the driving force of this movement. You are not just workers or volunteers—you are leaders, changemakers, and the hope for a better tomorrow.",
-                "p15": "To every Janasainik reading this: thank you. Thank you for your service, your sacrifice, and your unwavering belief in our shared vision. Together, we will build a movement that truly serves the people, that stands up for justice, and that creates lasting positive change in our society. The future we dream of is possible, and it will be built by people like you, one community at a time, one conversation at a time, one act of service at a time. Stay strong, stay united, and let us march forward together toward the future we deserve."
+                "title": "జనసేన సైనికులు కు నమస్కారం 🙏",
+                "publishedDate": "మార్చి 23, 2026",
+                "greeting": "జనసేన సైనికులు కు నమస్కారం 🙏",
+                "s1heading": "జనసైనికుడు - భావజాలం",
+                "s1p1": "ఆంధ్ర రాష్ట్రంలో రాజకీయాలు అత్యంత డబ్బుతో కూడుకున్నవి అయిన ఈ సమయంలో, రాష్ట్రంలోని ప్రధాన పార్టీలకు మద్దతుగా కాకుండా, డబ్బు, అధికారం ఆశలు లేని నాయకుడు అయిన పవన్ కళ్యాణ్ గారి బాటలో మీరు నడవాలని అనుకోవడం అంటేనే,",
+                "s1p2": "మీరు సోషలిస్ట్ మరియు విప్లవ భావజాలం కలిగిన వారు, దోపిడీని, అణిచివేతను సహించని వారు అని అర్థం చేసుకోవచ్చు. అందువల్ల, మనలాంటి జనసైనికులు ఈ సమాజానికి అవసరం.",
+                "s2heading": "రాజకీయం - రబ్బరు చెప్పులు",
+                "s2p1": "పవన్ కళ్యాణ్ గారు చెప్పిన ఈ వాక్యం, బహుళ అర్థాలతో ఉండటంతో జనసైనికులు సతమతం అవుతున్నారు. అసలు, రాజకీయాలకు యాక్సెస్ లేని యువతకు, ప్రజలకు జనసేన పార్టీ ఒక పునాది గా మారాలి అనేది కళ్యాణ్ గారి ఆలోచన.",
+                "s2p2": "రబ్బరు చెప్పులు తో, అలాగే ప్రజా సమస్యల పట్ల అవగాహనతో, వార్డ్ మరియు కార్పొరేషన్ స్థాయి రాజకీయ అవకాశం జనసేనలో సాధ్యపడుతుంది. కానీ, అతి కొంత మంది జనసైనికులు కేవలం రబ్బరు చెప్పులు తోనే నియోజకవర్గ ఇంచార్జ్ లేదా జిల్లా అధ్యక్షులు అవ్వాలని సంవత్సరాలుగా ప్రయత్నిస్తున్నారు.",
+                "s2p3": "అయితే, ఆర్థిక స్థోమత మరియు ప్రజా సమస్యల పట్ల అవగాహనతో క్రింది స్థాయి నుండి పై స్థాయి వరకు ఎదగడం జనసేనలో సాధ్యం. ఇది ఎవరిని నిరుత్సాహపరిచే ఉద్దేశ్యం కాదు, కేవలం కళ్యాణ్ గారి ఆలోచన మాత్రమే.",
+                "s3heading": "ప్రశ్నించడం - సమాంతర విధానం (Flat Hierarchy)",
+                "s3p1": "\"A boss is always right\", \"Believe in your leader\" అనే భావనతో, నాయకత్వంపై నమ్మకం కలిగి ఉండటం అవసరం. అధినాయకుడు ఏ నిర్ణయం తీసుకున్నా, అది సేన బాగోగులు దృష్ట్యా తీసుకున్న నిర్ణయమే అవుతుంది.",
+                "s3p2": "అధినాయకుడు నిర్ణయాలను శంకించేవాడు నాయకుడు సేనలో భాగం కాలేడు. మన పై స్థాయి మండల, జిల్లా మరియు రాష్ట్ర స్థాయి నాయకులను పవన్ కళ్యాణ్ గారి వలె గౌరవించాలి. పరస్పర గౌరవం ఈ సమాజంలో మనల్ని, మన పార్టీని ఉన్నత స్థానాలకు చేరవేస్తుంది.",
+                "s4heading": "వ్యూహం - పొత్తు",
+                "s4p1": "ఈ దేశంలో అత్యధిక జనాభా శతాబ్దాలుగా అణిచివేతకు గురి అయి ఉన్నవారే. ఇప్పటికీ విద్యకు యాక్సెస్ లేని ప్రజలు ఎంతోమంది ఉన్నారు. కళ్యాణ్ గారు ఆశించిన మార్పుకు పునాది వేయాలంటే, కాలానికి అనుగుణంగా వ్యూహాత్మకంగా అడుగులు వేయాలి. అప్పటివరకు రాష్ట్రాన్ని కాపాడుకోవడం కూడా అవసరం, అందుకు పొత్తు తప్పనిసరి.",
+                "s5heading": "ముగింపు - జనసైనికుల కర్తవ్యం",
+                "s5p1": "పవన్ కళ్యాణ్ గారు మనకి పొత్తులో అధికారం ఇచ్చి, మనకు ఒక ప్లాట్ఫారం నిర్మించి ఇచ్చారు. మరియు, మనకు జనసైనికులు అనే పదవి ఇచ్చి, ఈ పదవిని మన మిత్ర, ప్రత్యర్థి పార్టీల చేత పలికించేలా చేశారు.",
+                "s5p2": "ఒక జనసైనికుడు 10 మంది మిగతా పార్టీల కార్యకర్తలతో సమానం. కాబట్టి, జనసైనికులు ఏకం అయ్యి, పొత్తులో జనసేనకు రావలసిన భాగస్వామ్యం మీద దృష్టి పెట్టండి. అవసరం అయితే, మీ ప్రాంతంలో ప్రజల తరఫున ప్రతిపక్ష పాత్ర పోషించండి."
+        },
+        "voices": {
+                "eyebrow": "People-first submissions",
+                "title": "Voices",
+                "subtitle": "A moderated civic section where citizens can raise issues, opinions, and suggestions with enough structure to be reviewed seriously.",
+                "submitVoice": "Submit Voice",
+                "submitFirstVoice": "Submit the first voice",
+                "allVoices": "All Voices",
+                "myVoices": "My Voices",
+                "myVoicesTitle": "My Voices",
+                "myVoicesSubtitle": "Track every submission you created, including pending, approved, rejected, under-review, and resolved statuses.",
+                "publicNotice": "Only approved voices are visible publicly. Every new submission is hidden until a Super Admin reviews it.",
+                "submitTitle": "Submit a Voice",
+                "submitSubtitle": "Share a genuine issue, public opinion, or actionable suggestion with enough context for moderation.",
+                "submissionRule": "Every new voice is marked Pending by default and stays private until the Super Admin approves it.",
+                "detailNotFound": "This voice could not be found or is not available for your account.",
+                "submittedByLabel": "Submitted by",
+                "reviewedByLabel": "Reviewed by",
+                "anonymousSubmission": "Registered community member",
+                "noMedia": "No media attached",
+                "noOwnVoices": "You have not submitted any voices yet",
+                "noOwnVoicesHint": "Create a structured submission to start tracking moderation status.",
+                "emptyTitle": "No approved voices yet",
+                "emptySubtitle": "Once submissions are approved, they will appear here for the public.",
+                "rejectionReason": "Rejection reason",
+                "adminNotes": "Admin notes",
+                "fields": {
+                        "title": "Title",
+                        "description": "Description",
+                        "category": "Category",
+                        "state": "State",
+                        "district": "District",
+                        "constituency": "Constituency",
+                        "mandal": "Mandal / Area",
+                        "village": "Village / Locality",
+                        "images": "Images (optional, max 2)",
+                        "video": "Attach video (optional)",
+                        "audio": "Attach voice recording (optional)"
+                },
+                "categories": {
+                        "ISSUE": "Issue",
+                        "OPINION": "Opinion",
+                        "SUGGESTION": "Suggestion",
+                        "COMPLAINT": "Complaint",
+                        "FEEDBACK": "Feedback",
+                        "OTHER": "Other"
+                },
+                "status": {
+                        "PENDING": "Pending",
+                        "APPROVED": "Approved",
+                        "REJECTED": "Rejected",
+                        "UNDER_REVIEW": "Under Review",
+                        "RESOLVED": "Resolved"
+                },
+                "media": {
+                        "video": "Video",
+                        "audio": "Voice recording",
+                        "tooLarge": "File exceeds the 5MB limit.",
+                        "readError": "The file could not be read. Please try again."
+                },
+                "validation": {
+                        "title": "Title must be at least 5 characters.",
+                        "description": "Description must be at least 20 characters.",
+                        "district": "Select a district.",
+                        "constituency": "Select a constituency."
+                },
+                "filters": {
+                        "search": "Search",
+                        "status": "Status",
+                        "category": "Category",
+                        "location": "Location",
+                        "fromDate": "From date",
+                        "toDate": "To date",
+                        "allStatuses": "All statuses",
+                        "allCategories": "All categories",
+                        "allLocations": "All locations"
+                },
+                "admin": {
+                        "title": "Voices moderation dashboard",
+                        "subtitle": "Review all submissions, filter by workflow state, and decide what becomes public.",
+                        "noResults": "No voices match the current filters",
+                        "noResultsHint": "Adjust the filters to inspect more submissions.",
+                        "reviewDialogTitle": "Review voice",
+                        "adminNotesField": "Internal notes",
+                        "markUnderReview": "Mark under review",
+                        "markResolved": "Mark resolved",
+                        "defaultRejectReason": "This submission does not meet moderation standards right now."
+                }
         },
         "projects": {
                 "title": "Projects",

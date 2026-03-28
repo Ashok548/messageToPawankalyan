@@ -16,6 +16,10 @@ import {
     Divider,
     Stack,
     Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
     IconButton,
     Tooltip
 } from '@mui/material';
@@ -27,12 +31,13 @@ import VerifiedIcon from '@mui/icons-material/Verified';
 import BadgeIcon from '@mui/icons-material/Badge';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import CloseIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/Delete';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PlatformIcon from '@/components/PlatformIcon';
-import { SocialPlatform } from '@/utils/socialMediaValidation';
+import { SocialPlatform, getPlatformName } from '@/utils/socialMediaValidation';
 
 const GET_WARRIOR = gql`
     query GetSocialMediaWarrior($id: String!) {
@@ -50,10 +55,12 @@ const GET_WARRIOR = gql`
             partyPosition
             nominatedPost
             primaryPlatform
+            primaryFollowersCount
             primaryProfileUrl
             otherPlatforms {
                 platform
                 profileUrl
+                followersCount
             }
             submittedBy
             status
@@ -72,6 +79,23 @@ const UPDATE_WARRIOR_STATUS = gql`
     }
 `;
 
+const DELETE_WARRIOR = gql`
+    mutation DeleteSocialMediaWarrior($id: String!) {
+        deleteSocialMediaWarrior(id: $id) {
+            id
+        }
+    }
+`;
+
+function formatFollowersCount(count?: number | null) {
+    if (count == null) return null;
+
+    return new Intl.NumberFormat('en', {
+        notation: count >= 1000 ? 'compact' : 'standard',
+        maximumFractionDigits: count >= 1000 ? 1 : 0,
+    }).format(count);
+}
+
 export default function SocialWarriorProfilePage() {
     const t = useTranslations('warriors');
     const tCommon = useTranslations('common');
@@ -81,14 +105,27 @@ export default function SocialWarriorProfilePage() {
     const id = params.id as string;
     const { user } = useAuth();
     const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
+    const isSuperAdmin = user?.role === 'SUPER_ADMIN';
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
     const { data, loading, error, refetch } = useQuery(GET_WARRIOR, {
         variables: { id },
     });
 
     const [updateStatus, { loading: updating }] = useMutation(UPDATE_WARRIOR_STATUS);
+    const [deleteWarrior, { loading: deleting }] = useMutation(DELETE_WARRIOR);
+
+    const handleDelete = async () => {
+        try {
+            await deleteWarrior({ variables: { id } });
+            setDeleteDialogOpen(false);
+            navigate(`/${locale}/social-media-warriors`);
+        } catch (err) {
+            console.error('Failed to delete warrior:', err);
+        }
+    };
 
     const handleStatusUpdate = async (status: string) => {
         try {
@@ -172,6 +209,17 @@ export default function SocialWarriorProfilePage() {
                                     <EditIcon />
                                 </IconButton>
                             </Tooltip>
+                            {isSuperAdmin && (
+                                <Tooltip title="Delete Profile">
+                                    <IconButton
+                                        color="error"
+                                        onClick={() => setDeleteDialogOpen(true)}
+                                        sx={{ bgcolor: 'error.50', '&:hover': { bgcolor: 'error.100' } }}
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            )}
                         </Box>
                     )}
 
@@ -406,6 +454,15 @@ export default function SocialWarriorProfilePage() {
                                         >
                                             {warrior.primaryPlatform}
                                         </Typography>
+                                        <Chip
+                                            icon={<PlatformIcon platform={warrior.primaryPlatform as SocialPlatform} size={18} />}
+                                            label={formatFollowersCount(warrior.primaryFollowersCount)
+                                                ? `${formatFollowersCount(warrior.primaryFollowersCount)} followers`
+                                                : getPlatformName(warrior.primaryPlatform as SocialPlatform)}
+                                            size="small"
+                                            variant="outlined"
+                                            sx={{ mb: 1, width: 'fit-content', fontWeight: 600 }}
+                                        />
                                         <Typography
                                             component="a"
                                             href={warrior.primaryProfileUrl}
@@ -501,6 +558,15 @@ export default function SocialWarriorProfilePage() {
                                         >
                                             {p.platform}
                                         </Typography>
+                                        <Chip
+                                            icon={<PlatformIcon platform={p.platform as SocialPlatform} size={18} />}
+                                            label={formatFollowersCount(p.followersCount)
+                                                ? `${formatFollowersCount(p.followersCount)} followers`
+                                                : getPlatformName(p.platform as SocialPlatform)}
+                                            size="small"
+                                            variant="outlined"
+                                            sx={{ mb: 1, width: 'fit-content', fontWeight: 600 }}
+                                        />
                                         <Typography
                                             component="a"
                                             href={p.profileUrl}
@@ -611,6 +677,22 @@ export default function SocialWarriorProfilePage() {
                             sx={{ maxWidth: '100%', maxHeight: '90vh', borderRadius: 1 }}
                         />
                     </Box>
+                </Dialog>
+
+                {/* Delete Confirmation Dialog */}
+                <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+                    <DialogTitle>Delete Warrior Profile</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Are you sure you want to permanently delete <strong>{data?.socialMediaWarrior?.name}</strong>&apos;s profile? This action cannot be undone.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setDeleteDialogOpen(false)} disabled={deleting}>Cancel</Button>
+                        <Button onClick={handleDelete} color="error" variant="contained" disabled={deleting}>
+                            {deleting ? 'Deleting…' : 'Delete'}
+                        </Button>
+                    </DialogActions>
                 </Dialog>
 
             </Container>

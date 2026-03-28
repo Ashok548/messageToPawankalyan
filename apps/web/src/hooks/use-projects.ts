@@ -31,7 +31,7 @@ interface CreateProjectMutation {
 // ============================================
 
 export function useProjects(status?: string) {
-    const { data, loading, error, refetch } = useQuery(GET_PROJECTS, {
+    const { data, loading, error, refetch } = useQuery<GetProjectsQuery>(GET_PROJECTS, {
         variables: { status },
         // Cache policy options:
         // - 'cache-first': Use cache, fetch if not cached (default)
@@ -86,7 +86,7 @@ export function useCreateProject() {
                 cache.writeQuery({
                     query: GET_PROJECTS,
                     data: {
-                        projects: [...existingProjects.projects, data.createProject],
+                        projects: [...(existingProjects as GetProjectsQuery).projects, data.createProject],
                     },
                 });
             }

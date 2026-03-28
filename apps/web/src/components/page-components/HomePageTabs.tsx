@@ -5,8 +5,6 @@ import {
     Box,
     Typography,
     Paper,
-    Tabs,
-    Tab,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 
@@ -69,10 +67,10 @@ function SectionHeader({ title, id }: SectionHeaderProps) {
             <Typography
                 component="h2"
                 sx={{
-                    fontSize: { xs: 18, sm: 20 },
+                    fontSize: { xs: 22, sm: 26 },
                     fontWeight: 700,
                     color: '#1a1a1a',
-                    lineHeight: 1.4,
+                    lineHeight: 1.35,
                 }}
             >
                 {title}
@@ -90,11 +88,11 @@ function SubHeading({ children, id }: { children: React.ReactNode; id?: string }
             component="h3"
             id={id}
             sx={{
-                fontSize: { xs: 16, sm: 17 },
+                fontSize: { xs: 19, sm: 21 },
                 fontWeight: 700,
                 color: '#2e2e2e',
-                mt: 3,
-                mb: 1.5,
+                mt: 4,
+                mb: 2,
             }}
         >
             {children}
@@ -126,11 +124,11 @@ function EditorialQuote({ children, attribution, center = false }: PullQuoteProp
         >
             <Typography
                 sx={{
-                    fontSize: { xs: 16, sm: 18 },
+                    fontSize: { xs: 19, sm: 21 },
                     fontWeight: 600,
                     fontStyle: 'italic',
                     color: '#333',
-                    lineHeight: 1.7,
+                    lineHeight: 1.75,
                 }}
             >
                 "{children}"
@@ -160,10 +158,10 @@ function Para({ children }: { children: React.ReactNode }) {
         <Typography
             component="p"
             sx={{
-                fontSize: { xs: 15, sm: 16 },
-                lineHeight: 1.8,
+                fontSize: { xs: 17, sm: 18 },
+                lineHeight: 1.9,
                 color: '#2e2e2e',
-                mb: 2,
+                mb: 2.5,
                 fontFamily: "'Noto Sans Telugu', 'Mandali', Georgia, serif",
                 fontWeight: 400,
             }}
@@ -178,36 +176,14 @@ function Para({ children }: { children: React.ReactNode }) {
 ───────────────────────────────────────────── */
 function ListItemText({ title, description }: { title: string; description: string }) {
     return (
-        <Box component="li" sx={{ mb: 1, pl: 1 }}>
-            <Typography component="div" sx={{ fontSize: { xs: 15, sm: 16 }, lineHeight: 1.8, color: '#2e2e2e' }}>
+        <Box component="li" sx={{ mb: 1.5, pl: 1 }}>
+            <Typography component="div" sx={{ fontSize: { xs: 17, sm: 18 }, lineHeight: 1.9, color: '#2e2e2e' }}>
                 <Box component="strong" sx={{ color: '#1a1a1a', mr: 1, fontWeight: 700 }}>
                     {title}:
                 </Box>
                 {description}
             </Typography>
         </Box>
-    );
-}
-
-/* ─────────────────────────────────────────────
-   Tab Panel
-───────────────────────────────────────────── */
-interface TabPanelProps {
-    children?: React.ReactNode;
-    index: number;
-    value: number;
-}
-function TabPanel(props: TabPanelProps) {
-    const { children, value, index } = props;
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`home-tabpanel-${index}`}
-            aria-labelledby={`home-tab-${index}`}
-        >
-            {value === index && <Box sx={{ pt: 2 }}>{children}</Box>}
-        </div>
     );
 }
 
@@ -238,7 +214,7 @@ function RenderOriginal() {
             </Box>
 
             {/* § 1 */}
-            <SectionHeader title="బలిదానాల తో స్వాతంత్రం - స్వదేశీ పాలకులతో దోపిడి రూపాంతరం." id="section-1" />
+            <SectionHeader title="బలిదానాల తో స్వాతంత్రం - స్వదేశీ పాలకులతో దోపిడి గా రూపాంతరం." id="section-1" />
             <Para>
                 200 సంవత్సరాలు బ్రిటిష్ వారిచే దోపిడికి గురైన నా భారతదేశానికి స్వాతంత్ర్యం వచ్చి 79 సంవత్సరాలు అయ్యింది అని మనం చెబుతున్నాం.
             </Para>
@@ -425,7 +401,7 @@ function RenderOriginal() {
                     fontWeight: 700,
                     textAlign: 'right',
                     whiteSpace: 'pre-line',
-                    fontSize: { xs: 16, sm: 18 },
+                    fontSize: { xs: 18, sm: 20 },
                     color: '#1a1a1a',
                 }}
             >
@@ -435,127 +411,14 @@ function RenderOriginal() {
     );
 }
 
-/* ─────────────────────────────────────────────
-   renderUpdated — unchanged (Updated/Viral tab)
-───────────────────────────────────────────── */
-function RenderUpdated() {
-    const t = useTranslations('home');
-    return (
-        <Box
-            sx={{
-                '& p': {
-                    fontSize: { xs: 16, sm: 17 },
-                    lineHeight: 1.8,
-                    color: '#2e2e2e',
-                    mb: 3,
-                    fontFamily: "'Noto Sans Telugu', 'Mandali', Georgia, serif",
-                },
-                maxWidth: { xs: '100%', md: 800, lg: 950 },
-                mx: 'auto',
-                px: { xs: 2, sm: 3, md: 4 }
-            }}
-        >
-            <Paper
-                elevation={0}
-                sx={{
-                    p: { xs: 3, sm: 4 },
-                    my: 3,
-                    borderLeft: '4px solid #cccccc',
-                    bgcolor: '#fafafa',
-                }}
-            >
-                <Typography component="p" sx={{ fontSize: { xs: 20, sm: 24 }, fontWeight: 800, color: '#1a1a1a', mb: 1 }}>
-                    {t('groundTitle')}
-                </Typography>
-                <Typography component="p" sx={{ fontSize: { xs: 16, sm: 18 }, fontWeight: 700, color: '#333333', mb: 0 }}>
-                    {t('groundSubtitle')}
-                </Typography>
-            </Paper>
-
-            <Typography sx={{ fontSize: 13, color: 'text.secondary', mb: 4, fontFamily: "'Noto Sans Telugu', 'Mandali', Georgia, serif" }}>
-                {t('publishedDate')}
-            </Typography>
-
-            <Typography component="p" sx={{ fontWeight: 700 }}>
-                {t('groundSalutation')}
-            </Typography>
-
-            {t('groundFullContent')
-                .split('\n\n')
-                .map((paragraph, index) => (
-                    <Typography key={index} component="p" sx={{ whiteSpace: 'pre-line' }}>
-                        {paragraph}
-                    </Typography>
-                ))}
-
-            <Paper
-                elevation={0}
-                sx={{
-                    p: 3,
-                    mt: 4,
-                    border: '1px solid #eaeaea',
-                    borderRadius: 2,
-                    textAlign: 'center',
-                }}
-            >
-                <Typography sx={{ fontSize: 17, fontWeight: 700, mb: 1, color: '#1a1a1a', fontFamily: "'Noto Sans Telugu', 'Mandali', Georgia, serif" }}>
-                    {t('groundCta1')}
-                </Typography>
-                <Typography sx={{ fontSize: 14, color: '#555', fontFamily: "'Noto Sans Telugu', 'Mandali', Georgia, serif" }}>
-                    {t('groundCta2')}
-                </Typography>
-            </Paper>
-
-            <Typography
-                component="p"
-                sx={{ mt: 5, fontWeight: 700, textAlign: 'right', whiteSpace: 'pre-line', fontSize: 16, color: '#1a1a1a' }}
-            >
-                {t('signingOff')}
-            </Typography>
-        </Box>
-    );
-}
 
 /* ─────────────────────────────────────────────
    HomePageTabs — export
 ───────────────────────────────────────────── */
 export function HomePageTabs() {
-    const [value, setValue] = useState(1);
-
-    const handleChange = (_: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
-    };
-
     return (
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 4 }}>
-            <Tabs
-                value={value}
-                onChange={handleChange}
-                aria-label="home page versions"
-                sx={{
-                    backgroundColor: 'transparent',
-                    borderBottom: '1px solid #eaeaea',
-                    '& .MuiTab-root': {
-                        fontWeight: 600,
-                        fontSize: 15,
-                        textTransform: 'none',
-                        minHeight: 48,
-                    },
-                    '& .Mui-selected': { color: '#1a1a1a' },
-                    '& .MuiTabs-indicator': { bgcolor: '#1a1a1a' },
-                }}
-            >
-                <Tab label="Original" id="home-tab-0" aria-controls="home-tabpanel-0" />
-                <Tab label="Updated (Viral)" id="home-tab-1" aria-controls="home-tabpanel-1" />
-            </Tabs>
-
-            <TabPanel value={value} index={0}>
-                <RenderOriginal />
-            </TabPanel>
-
-            <TabPanel value={value} index={1}>
-                <RenderUpdated />
-            </TabPanel>
+        <Box sx={{ mb: 4 }}>
+            <RenderOriginal />
         </Box>
     );
 }

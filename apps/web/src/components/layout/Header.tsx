@@ -125,7 +125,20 @@ export default function Header() {
                     </IconButton>
 
                     {/* Center: Logo & Title */}
-                    <Box sx={{ display: 'flex', alignItems: 'center', flex: 1, overflow: 'hidden' }}>
+                    <MuiLink
+                        onClick={() => handleNavigation(`/${locale}`)}
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            flex: 1,
+                            overflow: 'hidden',
+                            textDecoration: 'none',
+                            cursor: 'pointer',
+                            '&:hover': {
+                                opacity: 0.8,
+                            },
+                        }}
+                    >
                         {/* Logo */}
                         <Image
                             src="/assets/logo_navigation.png"
@@ -191,7 +204,7 @@ export default function Header() {
                                 PAWAN KALYAN
                             </Box> */}
                         </Box>
-                    </Box>
+                    </MuiLink>
 
                     {/* Right: Navigation Links */}
                     <Stack
