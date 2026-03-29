@@ -28,8 +28,8 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 // Loading interceptor link
 const loadingLink = new ApolloLink((operation, forward) => {
-    // Skip loading spinner for frequent polling queries
-    const skipLoadingOperations = ['GetVisitorStats'];
+    // Skip loading spinner for frequent polling queries and filter-driven list queries
+    const skipLoadingOperations = ['GetVisitorStats', 'GetPublicIssues'];
     const shouldShowLoading = !skipLoadingOperations.includes(operation.operationName);
 
     // Use Observable to handle both success, error, and cancellation cases

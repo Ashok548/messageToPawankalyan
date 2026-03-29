@@ -18,14 +18,20 @@ import { GET_ANALYSES, CREATE_ANALYSIS } from '@/graphql/analysis';
 // ============================================
 
 export function usePublicIssues(filter?: Record<string, unknown>, pagination?: { take: number; skip: number }) {
-    const { data, loading, error, refetch } = useQuery(GET_PUBLIC_ISSUES, {
+    const { data, previousData, loading, error, refetch } = useQuery(GET_PUBLIC_ISSUES, {
         variables: { filter, pagination },
         fetchPolicy: 'cache-and-network',
+        notifyOnNetworkStatusChange: true,
+        returnPartialData: true,
     });
 
+    const issues = data?.publicIssues ?? previousData?.publicIssues ?? [];
+
     return {
-        issues: data?.publicIssues ?? [],
+        issues,
         loading,
+        initialLoading: loading && issues.length === 0,
+        isRefreshing: loading && issues.length > 0,
         error,
         refetch,
     };

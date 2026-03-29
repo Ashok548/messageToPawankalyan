@@ -29,6 +29,11 @@ type PublicIssueWithRelations = PrismaPublicIssue & {
     reviewedByUser: SelectedUser | null;
 };
 
+type SupportIdentity = {
+    userId?: string;
+    anonymousSupporterKey?: string;
+};
+
 @Injectable()
 export class PublicIssuesRepository {
     constructor(private readonly prisma: PrismaService) { }
@@ -50,6 +55,31 @@ export class PublicIssuesRepository {
         submittedByUser: this.userSelect,
         reviewedByUser: this.userSelect,
     } satisfies Prisma.PublicIssueInclude;
+
+    private getSupportWhereUnique(issueId: string, identity: SupportIdentity): Prisma.PublicIssueSupportWhereUniqueInput {
+        if (identity.userId) {
+            return { issueId_userId: { issueId, userId: identity.userId } };
+        }
+
+        return {
+            issueId_anonymousSupporterKey: {
+                issueId,
+                anonymousSupporterKey: identity.anonymousSupporterKey!,
+            },
+        };
+    }
+
+    private getSupportCreateData(issueId: string, identity: SupportIdentity): Prisma.PublicIssueSupportCreateInput {
+        return identity.userId
+            ? {
+                issue: { connect: { id: issueId } },
+                user: { connect: { id: identity.userId } },
+            }
+            : {
+                issue: { connect: { id: issueId } },
+                anonymousSupporterKey: identity.anonymousSupporterKey!,
+            };
+    }
 
     private mapToEntity(issue: PublicIssueWithRelations): PublicIssue {
         return issue as unknown as PublicIssue;
@@ -307,14 +337,14 @@ export class PublicIssuesRepository {
         return this.mapToEntity(issue as PublicIssueWithRelations);
     }
 
-    async addSupport(issueId: string, userId: string): Promise<PublicIssue> {
+    async addSupport(issueId: string, identity: SupportIdentity): Promise<PublicIssue> {
         const result = await this.prisma.$transaction(async (tx) => {
             const existing = await tx.publicIssueSupport.findUnique({
-                where: { issueId_userId: { issueId, userId } },
+                where: this.getSupportWhereUnique(issueId, identity),
             });
 
             if (!existing) {
-                await tx.publicIssueSupport.create({ data: { issueId, userId } });
+                await tx.publicIssueSupport.create({ data: this.getSupportCreateData(issueId, identity) });
             }
 
             const updated = await this.syncSupportMetadata(tx, issueId);
@@ -345,16 +375,22 @@ export class PublicIssuesRepository {
         return { ...mapped, hasUserSupported: result.hasUserSupported };
     }
 
-    async toggleSupport(issueId: string, userId: string): Promise<PublicIssue> {
+    async toggleSupport(issueId: string, identity: SupportIdentity): Promise<PublicIssue> {
         const existing = await this.prisma.publicIssueSupport.findUnique({
-            where: { issueId_userId: { issueId, userId } },
+            where: this.getSupportWhereUnique(issueId, identity),
         });
 
         if (existing) {
-            return this.removeSupport(issueId, userId);
+            if (!identity.userId) {
+                const updated = await this.syncSupportMetadata(this.prisma, issueId);
+                const mapped = this.mapToEntity(updated as unknown as PublicIssueWithRelations);
+                return { ...mapped, hasUserSupported: true };
+            }
+
+            return this.removeSupport(issueId, identity.userId);
         }
 
-        return this.addSupport(issueId, userId);
+        return this.addSupport(issueId, identity);
     }
 
     async delete(id: string): Promise<PublicIssue> {

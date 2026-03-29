@@ -50,10 +50,11 @@ interface PublicIssueCardProps {
     onOpen?: () => void;
     onSupport?: (e: React.MouseEvent) => void;
     hideSupportButton?: boolean;
+    supportButtonDisabled?: boolean;
     footerActions?: ReactNode;
 }
 
-export function PublicIssueCard({ issue, onOpen, onSupport, hideSupportButton = false, footerActions }: PublicIssueCardProps) {
+export function PublicIssueCard({ issue, onOpen, onSupport, hideSupportButton = false, supportButtonDisabled = false, footerActions }: PublicIssueCardProps) {
     const t = useTranslations('publicIssues');
     const tCommon = useTranslations('common');
     const priorityStyle = PRIORITY_CHIP_STYLES[issue.priority] ?? PRIORITY_CHIP_STYLES.NORMAL;
@@ -185,6 +186,7 @@ export function PublicIssueCard({ issue, onOpen, onSupport, hideSupportButton = 
                                     size="small"
                                     startIcon={issue.hasUserSupported ? <ThumbUpAltIcon fontSize="small" /> : <ThumbUpAltOutlinedIcon fontSize="small" />}
                                     onClick={(e) => { e.stopPropagation(); onSupport?.(e); }}
+                                    disabled={supportButtonDisabled}
                                     color={issue.hasUserSupported ? 'primary' : 'inherit'}
                                     sx={{ minWidth: 0 }}
                                 >

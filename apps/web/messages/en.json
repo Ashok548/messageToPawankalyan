@@ -891,6 +891,7 @@
                 "submittedByLabel": "Submitted by",
                 "reviewedByLabel": "Approved by",
                 "anonymousSubmission": "Anonymous",
+                "superAdminLabel": "Super Admin",
                 "adminLabel": "Admin",
                 "noEvidence": "No evidence attached",
                 "emptyTitle": "No approved public issues yet",

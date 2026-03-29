@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import {
     Alert,
     Box,
+    Breadcrumbs,
     Button,
     Card,
     CardContent,
@@ -21,8 +22,8 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
+import Link from 'next/link';
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -36,6 +37,7 @@ import ImageLightbox from '@/components/ui/image-lightbox';
 import { useAuth } from '@/hooks/use-auth';
 import { useNavigate } from '@/hooks/use-navigate';
 import { usePublicIssue, useUpdatePublicIssue, useUpdatePublicIssueStatus, useTogglePublicIssueSupport, useIssueAnalyses, useCreateAnalysis } from '@/hooks/use-public-issues';
+import { getAnonymousPublicIssueSupporterKey, hasSupportedPublicIssue, markPublicIssueSupported } from '@/lib/public-issue-support-storage';
 import { getErrorMessage } from '@/utils/error-helpers';
 
 const CATEGORY_OPTIONS = ['CORRUPTION', 'LAND_MAFIA', 'INDUSTRIAL_POLLUTION', 'POLICY_CONCERN', 'PUBLIC_SERVICES', 'INFRASTRUCTURE', 'OTHER'] as const;
@@ -148,9 +150,10 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
 
     useEffect(() => {
         if (issue) {
+            const locallySupported = hasSupportedPublicIssue(issue.id);
             setSupportState({
                 supportCount: issue.supportCount,
-                hasUserSupported: issue.hasUserSupported,
+                hasUserSupported: issue.hasUserSupported || locallySupported,
                 priority: issue.priority,
                 isHighPriority: issue.isHighPriority,
             });
@@ -278,8 +281,9 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
             return;
         }
 
-        if (!user) {
-            setAdminError(t('loginToSupport'));
+        const alreadySupported = hasSupportedPublicIssue(issue.id) || supportState?.hasUserSupported || issue.hasUserSupported;
+
+        if (alreadySupported) {
             return;
         }
 
@@ -290,13 +294,11 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
             isHighPriority: issue.isHighPriority,
         };
 
-        const nextSupportCount = previousState.hasUserSupported
-            ? Math.max(previousState.supportCount - 1, 0)
-            : previousState.supportCount + 1;
+        const nextSupportCount = previousState.supportCount + 1;
         const nextPriority = computePriority(nextSupportCount);
         const optimisticState: SupportState = {
             supportCount: nextSupportCount,
-            hasUserSupported: !previousState.hasUserSupported,
+            hasUserSupported: true,
             priority: nextPriority,
             isHighPriority: nextSupportCount >= HIGH_THRESHOLD,
         };
@@ -306,12 +308,18 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
         setSupportState(optimisticState);
 
         try {
-            const result = await toggleSupport({ variables: { id: issue.id } });
+            const result = await toggleSupport({
+                variables: {
+                    id: issue.id,
+                    anonymousSupporterKey: user ? undefined : getAnonymousPublicIssueSupporterKey(),
+                },
+            });
             const updatedIssue = result.data?.togglePublicIssueSupport;
             if (updatedIssue) {
+                markPublicIssueSupported(issue.id);
                 setSupportState({
                     supportCount: updatedIssue.supportCount,
-                    hasUserSupported: updatedIssue.hasUserSupported,
+                    hasUserSupported: true,
                     priority: updatedIssue.priority,
                     isHighPriority: updatedIssue.isHighPriority,
                 });
@@ -454,69 +462,111 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
     );
 
     return (
-        <Box component="main" sx={{ minHeight: '100vh', backgroundColor: '#f4f6f8', py: { xs: 3, md: 5 } }}>
-            <Container maxWidth={false} sx={{ maxWidth: '1200px', px: { xs: 2, sm: 3, md: 4 } }}>
-                <Button startIcon={<ArrowBackIcon />} onClick={() => navigate(`/${locale}/public-issues`)} sx={{ mb: 3, fontWeight: 700 }}>
-                    {tCommon('back')}
-                </Button>
+        <Box component="main" sx={{ backgroundColor: '#ffffff', minHeight: '100vh', py: 4 }}>
+            <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3 } }}>
+                {/* Breadcrumbs */}
+                <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2, fontSize: '0.9rem' }}>
+                    <Link href={`/${locale}`} style={{ textDecoration: 'none', color: '#1976d2' }}>
+                        {tCommon('home')}
+                    </Link>
+                    <Link href={`/${locale}/public-issues`} style={{ textDecoration: 'none', color: '#1976d2' }}>
+                        {t('title')}
+                    </Link>
+                    <Typography color="text.primary" sx={{ maxWidth: 300, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {issue.title}
+                    </Typography>
+                </Breadcrumbs>
+
+                {/* Main Heading with Admin Action Buttons */}
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #a2a9b1', pb: 1, mb: 3 }}>
+                    <Typography component="h1" variant="h3" sx={{
+                        fontFamily: '"Linux Libertine", "Georgia", "Times", serif',
+                        fontWeight: 400,
+                        flex: 1,
+                    }}>
+                        {issue.title}
+                    </Typography>
+
+                    {isSuperAdmin && (
+                        <Stack direction="row" spacing={1} sx={{ ml: 2 }}>
+                            <Button
+                                variant="contained"
+                                color="success"
+                                startIcon={<CheckCircleOutlineIcon />}
+                                onClick={handleApprove}
+                                disabled={updatingStatus || issue.status === 'APPROVED'}
+                                sx={{ whiteSpace: 'nowrap' }}
+                            >
+                                {tCommon('approve')}
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                color="error"
+                                startIcon={<CancelOutlinedIcon />}
+                                onClick={() => setDialogMode('reject')}
+                                disabled={updatingStatus || issue.status === 'REJECTED'}
+                                sx={{ whiteSpace: 'nowrap' }}
+                            >
+                                {tCommon('reject')}
+                            </Button>
+                            <Button variant="outlined" startIcon={<EditOutlinedIcon />} onClick={() => setDialogMode('edit')} sx={{ whiteSpace: 'nowrap' }}>
+                                {tCommon('edit')}
+                            </Button>
+                        </Stack>
+                    )}
+                </Box>
 
                 {adminError && <Alert severity="error" sx={{ mb: 3 }}>{adminError}</Alert>}
 
                 <Grid container spacing={{ xs: 3, lg: 4 }} alignItems="flex-start">
-                    <Grid item xs={12} lg={8}>
+                    <Grid item xs={12} lg={isSuperAdmin ? 8 : 12}>
                         <Stack spacing={3}>
                             <Card sx={{ borderRadius: 5, border: '1px solid #e4e8ee', boxShadow: '0 18px 50px rgba(15, 23, 42, 0.06)' }}>
                                 <CardContent sx={{ p: { xs: 2.5, sm: 3, md: 4 } }}>
-                                    <Stack spacing={4}>
+                                    <Stack spacing={2.5}>
                                         <Box>
-                                            <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap', rowGap: 1 }}>
-                                                <Chip label={t(`categories.${issue.category}`)} size="small" sx={{ fontWeight: 700, color: '#1f4d8f', bgcolor: '#eef4ff', borderRadius: 2 }} />
-                                                <Chip label={t(`status.${issue.status}`)} size="small" sx={{ fontWeight: 700, color: '#2d5b43', bgcolor: '#edf6ef', borderRadius: 2 }} />
-                                                <Chip label={t(`priority.${currentPriority}`)} size="small" sx={{ fontWeight: 700, color: '#6c4d12', bgcolor: '#fff3d9', borderRadius: 2 }} />
-                                            </Stack>
-
-                                            <Typography variant="h3" component="h1" sx={{ fontWeight: 900, lineHeight: 1.12, letterSpacing: '-0.02em', color: '#1c2940', mb: 1.75, fontSize: { xs: '0.8rem', sm: '1.25rem', md: '1.75rem' } }}>
-                                                {issue.title}
-                                            </Typography>
-
-                                            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }} sx={{ mb: 2.25 }}>
-                                                <Typography sx={{ display: 'flex', alignItems: 'center', gap: 1, fontWeight: 800, color: '#184f95', fontSize: { xs: '1rem', sm: '1.05rem' } }}>
-                                                    <ThumbUpAltIcon sx={{ fontSize: 20 }} />
-                                                    {t('supportersStatement', { count: formattedSupportCount })}
-                                                </Typography>
+                                            {/* Row 1: chips left, support button right */}
+                                            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }} sx={{ mb: 1.5 }}>
+                                                <Stack direction="row" spacing={0.75} sx={{ flexWrap: 'wrap', rowGap: 0.75 }}>
+                                                    <Chip label={t(`categories.${issue.category}`)} size="small" sx={{ fontWeight: 700, color: '#1f4d8f', bgcolor: '#eef4ff', borderRadius: 2 }} />
+                                                    <Chip label={t(`status.${issue.status}`)} size="small" sx={{ fontWeight: 700, color: '#2d5b43', bgcolor: '#edf6ef', borderRadius: 2 }} />
+                                                    <Chip label={t(`priority.${currentPriority}`)} size="small" sx={{ fontWeight: 700, color: '#6c4d12', bgcolor: '#fff3d9', borderRadius: 2 }} />
+                                                    <Chip label={t(`verification.${currentVerificationStatus}`)} size="small" variant="outlined" sx={{ fontWeight: 700, borderColor: '#c9d4e4', color: '#314665', bgcolor: '#f9fbfd', borderRadius: 2 }} />
+                                                </Stack>
                                                 <Button
                                                     variant={hasUserSupported ? 'contained' : 'outlined'}
                                                     size="small"
                                                     startIcon={hasUserSupported ? <ThumbUpAltIcon /> : <ThumbUpAltOutlinedIcon />}
                                                     onClick={handleToggleSupport}
-                                                    disabled={!isSupportable || supportSubmitting}
-                                                    sx={{ minWidth: 132, fontWeight: 700 }}
+                                                    disabled={!isSupportable || supportSubmitting || hasUserSupported}
+                                                    sx={{ fontWeight: 700, flexShrink: 0 }}
                                                 >
-                                                    {hasUserSupported ? t('supported') : t('support')}
+                                                    {hasUserSupported ? `${t('supported')} (${formattedSupportCount})` : `${t('support')} (${formattedSupportCount})`}
                                                 </Button>
                                             </Stack>
 
-                                            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.25} alignItems={{ sm: 'center' }} flexWrap="wrap" sx={{ color: 'text.secondary', mb: 1.5 }}>
-                                                <Stack direction="row" spacing={0.75} alignItems="center">
-                                                    <PlaceOutlinedIcon sx={{ fontSize: 18 }} />
+                                            {/* Row 2: location · date · submitted by · approved by */}
+                                            <Stack direction="row" spacing={0.5} alignItems="center" flexWrap="wrap" sx={{ color: 'text.secondary', rowGap: 0.5 }}>
+                                                <Stack direction="row" spacing={0.5} alignItems="center">
+                                                    <PlaceOutlinedIcon sx={{ fontSize: 16 }} />
                                                     <Typography variant="body2">{locationParts.join(', ')}</Typography>
                                                 </Stack>
-                                                <Typography variant="body2" sx={{ display: { xs: 'none', sm: 'block' }, color: 'text.disabled' }}>•</Typography>
-                                                <Stack direction="row" spacing={0.75} alignItems="center">
-                                                    <AccessTimeOutlinedIcon sx={{ fontSize: 18 }} />
+                                                <Typography variant="body2" sx={{ color: 'text.disabled' }}>·</Typography>
+                                                <Stack direction="row" spacing={0.5} alignItems="center">
+                                                    <AccessTimeOutlinedIcon sx={{ fontSize: 16 }} />
                                                     <Typography variant="body2">{formattedCreatedAt}</Typography>
                                                 </Stack>
+                                                <Typography variant="body2" sx={{ color: 'text.disabled' }}>·</Typography>
+                                                <Typography variant="body2">
+                                                    <Box component="span" sx={{ fontWeight: 600, color: '#1c2940' }}>{t('submittedByLabel')}:</Box>{' '}
+                                                    {t('anonymousSubmission')}
+                                                </Typography>
+                                                <Typography variant="body2" sx={{ color: 'text.disabled' }}>·</Typography>
+                                                <Typography variant="body2">
+                                                    <Box component="span" sx={{ fontWeight: 600, color: '#1c2940' }}>{t('reviewedByLabel')}:</Box>{' '}
+                                                    {issue.reviewedAt ? t('superAdminLabel') : '-'}
+                                                </Typography>
                                             </Stack>
-
-                                            <Chip
-                                                label={t(`verification.${currentVerificationStatus}`)}
-                                                size="small"
-                                                variant="outlined"
-                                                sx={{ mb: 1.25, fontWeight: 700, borderColor: '#c9d4e4', color: '#314665', bgcolor: '#f9fbfd' }}
-                                            />
-                                            <Typography variant="body2" sx={{ color: 'text.secondary', maxWidth: '68ch', lineHeight: 1.7 }}>
-                                                {t('publicSubmissionDisclaimer')}
-                                            </Typography>
                                         </Box>
 
                                         <Divider />
@@ -557,22 +607,36 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
                                             </Stack>
 
                                             {visibleImages.length > 0 ? (
-                                                <Grid container spacing={2}>
+                                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                                                     {visibleImages.map((image: string, index: number) => (
-                                                        <Grid item xs={12} sm={6} key={image}>
-                                                            <Box sx={{ position: 'relative', borderRadius: 3, overflow: 'hidden', aspectRatio: '4 / 3', bgcolor: '#e9edf2', border: '1px solid #e5e7eb', cursor: 'pointer' }} onClick={() => handleOpenLightbox(index)}>
-                                                                <Image src={image} alt={`${issue.title}-${index + 1}`} fill sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 420px" style={{ objectFit: 'cover' }} />
-                                                                {hasMoreImages && index === visibleImages.length - 1 && hiddenImageCount > 0 && (
-                                                                    <Box sx={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'rgba(15, 23, 42, 0.58)', color: '#fff', backdropFilter: 'blur(2px)' }}>
-                                                                        <Typography sx={{ fontSize: { xs: '1.1rem', sm: '1.35rem' }, fontWeight: 800, letterSpacing: '0.01em' }}>
-                                                                            {t('moreImagesOverlay', { count: hiddenImageCount })}
-                                                                        </Typography>
-                                                                    </Box>
-                                                                )}
-                                                            </Box>
-                                                        </Grid>
+                                                        <Box
+                                                            key={image}
+                                                            onClick={() => handleOpenLightbox(index)}
+                                                            sx={{
+                                                                position: 'relative',
+                                                                width: 80,
+                                                                height: 80,
+                                                                borderRadius: 2,
+                                                                overflow: 'hidden',
+                                                                border: '1px solid #e5e7eb',
+                                                                cursor: 'pointer',
+                                                                bgcolor: '#e9edf2',
+                                                                flexShrink: 0,
+                                                                '&:hover': { opacity: 0.85, borderColor: '#1976d2' },
+                                                                transition: 'opacity 0.15s, border-color 0.15s',
+                                                            }}
+                                                        >
+                                                            <Image src={image} alt={`${issue.title}-${index + 1}`} fill sizes="80px" style={{ objectFit: 'cover' }} />
+                                                            {hasMoreImages && index === visibleImages.length - 1 && hiddenImageCount > 0 && (
+                                                                <Box sx={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'rgba(15, 23, 42, 0.58)', color: '#fff', backdropFilter: 'blur(2px)' }}>
+                                                                    <Typography sx={{ fontSize: '0.85rem', fontWeight: 800 }}>
+                                                                        +{hiddenImageCount}
+                                                                    </Typography>
+                                                                </Box>
+                                                            )}
+                                                        </Box>
                                                     ))}
-                                                </Grid>
+                                                </Box>
                                             ) : (
                                                 <Alert severity="info">{t('noEvidence')}</Alert>
                                             )}
@@ -584,57 +648,9 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
                         </Stack>
                     </Grid>
 
-                    <Grid item xs={12} lg={4}>
-                        <Stack spacing={3} sx={{ position: { lg: 'sticky' }, top: { lg: 24 } }}>
-                            <Card sx={{ borderRadius: 4, border: '1px solid #e4e8ee', boxShadow: '0 14px 36px rgba(15, 23, 42, 0.05)' }}>
-                                <CardContent sx={{ p: 3 }}>
-                                    <Typography variant="h6" sx={{ fontWeight: 800, color: '#1f2f46', mb: 2.5 }}>
-                                        {t('summaryTitle')}
-                                    </Typography>
-
-                                    <Stack spacing={2} divider={<Divider flexItem />}>
-                                        <Box>
-                                            <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.06em', mb: 0.5 }}>
-                                                {t('submittedByLabel')}
-                                            </Typography>
-                                            <Typography sx={{ fontWeight: 800, color: '#1c2940' }}>{t('anonymousSubmission')}</Typography>
-                                        </Box>
-                                        <Box>
-                                            <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.06em', mb: 0.5 }}>
-                                                {t('reviewedByLabel')}
-                                            </Typography>
-                                            <Typography sx={{ fontWeight: 800, color: '#1c2940' }}>
-                                                {issue.reviewedByUser?.name || (issue.reviewedAt ? t('adminLabel') : '-')}
-                                            </Typography>
-                                        </Box>
-                                        <Box>
-                                            <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.06em', mb: 0.75 }}>
-                                                {t('admin.verificationField')}
-                                            </Typography>
-                                            <Chip label={t(`verification.${currentVerificationStatus}`)} size="small" variant="outlined" sx={{ fontWeight: 700 }} />
-                                        </Box>
-                                        <Box>
-                                            <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.06em', mb: 0.75 }}>
-                                                {t('admin.priorityField')}
-                                            </Typography>
-                                            <Chip label={t(`priority.${currentPriority}`)} size="small" sx={{ fontWeight: 700, color: '#6c4d12', bgcolor: '#fff3d9' }} />
-                                        </Box>
-                                        <Box>
-                                            <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.06em', mb: 0.75 }}>
-                                                {t('totalSupportCount')}
-                                            </Typography>
-                                            <Typography sx={{ fontSize: '1.75rem', lineHeight: 1, fontWeight: 900, color: '#1c2940', mb: 0.5 }}>
-                                                {formattedSupportCount}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                {t('supportersCount', { count: currentSupportCount })}
-                                            </Typography>
-                                        </Box>
-                                    </Stack>
-                                </CardContent>
-                            </Card>
-
-                            {isSuperAdmin && (
+                    {isSuperAdmin && (
+                        <Grid item xs={12} lg={4}>
+                            <Stack spacing={3} sx={{ position: { lg: 'sticky' }, top: { lg: 24 } }}>
                                 <Card sx={{ borderRadius: 4, border: '1px solid #e4e8ee', boxShadow: '0 14px 36px rgba(15, 23, 42, 0.05)' }}>
                                     <CardContent sx={{ p: 3 }}>
                                         <Typography variant="h6" sx={{ fontWeight: 800, color: '#1f2f46', mb: 2.5 }}>
@@ -668,37 +684,12 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
                                                     <MenuItem key={verificationStatus} value={verificationStatus}>{t(`verification.${verificationStatus}`)}</MenuItem>
                                                 ))}
                                             </TextField>
-                                            <Stack direction={{ xs: 'column', sm: 'row', lg: 'column' }} spacing={1.25}>
-                                                <Button
-                                                    variant="contained"
-                                                    color="success"
-                                                    startIcon={<CheckCircleOutlineIcon />}
-                                                    onClick={handleApprove}
-                                                    disabled={updatingStatus || issue.status === 'APPROVED'}
-                                                    fullWidth
-                                                >
-                                                    {tCommon('approve')}
-                                                </Button>
-                                                <Button
-                                                    variant="outlined"
-                                                    color="error"
-                                                    startIcon={<CancelOutlinedIcon />}
-                                                    onClick={() => setDialogMode('reject')}
-                                                    disabled={updatingStatus || issue.status === 'REJECTED'}
-                                                    fullWidth
-                                                >
-                                                    {tCommon('reject')}
-                                                </Button>
-                                                <Button variant="outlined" startIcon={<EditOutlinedIcon />} onClick={() => setDialogMode('edit')} fullWidth>
-                                                    {tCommon('edit')}
-                                                </Button>
-                                            </Stack>
                                         </Stack>
                                     </CardContent>
                                 </Card>
-                            )}
-                        </Stack>
-                    </Grid>
+                            </Stack>
+                        </Grid>
+                    )}
                 </Grid>
 
                 <Box sx={{ mt: 3 }}>

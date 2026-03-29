@@ -486,7 +486,7 @@ type Mutation {
 
   """SUPER_ADMIN only: Toggle visibility"""
   toggleGovernanceHighlightVisibility(id: String!): GovernanceHighlight!
-  togglePublicIssueSupport(id: String!): PublicIssue!
+  togglePublicIssueSupport(anonymousSupporterKey: String, id: String!): PublicIssue!
 
   """SUPER_ADMIN: approve or reject an analysis submission"""
   updateAnalysisStatus(id: String!, input: UpdateAnalysisStatusInput!): Analysis!

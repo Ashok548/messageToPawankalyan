@@ -76,12 +76,13 @@ export class PublicIssuesResolver {
     }
 
     @Mutation(() => PublicIssue)
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlOptionalAuthGuard)
     async togglePublicIssueSupport(
         @Args('id') id: string,
-        @CurrentUser() user: { id: string },
+        @Args('anonymousSupporterKey', { nullable: true }) anonymousSupporterKey?: string,
+        @CurrentUser() user?: { id: string },
     ): Promise<PublicIssue> {
-        return this.publicIssuesService.toggleSupport(id, user.id);
+        return this.publicIssuesService.toggleSupport(id, user?.id, anonymousSupporterKey);
     }
 
     @Mutation(() => PublicIssue)

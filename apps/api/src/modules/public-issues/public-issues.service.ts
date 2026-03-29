@@ -226,9 +226,23 @@ export class PublicIssuesService {
         return existing;
     }
 
-    async addSupport(issueId: string, userId: string): Promise<PublicIssue> {
+    private resolveSupportIdentity(userId?: string, anonymousSupporterKey?: string): { userId?: string; anonymousSupporterKey?: string } {
+        if (userId) {
+            return { userId };
+        }
+
+        const trimmedAnonymousSupporterKey = anonymousSupporterKey?.trim();
+
+        if (!trimmedAnonymousSupporterKey) {
+            throw new BadRequestException('Anonymous supporter key is required');
+        }
+
+        return { anonymousSupporterKey: trimmedAnonymousSupporterKey };
+    }
+
+    async addSupport(issueId: string, userId?: string, anonymousSupporterKey?: string): Promise<PublicIssue> {
         await this.validateSupportableIssue(issueId, userId);
-        return this.repository.addSupport(issueId, userId);
+        return this.repository.addSupport(issueId, this.resolveSupportIdentity(userId, anonymousSupporterKey));
     }
 
     async removeSupport(issueId: string, userId: string): Promise<PublicIssue> {
@@ -236,14 +250,9 @@ export class PublicIssuesService {
         return this.repository.removeSupport(issueId, userId);
     }
 
-    async toggleSupport(issueId: string, userId: string): Promise<PublicIssue> {
-        const existing = await this.validateSupportableIssue(issueId, userId);
-
-        if (existing.hasUserSupported) {
-            return this.repository.removeSupport(issueId, userId);
-        }
-
-        return this.repository.addSupport(issueId, userId);
+    async toggleSupport(issueId: string, userId?: string, anonymousSupporterKey?: string): Promise<PublicIssue> {
+        await this.validateSupportableIssue(issueId, userId);
+        return this.repository.addSupport(issueId, this.resolveSupportIdentity(userId, anonymousSupporterKey));
     }
 
     async delete(id: string): Promise<PublicIssue> {

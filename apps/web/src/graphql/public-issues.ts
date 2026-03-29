@@ -91,8 +91,8 @@ export const UPDATE_PUBLIC_ISSUE_STATUS = gql`
 `;
 
 export const TOGGLE_PUBLIC_ISSUE_SUPPORT = gql`
-  mutation TogglePublicIssueSupport($id: String!) {
-    togglePublicIssueSupport(id: $id) {
+  mutation TogglePublicIssueSupport($id: String!, $anonymousSupporterKey: String) {
+    togglePublicIssueSupport(id: $id, anonymousSupporterKey: $anonymousSupporterKey) {
       ${PUBLIC_ISSUE_CARD_FIELDS}
     }
   }

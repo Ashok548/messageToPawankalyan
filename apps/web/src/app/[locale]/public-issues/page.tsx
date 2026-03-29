@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
     Alert,
     Box,
@@ -8,14 +8,12 @@ import {
     CircularProgress,
     Container,
     MenuItem,
-    Snackbar,
     Stack,
     Tab,
     Tabs,
     TextField,
     Typography,
 } from '@mui/material';
-import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
 import { useLocale, useTranslations } from 'next-intl';
@@ -24,6 +22,7 @@ import { PublicIssueCard } from '@/components/public-issues/PublicIssueCard';
 import { useAuth } from '@/hooks/use-auth';
 import { useNavigate } from '@/hooks/use-navigate';
 import { usePublicIssues, useTogglePublicIssueSupport } from '@/hooks/use-public-issues';
+import { getAnonymousPublicIssueSupporterKey, getSupportedPublicIssueIds, hasSupportedPublicIssue, markPublicIssueSupported } from '@/lib/public-issue-support-storage';
 
 type FeedSort = 'LATEST' | 'HIGH_PRIORITY';
 
@@ -39,7 +38,7 @@ export default function PublicIssuesPage() {
 
     const [feedSort, setFeedSort] = useState<FeedSort>('LATEST');
     const [filters, setFilters] = useState({ searchTerm: '', category: '', district: '' });
-    const [loginSnackbar, setLoginSnackbar] = useState(false);
+    const [supportedIssueIds, setSupportedIssueIds] = useState<string[]>([]);
 
     const queryFilter = useMemo(() => ({
         searchTerm: filters.searchTerm || undefined,
@@ -49,50 +48,103 @@ export default function PublicIssuesPage() {
         sortBy: feedSort === 'HIGH_PRIORITY' ? 'TRENDING' : 'LATEST',
     }), [filters, feedSort]);
 
-    const { issues, loading, error, refetch } = usePublicIssues(queryFilter, { take: 50, skip: 0 });
+    const { issues, initialLoading, isRefreshing, error, refetch } = usePublicIssues(queryFilter, { take: 50, skip: 0 });
     const { toggleSupport } = useTogglePublicIssueSupport();
+
+    useEffect(() => {
+        setSupportedIssueIds(getSupportedPublicIssueIds());
+    }, []);
+
+    const effectiveIssues = useMemo(() => (
+        issues.map((issue: any) => ({
+            ...issue,
+            hasUserSupported: issue.hasUserSupported || supportedIssueIds.includes(issue.id),
+        }))
+    ), [issues, supportedIssueIds]);
 
     const handleSupport = async (issueId: string, e: React.MouseEvent) => {
         e.stopPropagation();
-        if (!user) {
-            setLoginSnackbar(true);
+
+        if (hasSupportedPublicIssue(issueId)) {
             return;
         }
-        await toggleSupport({ variables: { id: issueId } });
+
+        await toggleSupport({
+            variables: {
+                id: issueId,
+                anonymousSupporterKey: user ? undefined : getAnonymousPublicIssueSupporterKey(),
+            },
+        });
+        setSupportedIssueIds(markPublicIssueSupported(issueId));
         refetch();
     };
 
     return (
-        <Box component="main" sx={{ minHeight: '100vh', py: 4, background: 'linear-gradient(180deg, #fff9f2 0%, #ffffff 35%, #f7fbff 100%)' }}>
-            <Container maxWidth={false} sx={{ maxWidth: '1180px', px: { xs: 2, sm: 3 } }}>
-                <Box sx={{ mb: 4, p: { xs: 3, md: 4 }, borderRadius: 4, background: 'linear-gradient(135deg, #fff2df 0%, #fff 48%, #eaf5ff 100%)', border: '1px solid #f0dfc6' }}>
-                    <Stack direction={{ xs: 'column', md: 'row' }} spacing={3} justifyContent="space-between" alignItems={{ xs: 'flex-start', md: 'center' }}>
-                        <Box>
-                            <Stack direction="row" spacing={1.2} alignItems="center" sx={{ mb: 1 }}>
-                                <CampaignOutlinedIcon sx={{ color: '#c26b00' }} />
-                                <Typography variant="overline" sx={{ letterSpacing: '0.16em', color: '#9b5d16', fontWeight: 700 }}>
-                                    {t('eyebrow')}
-                                </Typography>
-                            </Stack>
-                            <Typography variant="h3" component="h1" sx={{ fontWeight: 900, lineHeight: 1.05, mb: 1.25, fontSize: { xs: '2rem', md: '2.8rem' } }}>
-                                {t('title')}
-                            </Typography>
-                            <Typography sx={{ maxWidth: 760, color: 'text.secondary', lineHeight: 1.75 }}>
-                                {t('subtitle')}
-                            </Typography>
-                        </Box>
+        <Box component="main" sx={{ minHeight: { xs: 'calc(100vh - 52px)', sm: 'calc(100vh - 48px)' }, backgroundColor: '#fafafa', py: { xs: 4, sm: 6 } }}>
+            <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3 } }}>
+                {/* Header Section */}
+                <Box
+                    sx={{
+                        mb: 5,
+                        display: 'flex',
+                        flexDirection: { xs: 'column', md: 'row' },
+                        alignItems: { xs: 'center', md: 'flex-start' },
+                        justifyContent: 'space-between',
+                        gap: 3,
+                        textAlign: { xs: 'center', md: 'left' }
+                    }}
+                >
+                    <Box sx={{ maxWidth: 680 }}>
+                        <Typography
+                            component="h1"
+                            sx={{
+                                fontSize: { xs: 28, sm: 36, md: 42 },
+                                fontWeight: 700,
+                                lineHeight: 1.2,
+                                color: '#1a1a1a',
+                                mb: 1.5,
+                                letterSpacing: '-0.02em',
+                            }}
+                        >
+                            {t('title')}
+                        </Typography>
+                        <Typography
+                            sx={{
+                                fontSize: { xs: 16, sm: 18 },
+                                color: 'text.secondary',
+                            }}
+                        >
+                            {t('subtitle')}
+                        </Typography>
+                    </Box>
 
-                        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
-                            {isSuperAdmin && (
-                                <Button variant="outlined" startIcon={<ShieldOutlinedIcon />} onClick={() => navigate(`/${locale}/public-issues/admin`)}>
-                                    {t('admin.openQueue')}
-                                </Button>
-                            )}
-                            <Button variant="contained" startIcon={<AddIcon />} onClick={() => navigate(`/${locale}/public-issues/submit`)}>
-                                {t('submitIssue')}
+                    {/* Actions Row */}
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: { xs: 'center', md: 'flex-end' } }}>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            startIcon={<AddIcon />}
+                            onClick={() => navigate(`/${locale}/public-issues/submit`)}
+                            sx={{
+                                px: 3,
+                                py: 1.2,
+                                fontSize: 15,
+                                fontWeight: 600,
+                                borderRadius: 2,
+                                textTransform: 'none',
+                                boxShadow: 2,
+                                whiteSpace: 'nowrap'
+                            }}
+                        >
+                            {t('submitIssue')}
+                        </Button>
+
+                        {isSuperAdmin && (
+                            <Button variant="outlined" startIcon={<ShieldOutlinedIcon />} onClick={() => navigate(`/${locale}/public-issues/admin`)}>
+                                {t('admin.openQueue')}
                             </Button>
-                        </Stack>
-                    </Stack>
+                        )}
+                    </Box>
                 </Box>
 
                 <Alert severity="info" sx={{ mb: 3 }}>
@@ -122,13 +174,19 @@ export default function PublicIssuesPage() {
                     </TextField>
                 </Box>
 
-                {loading ? (
+                {isRefreshing && (
+                    <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
+                        <CircularProgress size={24} />
+                    </Box>
+                )}
+
+                {initialLoading ? (
                     <Box sx={{ display: 'flex', justifyContent: 'center', py: 10 }}>
                         <CircularProgress />
                     </Box>
                 ) : error ? (
                     <Alert severity="error">{tCommon('error')}: {error.message}</Alert>
-                ) : issues.length === 0 ? (
+                ) : effectiveIssues.length === 0 ? (
                     <Box sx={{ textAlign: 'center', py: 10 }}>
                         <Typography variant="h5" sx={{ fontWeight: 800, mb: 1 }}>{t('emptyTitle')}</Typography>
                         <Typography color="text.secondary" sx={{ mb: 3 }}>{t('emptySubtitle')}</Typography>
@@ -136,25 +194,18 @@ export default function PublicIssuesPage() {
                     </Box>
                 ) : (
                     <Stack spacing={2.5}>
-                        {issues.map((issue: any) => (
+                        {effectiveIssues.map((issue: any) => (
                             <PublicIssueCard
                                 key={issue.id}
                                 issue={issue}
                                 onOpen={() => navigate(`/${locale}/public-issues/${issue.id}`)}
                                 onSupport={(e) => handleSupport(issue.id, e)}
+                                supportButtonDisabled={issue.hasUserSupported}
                             />
                         ))}
                     </Stack>
                 )}
             </Container>
-
-            <Snackbar
-                open={loginSnackbar}
-                autoHideDuration={4000}
-                onClose={() => setLoginSnackbar(false)}
-                message={t('loginToSupport')}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-            />
         </Box>
     );
 }
