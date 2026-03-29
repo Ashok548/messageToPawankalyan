@@ -26,8 +26,8 @@ import { PublicIssueStatusBadge, type PublicIssueStatusValue } from '@/component
 import { useAuth } from '@/hooks/use-auth';
 import { useNavigate } from '@/hooks/use-navigate';
 import { getErrorMessage } from '@/utils/error-helpers';
+import { useAllPublicIssues, useUpdatePublicIssueStatus, useUpdatePublicIssue, useDeletePublicIssue } from '@/hooks/use-public-issues';
 
-const REST_BASE_URL = process.env.NEXT_PUBLIC_REST_URL || process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_GRAPHQL_URL?.replace('/graphql', '') || 'http://localhost:4000';
 const STATUS_TABS = ['PENDING', 'APPROVED', 'REJECTED'] as const;
 const CATEGORY_OPTIONS = ['CORRUPTION', 'LAND_MAFIA', 'INDUSTRIAL_POLLUTION', 'POLICY_CONCERN', 'PUBLIC_SERVICES', 'INFRASTRUCTURE', 'OTHER'] as const;
 const PRIORITY_OPTIONS = ['NORMAL', 'NOTABLE', 'HIGH'] as const;
@@ -58,21 +58,6 @@ type AdminIssue = {
     rejectionReason?: string | null;
 };
 
-async function parseResponse(response: Response) {
-    const payload = await response.json().catch(() => null);
-
-    if (!response.ok) {
-        const message = payload && typeof payload === 'object' && 'message' in payload
-            ? Array.isArray(payload.message)
-                ? payload.message.join(', ')
-                : String(payload.message)
-            : `Request failed with status ${response.status}`;
-        throw new Error(message);
-    }
-
-    return payload;
-}
-
 export default function PublicIssuesAdminPage() {
     const t = useTranslations('publicIssues');
     const tCommon = useTranslations('common');
@@ -81,11 +66,8 @@ export default function PublicIssuesAdminPage() {
     const { user, loading: authLoading } = useAuth();
     const [activeTab, setActiveTab] = useState<AdminTabStatus>('PENDING');
     const [filters, setFilters] = useState({ searchTerm: '', category: '', district: '' });
-    const [issues, setIssues] = useState<AdminIssue[]>([]);
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [submittingAction, setSubmittingAction] = useState<string | null>(null);
-    const [reloadKey, setReloadKey] = useState(0);
     const [rejectDialogIssue, setRejectDialogIssue] = useState<AdminIssue | null>(null);
     const [rejectReason, setRejectReason] = useState('');
     const [deleteDialogIssue, setDeleteDialogIssue] = useState<AdminIssue | null>(null);
@@ -103,122 +85,28 @@ export default function PublicIssuesAdminPage() {
         status: activeTab,
     }), [activeTab, filters]);
 
-    useEffect(() => {
-        if (authLoading || user?.role !== 'SUPER_ADMIN') {
-            return;
-        }
+    const { issues, loading, refetch } = useAllPublicIssues(
+        queryFilter,
+        { take: 200, skip: 0 },
+        { skip: authLoading || user?.role !== 'SUPER_ADMIN' },
+    );
+    const { updatePublicIssueStatus } = useUpdatePublicIssueStatus();
+    const { updatePublicIssue: adminUpdateIssue } = useUpdatePublicIssue();
+    const { deletePublicIssue } = useDeletePublicIssue();
 
-        let cancelled = false;
+    const triggerReload = () => refetch();
 
-        async function loadIssues() {
-            const token = typeof window === 'undefined' ? null : localStorage.getItem('authToken');
-
-            if (!token) {
-                if (!cancelled) {
-                    setError(t('loginToSupport'));
-                    setLoading(false);
-                }
-                return;
-            }
-
-            setLoading(true);
-            setError(null);
-
-            try {
-                const searchParams = new URLSearchParams();
-                searchParams.set('status', queryFilter.status);
-
-                if (queryFilter.searchTerm) {
-                    searchParams.set('searchTerm', queryFilter.searchTerm);
-                }
-
-                if (queryFilter.category) {
-                    searchParams.set('category', queryFilter.category);
-                }
-
-                if (queryFilter.district) {
-                    searchParams.set('district', queryFilter.district);
-                }
-
-                const response = await fetch(`${REST_BASE_URL}/admin/issues?${searchParams.toString()}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                const payload = await parseResponse(response);
-
-                if (!cancelled) {
-                    setIssues(payload);
-                }
-            } catch (loadError) {
-                if (!cancelled) {
-                    setError(getErrorMessage(loadError));
-                }
-            } finally {
-                if (!cancelled) {
-                    setLoading(false);
-                }
-            }
-        }
-
-        loadIssues();
-
-        return () => {
-            cancelled = true;
-        };
-    }, [authLoading, queryFilter, reloadKey, t, user?.role]);
-
-    if (user?.role !== 'SUPER_ADMIN') {
-        return null;
-    }
-
-    const triggerReload = () => setReloadKey((current) => current + 1);
-
-    const applyUpdatedIssue = (updatedIssue: AdminIssue) => {
-        setIssues((currentIssues) => {
-            if (updatedIssue.status !== activeTab) {
-                return currentIssues.filter((issue) => issue.id !== updatedIssue.id);
-            }
-
-            return currentIssues.map((issue) => issue.id === updatedIssue.id ? updatedIssue : issue);
-        });
-    };
-
-    const runAction = async (actionKey: string, request: () => Promise<AdminIssue>) => {
-        setSubmittingAction(actionKey);
+    const handleApprove = async (issueId: string) => {
+        setSubmittingAction(`${issueId}-approve`);
         setError(null);
-
         try {
-            const updatedIssue = await request();
-            applyUpdatedIssue(updatedIssue);
+            await updatePublicIssueStatus({ variables: { id: issueId, input: { status: 'APPROVED' } } });
+            await refetch();
         } catch (actionError) {
             setError(getErrorMessage(actionError));
-            triggerReload();
         } finally {
             setSubmittingAction(null);
         }
-    };
-
-    const buildAuthHeaders = () => {
-        const token = typeof window === 'undefined' ? null : localStorage.getItem('authToken');
-
-        return {
-            'Content-Type': 'application/json',
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        };
-    };
-
-    const handleApprove = async (issueId: string) => {
-        await runAction(`${issueId}-approve`, async () => {
-            const response = await fetch(`${REST_BASE_URL}/admin/issues/${issueId}/approve`, {
-                method: 'PATCH',
-                headers: buildAuthHeaders(),
-                body: JSON.stringify({}),
-            });
-
-            return parseResponse(response);
-        });
     };
 
     const handleReject = async () => {
@@ -226,56 +114,57 @@ export default function PublicIssuesAdminPage() {
             return;
         }
 
-        await runAction(`${rejectDialogIssue.id}-reject`, async () => {
-            const response = await fetch(`${REST_BASE_URL}/admin/issues/${rejectDialogIssue.id}/reject`, {
-                method: 'PATCH',
-                headers: buildAuthHeaders(),
-                body: JSON.stringify({ rejectionReason: rejectReason.trim() }),
+        setSubmittingAction(`${rejectDialogIssue.id}-reject`);
+        setError(null);
+        try {
+            await updatePublicIssueStatus({
+                variables: {
+                    id: rejectDialogIssue.id,
+                    input: { status: 'REJECTED', rejectionReason: rejectReason.trim() },
+                },
             });
-
-            return parseResponse(response);
-        });
-
-        setRejectDialogIssue(null);
-        setRejectReason('');
+            await refetch();
+        } catch (actionError) {
+            setError(getErrorMessage(actionError));
+        } finally {
+            setSubmittingAction(null);
+            setRejectDialogIssue(null);
+            setRejectReason('');
+        }
     };
 
     const handlePriorityChange = async (issueId: string, priority: typeof PRIORITY_OPTIONS[number]) => {
-        await runAction(`${issueId}-priority`, async () => {
-            const response = await fetch(`${REST_BASE_URL}/admin/issues/${issueId}/priority`, {
-                method: 'PATCH',
-                headers: buildAuthHeaders(),
-                body: JSON.stringify({ priority }),
-            });
-
-            return parseResponse(response);
-        });
+        setSubmittingAction(`${issueId}-priority`);
+        setError(null);
+        try {
+            await adminUpdateIssue({ variables: { id: issueId, input: { priority } } });
+            await refetch();
+        } catch (actionError) {
+            setError(getErrorMessage(actionError));
+        } finally {
+            setSubmittingAction(null);
+        }
     };
 
     const handleVerificationChange = async (issueId: string, verificationStatus: typeof VERIFICATION_OPTIONS[number]) => {
-        await runAction(`${issueId}-verification`, async () => {
-            const response = await fetch(`${REST_BASE_URL}/admin/issues/${issueId}/verification-status`, {
-                method: 'PATCH',
-                headers: buildAuthHeaders(),
-                body: JSON.stringify({ verificationStatus }),
-            });
-
-            return parseResponse(response);
-        });
+        setSubmittingAction(`${issueId}-verification`);
+        setError(null);
+        try {
+            await adminUpdateIssue({ variables: { id: issueId, input: { verificationStatus } } });
+            await refetch();
+        } catch (actionError) {
+            setError(getErrorMessage(actionError));
+        } finally {
+            setSubmittingAction(null);
+        }
     };
 
     const handleDelete = async (issueId: string) => {
         setSubmittingAction(`${issueId}-delete`);
         setError(null);
-
         try {
-            const response = await fetch(`${REST_BASE_URL}/admin/issues/${issueId}`, {
-                method: 'DELETE',
-                headers: buildAuthHeaders(),
-            });
-
-            await parseResponse(response);
-            setIssues((current) => current.filter((issue) => issue.id !== issueId));
+            await deletePublicIssue({ variables: { id: issueId } });
+            await refetch();
         } catch (actionError) {
             setError(getErrorMessage(actionError));
         } finally {
@@ -283,6 +172,10 @@ export default function PublicIssuesAdminPage() {
             setDeleteDialogIssue(null);
         }
     };
+
+    if (user?.role !== 'SUPER_ADMIN') {
+        return null;
+    }
 
     return (
         <Box component="main" sx={{ minHeight: '100vh', backgroundColor: '#f6f7fb', py: 4 }}>
@@ -325,7 +218,7 @@ export default function PublicIssuesAdminPage() {
                     </Box>
                 ) : (
                     <Stack spacing={2.5}>
-                        {issues.map((issue) => (
+                        {(issues as AdminIssue[]).map((issue) => (
                             <PublicIssueCard
                                 key={issue.id}
                                 issue={issue}

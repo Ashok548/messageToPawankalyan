@@ -1,7 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import { useEffect, useMemo, useState } from 'react';
 import {
     Alert,
     Box,
@@ -34,9 +33,9 @@ import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
 import { ANDHRA_PRADESH_DISTRICTS, STATES } from '@repo/constants';
 import ImageLightbox from '@/components/ui/image-lightbox';
-import { GET_PUBLIC_ISSUE, UPDATE_PUBLIC_ISSUE, UPDATE_PUBLIC_ISSUE_STATUS } from '@/graphql/public-issues';
 import { useAuth } from '@/hooks/use-auth';
 import { useNavigate } from '@/hooks/use-navigate';
+import { usePublicIssue, useUpdatePublicIssue, useUpdatePublicIssueStatus, useTogglePublicIssueSupport, useIssueAnalyses, useCreateAnalysis } from '@/hooks/use-public-issues';
 import { getErrorMessage } from '@/utils/error-helpers';
 
 const CATEGORY_OPTIONS = ['CORRUPTION', 'LAND_MAFIA', 'INDUSTRIAL_POLLUTION', 'POLICY_CONCERN', 'PUBLIC_SERVICES', 'INFRASTRUCTURE', 'OTHER'] as const;
@@ -90,27 +89,7 @@ function computePriority(count: number): SupportState['priority'] {
     return 'NORMAL';
 }
 
-function getRestApiBaseUrl(): string {
-    return process.env.NEXT_PUBLIC_REST_URL
-        || process.env.NEXT_PUBLIC_API_URL
-        || process.env.NEXT_PUBLIC_GRAPHQL_URL?.replace('/graphql', '')
-        || 'http://localhost:4000';
-}
 
-async function parseIssueResponse(response: Response) {
-    const payload = await response.json().catch(() => null);
-
-    if (!response.ok) {
-        const errorMessage = payload && typeof payload === 'object' && 'message' in payload
-            ? Array.isArray(payload.message)
-                ? payload.message.join(', ')
-                : String(payload.message)
-            : 'Request failed';
-        throw new Error(errorMessage);
-    }
-
-    return payload;
-}
 
 export default function PublicIssueDetailPage({ params }: { params: { id: string } }) {
     const t = useTranslations('publicIssues');
@@ -131,10 +110,7 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
     const [selectedPriority, setSelectedPriority] = useState<SupportState['priority']>('NORMAL');
     const [selectedVerificationStatus, setSelectedVerificationStatus] = useState<VerificationStatusValue>('UNVERIFIED');
     const [adminUpdateMode, setAdminUpdateMode] = useState<'priority' | 'verification' | null>(null);
-    const [analyses, setAnalyses] = useState<AnalysisItem[]>([]);
-    const [analysisLoading, setAnalysisLoading] = useState(true);
     const [analysisError, setAnalysisError] = useState<string | null>(null);
-    const [analysisSubmitting, setAnalysisSubmitting] = useState(false);
     const [analysisSubmitted, setAnalysisSubmitted] = useState(false);
     const [analysisFieldErrors, setAnalysisFieldErrors] = useState<Partial<Record<keyof AnalysisFormState, string>>>({});
     const [analysisForm, setAnalysisForm] = useState<AnalysisFormState>({
@@ -146,15 +122,12 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
 
     const [analysisSubmittedAsLive, setAnalysisSubmittedAsLive] = useState(false);
 
-    const { data, loading, error, refetch } = useQuery(GET_PUBLIC_ISSUE, {
-        variables: { id: params.id },
-        fetchPolicy: 'cache-and-network',
-    });
-
-    const [updatePublicIssue, { loading: updatingIssue }] = useMutation(UPDATE_PUBLIC_ISSUE);
-    const [updatePublicIssueStatus, { loading: updatingStatus }] = useMutation(UPDATE_PUBLIC_ISSUE_STATUS);
-
-    const issue = data?.publicIssue;
+    const { issue, loading, error, refetch } = usePublicIssue(params.id);
+    const { updatePublicIssue, loading: updatingIssue } = useUpdatePublicIssue();
+    const { updatePublicIssueStatus, loading: updatingStatus } = useUpdatePublicIssueStatus();
+    const { toggleSupport } = useTogglePublicIssueSupport();
+    const { analyses, loading: analysisLoading, refetch: refetchAnalyses } = useIssueAnalyses(params.id);
+    const { createAnalysis, loading: analysisSubmitting } = useCreateAnalysis();
 
     useEffect(() => {
         if (issue) {
@@ -185,53 +158,6 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
             setSelectedVerificationStatus(issue.verificationStatus);
         }
     }, [issue]);
-
-    const loadAnalyses = useCallback(async () => {
-        setAnalysisLoading(true);
-        setAnalysisError(null);
-
-        try {
-            const response = await fetch(`${getRestApiBaseUrl()}/issues/${params.id}/analysis`);
-            const payload = await parseIssueResponse(response);
-            setAnalyses(payload);
-        } catch (loadError) {
-            setAnalysisError(getErrorMessage(loadError));
-        } finally {
-            setAnalysisLoading(false);
-        }
-    }, [params.id]);
-
-    useEffect(() => {
-        let cancelled = false;
-
-        async function run() {
-            setAnalysisLoading(true);
-            setAnalysisError(null);
-
-            try {
-                const response = await fetch(`${getRestApiBaseUrl()}/issues/${params.id}/analysis`);
-                const payload = await parseIssueResponse(response);
-
-                if (!cancelled) {
-                    setAnalyses(payload);
-                }
-            } catch (loadError) {
-                if (!cancelled) {
-                    setAnalysisError(getErrorMessage(loadError));
-                }
-            } finally {
-                if (!cancelled) {
-                    setAnalysisLoading(false);
-                }
-            }
-        }
-
-        void run();
-
-        return () => {
-            cancelled = true;
-        };
-    }, [params.id]);
 
     const locationParts = useMemo(() => (
         [issue?.state, issue?.district, issue?.constituency, issue?.mandal, issue?.village].filter(Boolean)
@@ -352,8 +278,7 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
             return;
         }
 
-        const token = typeof window === 'undefined' ? null : localStorage.getItem('authToken');
-        if (!token) {
+        if (!user) {
             setAdminError(t('loginToSupport'));
             return;
         }
@@ -381,21 +306,16 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
         setSupportState(optimisticState);
 
         try {
-            const method = previousState.hasUserSupported ? 'DELETE' : 'POST';
-            const response = await fetch(`${getRestApiBaseUrl()}/issues/${issue.id}/support`, {
-                method,
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            const updatedIssue = await parseIssueResponse(response);
-            setSupportState({
-                supportCount: updatedIssue.supportCount,
-                hasUserSupported: updatedIssue.hasUserSupported,
-                priority: updatedIssue.priority,
-                isHighPriority: updatedIssue.isHighPriority,
-            });
+            const result = await toggleSupport({ variables: { id: issue.id } });
+            const updatedIssue = result.data?.togglePublicIssueSupport;
+            if (updatedIssue) {
+                setSupportState({
+                    supportCount: updatedIssue.supportCount,
+                    hasUserSupported: updatedIssue.hasUserSupported,
+                    priority: updatedIssue.priority,
+                    isHighPriority: updatedIssue.isHighPriority,
+                });
+            }
         } catch (mutationError) {
             setSupportState(previousState);
             setAdminError(getErrorMessage(mutationError));
@@ -409,12 +329,6 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
             return;
         }
 
-        const token = typeof window === 'undefined' ? null : localStorage.getItem('authToken');
-        if (!token) {
-            setAdminError(t('admin.authRequired'));
-            return;
-        }
-
         const previousPriority = selectedPriority;
 
         setAdminError(null);
@@ -422,22 +336,9 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
         setAdminUpdateMode('priority');
 
         try {
-            const response = await fetch(`${getRestApiBaseUrl()}/admin/issues/${issue.id}/priority`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({ priority }),
-            });
-
-            await parseIssueResponse(response);
+            await updatePublicIssue({ variables: { id: issue.id, input: { priority } } });
             setSupportState((current) => current
-                ? {
-                    ...current,
-                    priority,
-                    isHighPriority: priority === 'HIGH',
-                }
+                ? { ...current, priority, isHighPriority: priority === 'HIGH' }
                 : current);
             await refetch();
         } catch (updateError) {
@@ -453,12 +354,6 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
             return;
         }
 
-        const token = typeof window === 'undefined' ? null : localStorage.getItem('authToken');
-        if (!token) {
-            setAdminError(t('admin.authRequired'));
-            return;
-        }
-
         const previousStatus = selectedVerificationStatus;
 
         setAdminError(null);
@@ -466,16 +361,7 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
         setAdminUpdateMode('verification');
 
         try {
-            const response = await fetch(`${getRestApiBaseUrl()}/admin/issues/${issue.id}/verification-status`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({ verificationStatus }),
-            });
-
-            await parseIssueResponse(response);
+            await updatePublicIssue({ variables: { id: issue.id, input: { verificationStatus } } });
             await refetch();
         } catch (updateError) {
             setSelectedVerificationStatus(previousStatus);
@@ -495,38 +381,26 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
             return;
         }
 
-        const token = typeof window === 'undefined' ? null : localStorage.getItem('authToken');
-        if (!token) {
-            setAnalysisError(t('analysis.restrictedLogin'));
-            return;
-        }
-
-        setAnalysisSubmitting(true);
         setAnalysisError(null);
         setAnalysisSubmitted(false);
 
         try {
-            const response = await fetch(`${getRestApiBaseUrl()}/analysis`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
+            await createAnalysis({
+                variables: {
+                    input: {
+                        issueId: params.id,
+                        problemUnderstanding: analysisForm.problemUnderstanding.trim(),
+                        impact: analysisForm.impact.trim(),
+                        observations: analysisForm.observations.trim(),
+                        considerations: analysisForm.considerations.trim() || undefined,
+                    },
                 },
-                body: JSON.stringify({
-                    issueId: params.id,
-                    problemUnderstanding: analysisForm.problemUnderstanding.trim(),
-                    impact: analysisForm.impact.trim(),
-                    observations: analysisForm.observations.trim(),
-                    considerations: analysisForm.considerations.trim() || undefined,
-                }),
             });
-
-            await parseIssueResponse(response);
 
             if (isSuperAdmin) {
                 // SUPER_ADMIN submissions are auto-approved — reload list so insight appears immediately
                 setAnalysisSubmittedAsLive(true);
-                await loadAnalyses();
+                await refetchAnalyses();
             } else {
                 setAnalysisSubmitted(true);
             }
@@ -540,8 +414,6 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
             setAnalysisFieldErrors({});
         } catch (submitError) {
             setAnalysisError(getErrorMessage(submitError));
-        } finally {
-            setAnalysisSubmitting(false);
         }
     };
 
@@ -854,7 +726,7 @@ export default function PublicIssueDetailPage({ params }: { params: { id: string
                                 <Alert severity="info" sx={{ mb: canSubmitAnalysis ? 3 : 0 }}>{t('analysis.empty')}</Alert>
                             ) : (
                                 <Stack spacing={2} sx={{ mb: canSubmitAnalysis ? 3 : 0 }}>
-                                    {analyses.map((analysis) => {
+                                    {(analyses as AnalysisItem[]).map((analysis) => {
                                         const summary = analysis.problemUnderstanding.length > 140
                                             ? `${analysis.problemUnderstanding.slice(0, 140).trimEnd()}...`
                                             : analysis.problemUnderstanding;

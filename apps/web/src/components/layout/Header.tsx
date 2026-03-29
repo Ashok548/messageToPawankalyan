@@ -77,7 +77,7 @@ export default function Header() {
         { label: t('navigation.governance'), href: `/${locale}/governance-highlights`, showForAll: true },
         { label: t('navigation.disciplinary'), href: `/${locale}/disciplinary-cases`, showForAll: true },
         { label: t('navigation.publicIssues'), href: `/${locale}/public-issues`, showForAll: true },
-        { label: t('navigation.voices'), href: `/${locale}/voices`, showForAll: true },
+        ...(isAdmin ? [{ label: t('navigation.voices'), href: `/${locale}/voices`, showForAll: true }] : []),
         ...(isSuperAdmin ? [{ label: t('navigation.userManagement'), href: `/${locale}/user-management`, showForAll: true }] : []),
     ];
 

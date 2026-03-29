@@ -21,17 +21,18 @@ import { ImageUploadField } from '@/components/forms/ImageUploadField';
 import { useNavigate } from '@/hooks/use-navigate';
 import { type ImageFile } from '@/utils/file-helpers';
 import { getErrorMessage } from '@/utils/error-helpers';
+import { useCreatePublicIssue } from '@/hooks/use-public-issues';
 
 const CATEGORY_OPTIONS = ['CORRUPTION', 'LAND_MAFIA', 'INDUSTRIAL_POLLUTION', 'POLICY_CONCERN', 'PUBLIC_SERVICES', 'INFRASTRUCTURE', 'OTHER'] as const;
 const SENSITIVE_CATEGORIES = new Set(['CORRUPTION', 'LAND_MAFIA', 'INDUSTRIAL_POLLUTION']);
 const STEP_LABELS = ['Title + Description', 'Category + Location', 'Media Upload', 'Review & Submit'];
-const REST_BASE_URL = process.env.NEXT_PUBLIC_REST_URL || process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_GRAPHQL_URL?.replace('/graphql', '') || 'http://localhost:4000';
 
 export default function SubmitPublicIssuePage() {
     const t = useTranslations('publicIssues');
     const tCommon = useTranslations('common');
     const locale = useLocale();
     const { navigate } = useNavigate();
+    const { createPublicIssue, loading: submitting } = useCreatePublicIssue();
 
     const [formData, setFormData] = useState({
         title: '',
@@ -46,7 +47,6 @@ export default function SubmitPublicIssuePage() {
     const [currentStep, setCurrentStep] = useState(0);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [submitError, setSubmitError] = useState<string | null>(null);
-    const [submitting, setSubmitting] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [images, setImages] = useState<ImageFile[]>([]);
 
@@ -160,38 +160,24 @@ export default function SubmitPublicIssuePage() {
             return;
         }
 
-        setSubmitting(true);
-
         try {
-            const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
-            const response = await fetch(`${REST_BASE_URL}/issues`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            await createPublicIssue({
+                variables: {
+                    input: {
+                        ...formData,
+                        constituency: formData.constituency || undefined,
+                        mandal: formData.mandal || undefined,
+                        village: formData.village || undefined,
+                        images: images.map((image) => image.base64),
+                    },
                 },
-                credentials: 'include',
-                body: JSON.stringify({
-                    ...formData,
-                    constituency: formData.constituency || undefined,
-                    mandal: formData.mandal || undefined,
-                    village: formData.village || undefined,
-                    images: images.map((image) => image.base64),
-                }),
             });
-
-            if (!response.ok) {
-                const payload = await response.json().catch(() => null);
-                throw new Error(payload?.message || `Request failed with status ${response.status}`);
-            }
 
             images.forEach((image) => URL.revokeObjectURL(image.preview));
             setImages([]);
             setSubmitted(true);
         } catch (error) {
             setSubmitError(getErrorMessage(error));
-        } finally {
-            setSubmitting(false);
         }
     };
 

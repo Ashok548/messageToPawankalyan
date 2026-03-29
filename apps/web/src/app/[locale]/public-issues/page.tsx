@@ -1,7 +1,6 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
 import {
     Alert,
     Box,
@@ -22,9 +21,9 @@ import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
 import { useLocale, useTranslations } from 'next-intl';
 import { ANDHRA_PRADESH_DISTRICTS } from '@repo/constants';
 import { PublicIssueCard } from '@/components/public-issues/PublicIssueCard';
-import { GET_PUBLIC_ISSUES, TOGGLE_PUBLIC_ISSUE_SUPPORT } from '@/graphql/public-issues';
 import { useAuth } from '@/hooks/use-auth';
 import { useNavigate } from '@/hooks/use-navigate';
+import { usePublicIssues, useTogglePublicIssueSupport } from '@/hooks/use-public-issues';
 
 type FeedSort = 'LATEST' | 'HIGH_PRIORITY';
 
@@ -50,14 +49,8 @@ export default function PublicIssuesPage() {
         sortBy: feedSort === 'HIGH_PRIORITY' ? 'TRENDING' : 'LATEST',
     }), [filters, feedSort]);
 
-    const { data, loading, error, refetch } = useQuery(GET_PUBLIC_ISSUES, {
-        variables: { filter: queryFilter, pagination: { take: 50, skip: 0 } },
-        fetchPolicy: 'cache-and-network',
-    });
-
-    const [toggleSupport] = useMutation(TOGGLE_PUBLIC_ISSUE_SUPPORT);
-
-    const issues = data?.publicIssues ?? [];
+    const { issues, loading, error, refetch } = usePublicIssues(queryFilter, { take: 50, skip: 0 });
+    const { toggleSupport } = useTogglePublicIssueSupport();
 
     const handleSupport = async (issueId: string, e: React.MouseEvent) => {
         e.stopPropagation();
